@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
+from smart_selects.db_fields import ChainedForeignKey
+
 
 # Create your models here.
 class circles(models.Model):
@@ -37,12 +38,12 @@ class sections(models.Model):
         return self.SECTIONDTL
 
 '''class policestation(models.Model):
-    DCODE = models.OneToManyField(circles)
-    DISTT_NAME = models.CharField(max_length =  50)
-    PS = models.CharField(max_length = 20)
-    POLICE_STATION_NAME = models.CharField(max_length = 100)
-    REMARKS = models.CharField(max_length = 300)
-    WORKING = models.CharField(max_length = 150)'''
+	DCODE = models.OneToManyField(circles)
+	DISTT_NAME = models.CharField(max_length =  50)
+	PS = models.CharField(max_length = 20)
+	POLICE_STATION_NAME = models.CharField(max_length = 100)
+	REMARKS = models.CharField(max_length = 300)
+	WORKING = models.CharField(max_length = 150)'''
 
 
 class details(models.Model):
@@ -63,7 +64,13 @@ class details(models.Model):
     DATE_OCC = models.DateField()
     PLACE_OCC = models.CharField(max_length=140)
 
-    ROAD = models.ForeignKey(roads)
+    ROAD = ChainedForeignKey(
+        roads,
+        chained_field = "CIRCLE",
+        chained_model_field = "CIRCLE",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
 
     ROADNAME = models.CharField(max_length=150)
     LOCATION = models.CharField(max_length=140)

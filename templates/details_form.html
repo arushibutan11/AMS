@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html>  
 <head>
+ {% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
+<script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
+<script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <style type="text/css">
 div{
     background-color: black;
@@ -68,7 +73,7 @@ function validateForm() {
 <option >{{s.username}}</option>
 
 <label for="road">Road Name </label> 
-<option >{{s.username}}</option>
+{{form.ROAD}}
 
 <label for="lat">Latitude </label> 
 {{ form.LATITUDE }}
@@ -138,7 +143,7 @@ function validateForm() {
     {{ form.dri_lic_no }}
 
     <label for="placelisno">Place from where License was issued </label> 
-    {{ form.dri_place }}
+    {{ form.dri_place }]
 
     <label for="idate">Issued Date:</label> 
     {{ form.dri_lic_date_issu }}
