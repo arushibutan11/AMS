@@ -28,147 +28,128 @@ function validateForm() {
 </head>
 <body>
 <h2>ACCIDENT REPORT FORM</h2>
-<form name="myForm" onsubmit="return validateForm()"  action=" " method="Post">
+<form name="myForm" action=" " method="Post">
+{% csrf_token %}
 <div>
+
 <label for="firno">FIR No.</label>
-<input id="firno" type="text" name="Fir No."><br>
+{{ form.FIRNO }}
+
 </div>
 <div>
+
 <label for="police">Police Station </label> 
-    <select id="police" name="Police Station">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+<option >{{s.username}}</option>
 
 <label for="circle">Circle </label> 
-<select id="circle" name="Circle">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+{{form.CIRCLE}}
 
 <label for="dist">District </label> 
- <select id="dist" name="District">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>   
+<option >{{s.username}}</option>
 
 <label for="range">Range </label> 
- <select id="range" name="Range">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+<option >{{s.username}}</option>
+
 </div>
 <div>
+
 <label for="date">Date </label> 
- <input id="date" type="date" name="Date">
+{{ form.DATE_OCC }}
 
 <label for="time">Time </label> 
-<input id="time" type="time" name="Time">
+{{ form.TIME_OCC }}
 </div>
 <div>
-    <label for="poo">Place of occurance  </label> 
-    <input id="poo" type="text" name="Place of occurance">
+
+<label for="poo">Place of occurance  </label> 
+{{ form.PLACE_OCC }}
 
 <label for="inter">Intersection  </label> 
-<select id= "inter" name="Intersection">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+<option >{{s.username}}</option>
 
-    <label for="road">Road Name </label> 
-    <select id="road" name="Road Name">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+<label for="road">Road Name </label> 
+<option >{{s.username}}</option>
 
-    <label for="lat">Latitude </label> 
-    <input id="lat" type="text" name="latitude">
+<label for="lat">Latitude </label> 
+{{ form.LATITUDE }}
 
-    <label for="long">Longitude </label> 
+<label for="long">Longitude </label> 
+{{ form.LONGITUDE }}
 
- <input id="long" type="text" name="longitude">
 </div>
 <div>
     <label for="sect">Section </label> 
-    <select id= "sect" name="Section">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+    <option >{{s.username}}</option>
 </div>
 <div>
+
 <label for="acctype">AccidentType</label> 
-    <select id="acctype" name="AccidentType">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+<option >{{s.username}}</option>
+
 </div>
 <div>
 <h3>Vehicle at fault</h3> 
-    <label for="typef">Type</label> 
-    <select id="typef" name="Type">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
 
-    <label for="regnof">Registration-No.</label> 
-    <input id="regnof" type="text" name="Registeration-No">
+    <label for="typef">Type</label> 
+    <option >{{s.username}}</option>
+
+    <label for="regnof">Registration-No. A</label> 
+    {{ form.RNOV1A }}
+    <label for="regnof">Registration-No. B</label> 
+    {{ form.RNOV1B }}
+
 
     <label for="routeno">Route No.</label> 
-    <input id="routeno" type="text" name="">
+    {{ form.routeno }}
+
 </div>
 <div>
 <h3>Victim Details</h3> 
 
     <label for="typev">Type </label> 
-    <select id="typev" name="Type">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
+    <option >{{s.username}}</option>
 
-    <label for="regnov">Registration-No. </label> 
-    <input id="regnov" type="text" name="Registeration-No">
+    <label for="regnof">Registration-No. A</label> 
+    {{ form.RNOV2A }}
+    <label for="regnof">Registration-No. B</label> 
+    {{ form.RNOV2B }}
 
     <label for="board">Boarding/De-boarding</label> 
+    <option >{{s.username}}</option>
 
-    <select id="board" name="Boarding">
-    <option value="p1">Yes</option>
-    <option value="p2">No</option>
-    </select>
 </div>
 </div>
 <div>
 <h3>Accident Driver Details</h3>
+
     <label for="drivname">Driver Name</label> 
-    <input id="drivname" type="text" name="Driver Name">
+     {{ form.dri_name }}
 
     <label for="addr">Address </label> 
-    <input id="addr" type="text" name="Address">
+     {{ form.dri_add }}
 
     <label for="arrest">Arrested</label> 
-    <select id="arrest" name="Arrested">
-    <option value="Yes">Yes</option>
-    <option value="No">No</option>
-  </select>
+    <option >{{s.username}}</option>
 
     <label for="age">Age </label> 
-    <input id="age" type="integer" name="Age">
+    {{ form.dri_age }}
 
     <label for="lisno">License No.</label> 
-    <input id="lisno" type="text" name="License No."><br></br>
+    {{ form.dri_lic_no }}
 
     <label for="placelisno">Place from where License was issued </label> 
-    <input id="placelisno" type="text" name="Place">
+    {{ form.dri_place }}
 
     <label for="idate">Issued Date:</label> 
-    <input id="idate" type="date" name="Issued Date">
+    {{ form.dri_lic_date_issu }}
 
     <label for="udate">Upto Date:</label> 
-    <input id="udate" type="date" name="Upto Date">
+    {{ form.dri_lic_date_upto }}
 
 </div>
 <div>
     <label for="remarks">Remarks</label> 
-    <input id="remarks" type="textarea" name="Remarks">
+    {{ form.REMARK }}
 </div>
 <input type="submit">
 </form>

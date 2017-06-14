@@ -4,25 +4,25 @@ from django.contrib.auth.models import User
 from .models import details
 
 
-class AccForm(forms.ModelForm):
+class FirForm(forms.ModelForm):
 
     class Meta:
         model = details
-     #  fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE','DATE_OCC',
- #'PLACE_OCC','ROAD', 'ROADNAME', 'LOCATION','CATEGORY', 'VEHTYPE1', 'TWW1', 'RNOV1A', 'RNOV1B', 
- #'VEHTYPE2', 'TWW2', 'RNOV2A', 'RNOV2B', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
- #'INJGIRL', 'KILLED', 'KILMALE', 'KILFEMALE', 'KILBOY', 'KILGIRL', 'PEDESTRIAN', 'ACCTYPE',
-#'ACCID_TYPE','VICTIM', 'DUPL', 'PENDING','DAY_NIGHT','YEAR','TIME_SLOT', 'MONTH','FN','ACCAGE','ACCSEX',
-#'ACCDRUNK' , 'Intersection', 'routeno', 'case_status','convert_case', 'BRIEF_FACTS' ,'dri_lic_no', 
-#'dri_name', 'dri_fath', 'dri_sex','dri_age','dri_add','dri_arrest','dri_place','dri_lic_date_issu',
-#'dri_lic_date_upto', 'dri_lic_status','REMARK', 'CONFIRM', 'LONGITUDE', 'LATITUDE', 'CONVERT',
-#'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
-# 'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1'] 
-   
-	exclude=['ACC_ID','TIME_TYPE','ROAD', 'LOCATION','CATEGORY', 'TWW1', 'TWW2', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
+     	fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE','DATE_OCC',
+ 'PLACE_OCC','ROAD', 'ROADNAME', 'LOCATION','CATEGORY', 'VEHTYPE1', 'TWW1', 'RNOV1A', 'RNOV1B', 
+ 'VEHTYPE2', 'TWW2', 'RNOV2A', 'RNOV2B', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
+ 'INJGIRL', 'KILLED', 'KILMALE', 'KILFEMALE', 'KILBOY', 'KILGIRL', 'PEDESTRIAN', 'ACCTYPE',
+'ACCID_TYPE','VICTIM', 'DUPL', 'PENDING','DAY_NIGHT','YEAR','TIME_SLOT', 'MONTH','FN','ACCAGE','ACCSEX',
+'ACCDRUNK' , 'Intersection', 'routeno', 'case_status','convert_case', 'BRIEF_FACTS' ,'dri_lic_no', 
+'dri_name', 'dri_fath', 'dri_sex','dri_age','dri_add','dri_arrest','dri_place','dri_lic_date_issu',
+'dri_lic_date_upto', 'dri_lic_status','REMARK', 'CONFIRM', 'LONGITUDE', 'LATITUDE', 'CONVERT',
+'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
+ 'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1'] 
+'''   
+        exclude=['ACC_ID','TIME_TYPE','ROAD', 'LOCATION','CATEGORY', 'TWW1', 'TWW2', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
  'INJGIRL', 'KILLED', 'KILMALE', 'KILFEMALE', 'KILBOY', 'KILGIRL', 'PEDESTRIAN', 'ACCTYPE',
 'ACCID_TYPE','VICTIM', 'DUPL', 'PENDING','DAY_NIGHT','YEAR','TIME_SLOT', 'MONTH','FN','ACCAGE','ACCSEX',
 'ACCDRUNK', 'routeno', 'case_status','convert_case', 'BRIEF_FACTS' , 'dri_fath', 'dri_sex', 'dri_lic_status','CONFIRM','CONVERT',
 'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
  'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1']
-   
+   '''

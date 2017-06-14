@@ -11,18 +11,39 @@ class circles(models.Model):
     CIRCLENAM = models.CharField(max_length=50)
     RANGE = models.CharField(max_length=4)
     RANGENAM = models.CharField(max_length=50)
+    def __str__(self):
+        return self.CIRCLENAM
 
 class roads(models.Model):
-    RNG =  models.CharField(max_length = 5)
-    DIST = models.CharField(max_length = 5)
-    CIRCLE = models.ManyToManyField(circles)
+    RNG =  models.CharField(max_length = 5, blank = True)
+    DIST = models.CharField(max_length = 5, blank = True)
+    CIRCLE = models.ForeignKey(circles)
     ROADNAME = models.CharField(max_length=50)
     ROAD = models.IntegerField()
-    PS = models.CharField(max_length=5)
-    PLACE_OCC = models.CharField(max_length=50)
-    NEW = models.CharField(max_length=50)
-    PSNAME = models.CharField(max_length=50)
-    NEW1 = models.CharField(max_length=50)
+    PS = models.CharField(max_length=5, blank = True)
+    PLACE_OCC = models.CharField(max_length=50, blank = True)
+    NEW = models.CharField(max_length=50, primary_key = True)
+    PSNAME = models.CharField(max_length=50, blank = True)
+    NEW1 = models.CharField(max_length=50, blank = True)
+    def __str__(self):
+        return self.ROADNAME
+
+class sections(models.Model):
+    SECTION = models.IntegerField(primary_key=True)
+    SECTIONDTL = models.CharField(max_length = 50)
+    ACCTYPE = models.CharField(max_length = 5)
+    ACCTYPEN = models.CharField(max_length = 25)
+    def __str__(self):
+        return self.SECTIONDTL
+
+'''class policestation(models.Model):
+    DCODE = models.OneToManyField(circles)
+    DISTT_NAME = models.CharField(max_length =  50)
+    PS = models.CharField(max_length = 20)
+    POLICE_STATION_NAME = models.CharField(max_length = 100)
+    REMARKS = models.CharField(max_length = 300)
+    WORKING = models.CharField(max_length = 150)'''
+
 
 class details(models.Model):
 
@@ -34,7 +55,9 @@ class details(models.Model):
     DIST =  models.CharField(max_length=5)
     PS = models.CharField(max_length=5)
     FIRNO = models.IntegerField()
-    SECTION = models.CharField(max_length=15)
+
+    SECTION = models.ForeignKey(sections)
+
     TIME_OCC = models.TimeField()
     TIME_TYPE = models.CharField(max_length=15)
     DATE_OCC = models.DateField()
