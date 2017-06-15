@@ -7,4 +7,5 @@ from fir import views
 
 urlpatterns = [
     url(r'^$', views.create_fir, name='create_fir'),
+    url(r'^getcircleinfo$', views.getcircleinfo, name='getcircleinfo')
 ]

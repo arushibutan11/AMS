@@ -15,6 +15,16 @@ class circles(models.Model):
     def __str__(self):
         return self.CIRCLENAM
 
+    def as_json(self):
+        return dict(
+            DISTNAM=self.DISTNAM,
+            DIST = self.DIST,
+            CIRCLE = self.CIRCLE,
+            CIRCLENAM=self.CIRCLENAM,
+            RANGE=self.RANGE,
+            RANGENAM=self.RANGENAM)
+            
+
 class roads(models.Model):
     RNG =  models.CharField(max_length = 5, blank = True)
     DIST = models.CharField(max_length = 5, blank = True)
