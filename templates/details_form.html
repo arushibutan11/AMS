@@ -251,28 +251,10 @@ h2 { text-align: center; }
 </form>
 </div>
 <script>
-function validateForm() {
-    var x = document.forms["myForm"]["Fir No."].value;
-    if (x == "") {
-        alert("Name must be filled out");
-        return false;
-    }
-}
-
-$("#time").change(function () {
-    var selection = $("#time option:selected").text(); //grab the value selected
-    
-    //var textbox3 = document.getElementById('id_FIRNO');
-	//textbox3.value=selection
-	alert("you selected" + selection);
-
-    });
 
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
-    
-    //var textbox3 = document.getElementById('id_FIRNO');
-	//textbox3.value=selection
+ 
 	function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -307,54 +289,31 @@ $.ajaxSetup({
         },
         dataType: 'json',
         success: function (data) {
-          
-			var x = document.getElementById("id_DIST");
-			if (x){x.value = data['DIST'];}
-			var y = document.getElementById("id_RNG");
-			if (y){y.value = data['RANGE'];}
-         
+			document.getElementById("id_DIST").value = data['DIST'];
+			document.getElementById("id_RNG").value = data['RANGE'];
         }
       });
-
     });
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-
-
-	var x = document.getElementById("id_MONTH");
-	if (x)
-	{
-
-	x.value = selection;
-	
-}
-else { alert("WRONG"); }
-
+	document.getElementById("id_MONTH").value = selection;
     });
 
 
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
-
-
-	var x = document.getElementById("id_YEAR");
-	if (x)
-	{
-
-	x.value = selection;
-}
-else { alert("WRONG"); }
-
+	document.getElementById("id_YEAR").value = selection;
+	var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
+	document.getElementById("id_ACC_ID").value = id;
     });
 
 
 $("#id_DATE_OCC_day").change(function () {
     var selection = $("#id_DATE_OCC_day option:selected").text(); //grab the value selected
-	var x = document.getElementById("id_FN");
-
-	if (selection<=15) {
-		x.value = 1; } 
-	else { x.value = 2; }
+	if (selection<=15) 
+	{document.getElementById("id_FN").value = 1; } 
+	else 
+	{ document.getElementById("id_FN").value = 2; }
 
     });
 
