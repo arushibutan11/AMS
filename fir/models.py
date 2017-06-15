@@ -37,13 +37,18 @@ class sections(models.Model):
     def __str__(self):
         return self.SECTIONDTL
 
-'''class policestation(models.Model):
-	DCODE = models.OneToManyField(circles)
-	DISTT_NAME = models.CharField(max_length =  50)
-	PS = models.CharField(max_length = 20)
-	POLICE_STATION_NAME = models.CharField(max_length = 100)
-	REMARKS = models.CharField(max_length = 300)
-	WORKING = models.CharField(max_length = 150)'''
+class policestation(models.Model):
+    DISTNAM = models.CharField(max_length =  50)
+    DIST = models.CharField(max_length = 20)
+    CIRCLE = models.ForeignKey(circles)
+    CIRCLENAM = models.CharField(max_length=50)
+    RANGE = models.CharField(max_length=4)
+    RANGENAM = models.CharField(max_length=50)
+    PS = models.CharField(max_length=20)
+    PSNAME = models.CharField(max_length = 100)
+    CIRCLE_PS= models.CharField(max_length=50, primary_key = True)
+    def __str__(self):
+        return self.PSNAME
 
 
 class details(models.Model):
@@ -54,7 +59,13 @@ class details(models.Model):
     CIRCLE = models.ForeignKey(circles)
 
     DIST =  models.CharField(max_length=5)
-    PS = models.CharField(max_length=5)
+    PS = ChainedForeignKey(policestation,
+        chained_field = "CIRCLE",
+        chained_model_field = "CIRCLE",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
+
     FIRNO = models.IntegerField()
 
     SECTION = models.ForeignKey(sections)

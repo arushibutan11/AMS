@@ -6,12 +6,70 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
+<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
+
 <style type="text/css">
+label {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+td {
+    padding-right: 5px;
+}
+select {
+    width: 169px;
+    padding: 3px;
+}
+.form-style-6{
+    font: 95% Arial, Helvetica, sans-serif;
+    margin: 10px auto;
+    padding: 16px;
+    background: #F7F7F7;
+}
+.form-style-6 h1{
+    background: #2196F3;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+}
+.form-style-6 input[type="submit"],
+.form-style-6 input[type="button"]{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background: #2196F3;
+    border-bottom: 2px solid #30C29E;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;    
+    color: #fff;
+}
+.form-style-6 input[type="text"],
+{
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background: #fff;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+}
 div{
-    background-color: black;
-    border: black;
-    color: white;
-    margin: 10px 0 10px 0;
+    width: 100%;
+    border-bottom: 10px;
+    border-bottom: 1px #c7bfbf solid;
+    color: black;
+    /* margin: 10px 0 10px 0; */
     padding: 10px;
 } 
 input {
@@ -20,83 +78,117 @@ input {
     margin: 5px 0 5px 3px;
     padding: 3px;
 }
+
+h2 { text-align: center; }
 </style>
-<script>
-function validateForm() {
-    var x = document.forms["myForm"]["Fir No."].value;
-    if (x == "") {
-        alert("Name must be filled out");
-        return false;
-    }
-}
-</script>
+
 </head>
 <body>
-<h2>ACCIDENT REPORT FORM</h2>
+<div class="form-style-6">
+<h1>ACCIDENT REPORT FORM</h1>
 <form name="myForm" action=" " method="Post">
 {% csrf_token %}
 <div>
+    <input id = "plis" type = "text"> </input>
+<label>Accident Id</label>
+ {{ form.ACC_ID }} 
+ <br>
+ <label>Fort Night</label>
+{{ form.FN }}
 
-<label for="firno">FIR No.</label>
+  <label>Month</label>
+  {{ form.MONTH }}
+
+  <label>Year</label>
+  {{ form.YEAR }}
+
+</div>
+
+<div>
+
+<label>Circle </label> 
+{{ form.CIRCLE }}
+
+<label>District</label> 
+{{ form.DIST }}
+
+<label>Range </label> 
+{{ form.RNG }}
+
+<label>Police Station </label>
+{{ form.PS }}
+
+</div>
+
+<div>
+
+<label>FIR No.</label>
 {{ form.FIRNO }}
 
-</div>
-<div>
-
-<label for="police">Police Station </label> 
-<option >{{s.username}}</option>
-
-<label for="circle">Circle </label> 
-{{form.CIRCLE}}
-
-<label for="dist">District </label> 
-<option >{{s.username}}</option>
-
-<label for="range">Range </label> 
-<option >{{s.username}}</option>
-
-</div>
-<div>
-
-<label for="date">Date </label> 
+<label>Date </label> 
 {{ form.DATE_OCC }}
 
-<label for="time">Time </label> 
-{{ form.TIME_OCC }}
 </div>
 <div>
 
-<label for="poo">Place of occurance  </label> 
+<label>Time </label> 
+{{ form.TIME_OCC }}
+
+<label>Time Type </label> 
+{{ form.TIME_TYPE }}
+
+<label>Time Slot</label>
+<select id="time" name="Time Slot">
+    <option value="p1">Approx</option>
+    <option value="p2">INFIR</option>
+    </select>
+{{ form.TIME_SLOT }}
+
+<label>Day/Night</label> 
+{{ form.DAY_NIGHT }}
+
+
+</div>
+
+<div>
+
+    <label>Section </label> 
+{{ form.SECTION }}
+
+  <label>AccidentType</label>
+ {{ form.ACCTYPE }}
+
+
+
+</div>
+<div>
+
+<label>Location </label> 
+{{ form.LOCATION }}
+
+<label>Place of occurance  </label> 
 {{ form.PLACE_OCC }}
 
-<label for="inter">Intersection  </label> 
-<option >{{s.username}}</option>
+<label>Intersection  </label> 
+{{ form.Intersection}}
 
 <label for="road">Road Name </label> 
 {{form.ROAD}}
 
-<label for="lat">Latitude </label> 
+<br>
+<label>Latitude </label> 
 {{ form.LATITUDE }}
 
-<label for="long">Longitude </label> 
+<label>Longitude </label> 
 {{ form.LONGITUDE }}
 
 </div>
-<div>
-    <label for="sect">Section </label> 
-    <option >{{s.username}}</option>
-</div>
-<div>
 
-<label for="acctype">AccidentType</label> 
-<option >{{s.username}}</option>
-
-</div>
 <div>
 <h3>Vehicle at fault</h3> 
 
     <label for="typef">Type</label> 
-    <option >{{s.username}}</option>
+{{ form.VEHTYPE1}}
 
     <label for="regnof">Registration-No. A</label> 
     {{ form.RNOV1A }}
@@ -112,7 +204,7 @@ function validateForm() {
 <h3>Victim Details</h3> 
 
     <label for="typev">Type </label> 
-    <option >{{s.username}}</option>
+{{ form.VEHTYPE2 }}
 
     <label for="regnof">Registration-No. A</label> 
     {{ form.RNOV2A }}
@@ -120,9 +212,7 @@ function validateForm() {
     {{ form.RNOV2B }}
 
     <label for="board">Boarding/De-boarding</label> 
-    <option >{{s.username}}</option>
 
-</div>
 </div>
 <div>
 <h3>Accident Driver Details</h3>
@@ -134,7 +224,7 @@ function validateForm() {
      {{ form.dri_add }}
 
     <label for="arrest">Arrested</label> 
-    <option >{{s.username}}</option>
+    {{ form.arrest }}
 
     <label for="age">Age </label> 
     {{ form.dri_age }}
@@ -142,8 +232,10 @@ function validateForm() {
     <label for="lisno">License No.</label> 
     {{ form.dri_lic_no }}
 
+    <br>
+
     <label for="placelisno">Place from where License was issued </label> 
-    {{ form.dri_place }]
+    {{ form.dri_place }}
 
     <label for="idate">Issued Date:</label> 
     {{ form.dri_lic_date_issu }}
@@ -158,5 +250,54 @@ function validateForm() {
 </div>
 <input type="submit">
 </form>
+</div>
+<script>
+function validateForm() {
+    var x = document.forms["myForm"]["Fir No."].value;
+    if (x == "") {
+        alert("Name must be filled out");
+        return false;
+    }
+}
+
+$("#time").change(function () {
+    var selection = $("#time option:selected").text(); //grab the value selected
+    
+    //var textbox3 = document.getElementById('id_FIRNO');
+	//textbox3.value=selection
+	alert("you selected" + selection);
+
+    });
+$("#id_DATE_OCC_month").change(function () {
+    var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
+
+
+	var x = document.getElementById("id_MONTH");
+	if (x)
+	{
+
+	x.value = selection;
+	
+}
+else { alert("WRONG"); }
+
+    });
+
+
+$("#id_DATE_OCC_year").change(function () {
+    var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
+
+
+	var x = document.getElementById("id_YEAR");
+	if (x)
+	{
+
+	x.value = selection;
+}
+else { alert("WRONG"); }
+
+    });
+
+</script>
 </body>
 </html>
