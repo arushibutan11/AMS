@@ -92,7 +92,7 @@ h2 { text-align: center; }
 <label>Accident Id</label>
  {{ form.ACC_ID }} 
  <br>
- <label>Fort Night</label>
+ <label>Fortnight</label>
 {{ form.FN }}
 
   <label>Month</label>
@@ -344,6 +344,17 @@ $("#id_DATE_OCC_year").change(function () {
 	x.value = selection;
 }
 else { alert("WRONG"); }
+
+    });
+
+
+$("#id_DATE_OCC_day").change(function () {
+    var selection = $("#id_DATE_OCC_day option:selected").text(); //grab the value selected
+	var x = document.getElementById("id_FN");
+
+	if (selection<=15) {
+		x.value = 1; } 
+	else { x.value = 2; }
 
     });
 
