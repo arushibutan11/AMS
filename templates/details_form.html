@@ -1,22 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Marketplace
-Gist
- @arushibutan11
- Sign out
- Unwatch 2
-  Star 0
-  Fork 0 arushibutan11/AMS
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Settings Insights 
-Tree: ef9a64c420 Find file Copy pathAMS/templates/details_form.html
-ef9a64c  an hour ago
-@arushibutan11 arushibutan11 Table working
-2 contributors @arushibutan11 @sanjamkr
-RawBlameHistory      
-480 lines (405 sloc)  11.1 KB
 <!DOCTYPE HTML>
 <html>  
 <head>
@@ -29,10 +10,20 @@ RawBlameHistory
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
 
 <style type="text/css">
+
+div#table2 {
+    display: none;
+    
+}
+div#table1 {
+    display: none;
+}
+
+
 label {
     padding-left: 5px;
     padding-right: 5px;
-	font-weight: 400;
+    font-weight: 400;
 }
 td {
     padding-right: 5px;
@@ -99,8 +90,10 @@ input {
     margin: 5px 0 5px 3px;
     padding: 3px;
 }
+
 h2 { text-align: center; }
 @import "compass/css3";
+
 .table-editable {
   position: relative;
   
@@ -108,6 +101,7 @@ h2 { text-align: center; }
     font-size: 20px;
   }
 }
+
 .table-remove {
   color: #700;
   cursor: pointer;
@@ -116,6 +110,7 @@ h2 { text-align: center; }
     color: #f00;
   }
 }
+
 .table-up, .table-down {
   color: #007;
   cursor: pointer;
@@ -124,6 +119,7 @@ h2 { text-align: center; }
     color: #00f;
   }
 }
+
 .table-add {
   color: #070;
   cursor: pointer;
@@ -234,61 +230,50 @@ h2 { text-align: center; }
 
 </div>
 <div id="alltables">
- <div id="table" class="table-editable">
-    <span class="zeroadd table-add glyphicon glyphicon-plus"></span>
-    <table class="zerot table">
+<div id="table1" class="table-editable">
+    <span class="table-add glyphicon glyphicon-plus"></span>
+    <table class="table">
+    
       <tr>
-        <th>Name</th>
-        <th>Value</th>
-        <th></th>
-        <th></th>
+        <th>Injured- Age</th>
+        <th>Injured- Sex</th>
+        <th>Injured- Type</th>
+
       </tr>
       <tr>
-        <td contenteditable="true">Stir Fry</td>
-        <td contenteditable="true">stir-fry</td>
-        <td>
-          <span class="table-remove glyphicon glyphicon-remove"></span>
-        </td>
-        <td>
-          <span class="table-up glyphicon glyphicon-arrow-up"></span>
-          <span class="table-down glyphicon glyphicon-arrow-down"></span>
-        </td>
+        <td contenteditable="true">{{ formkil.INJAGE }}</td>
+        <td contenteditable="true">{{ formkil.INJSEX }}</td>
+        <td contenteditable="true">{{ formkil.INJTYPE }}</td>
       </tr>
       <!-- This is our clonable table line -->
       <tr class="hide">
-        <td contenteditable="true">Untitled</td>
-        <td contenteditable="true">undefined</td>
-        <td>
-          <span class="table-remove glyphicon glyphicon-remove"></span>
-        </td>
-        <td>
-          <span class="table-up glyphicon glyphicon-arrow-up"></span>
-          <span class="table-down glyphicon glyphicon-arrow-down"></span>
-        </td>
-      </tr>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.SEX }}</td>
+        <td contenteditable="true">{{ formkil.TYPE }}/td>      </tr>
     </table>
   </div>
   
  <div id="table2" class="table-editable">
-    <span class="oneadd table-add glyphicon glyphicon-plus"></span>
-    <table  class="onet table">
+    <span class="table-add glyphicon glyphicon-plus"></span>
+    <table class="table">
       <tr>
-        <th>Name</th>
-        <th>Value</th>
-        
+        <th>Killed- Age</th>
+        <th>Killed- Sex</th>
+        <th>Killed- Type</th>
+
       </tr>
       <tr>
-        <td contenteditable="true">Stir Fry</td>
-        <td contenteditable="true">stir-fry</td>
-   
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
       </tr>
       <!-- This is our clonable table line -->
       <tr class="hide">
-        <td contenteditable="true">Untitled</td>
-        <td contenteditable="true">undefined</td>
-        
-      </tr>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>      </tr>
     </table>
+  </div>
   </div>
 <div>
 <h3>Vehicle at fault</h3> 
@@ -325,19 +310,19 @@ h2 { text-align: center; }
 
     <label>Driver Name</label> 
      {{ form.dri_name }}
-	 
-	<label>Age </label> 
+     
+    <label>Age </label> 
     {{ form.dri_age }}
-	
+    
     <label>Address </label> 
      {{ form.dri_add }}
 
  <label>Sex </label> 
      {{ form.dri_sex }}
-	
+    
  <label>Father's Name </label> 
      {{ form.dri_fath }}
-	 
+     
     <label>Arrested</label> 
     {{ form.dri_arrest }}
 
@@ -348,15 +333,20 @@ h2 { text-align: center; }
 
     <label">Place from where License was issued </label> 
     {{ form.dri_place }}
+
     <label>Issued Date:</label> 
     {{ form.dri_lic_date_issu }}
+
     <label>Upto Date:</label> 
     {{ form.dri_lic_date_upto }}
-	
-	   <label>License Status</label> 
+    
+       <label>License Status</label> 
     {{ form.dri_lic_status }}
-	   <label>Drunk/Not Drunk</label> 
+
+       <label>Drunk/Not Drunk</label> 
     {{ form.ACCDRUNK }}
+
+
 </div>
 <div>
     <label for="remarks">Remarks</label> 
@@ -366,10 +356,11 @@ h2 { text-align: center; }
 </form>
 </div>
 <script>
+
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
  
-	function getCookie(name) {
+    function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
         var cookies = document.cookie.split(';');
@@ -396,23 +387,23 @@ $.ajaxSetup({
         }
     }
 });
-	$.post({
+    $.post({
         url: '/getcircleinfo',
         data: {
           'circle': selection
         },
         dataType: 'json',
         success: function (data) {
-			document.getElementById("id_DIST").value = data['DIST'];
-			document.getElementById("id_RNG").value = data['RANGE'];
+            document.getElementById("id_DIST").value = data['DIST'];
+            document.getElementById("id_RNG").value = data['RANGE'];
         }
       });
     });
-	
+    
 $("#id_SECTION").change(function () {
     var selection = $("#id_SECTION option:selected").text(); //grab the value selected
  
-	function getCookie(name) {
+    function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
         var cookies = document.cookie.split(';');
@@ -439,39 +430,74 @@ $.ajaxSetup({
         }
     }
 });
-	$.post({
+    $.post({
         url: '/getsection',
         data: {
           'section': selection
         },
         dataType: 'json',
         success: function (data) {
-			document.getElementById("id_ACCTYPE").value = data['ACCTYPE'];
+            document.getElementById("id_ACCTYPE").value = data['ACCTYPE'];
+            if (data['ACCTYPE'] == 'S' || data['ACCTYPE'] == 'G' )
+            {
+                //Show Injured Table
+                $("#table2").hide();
+                $("#table1").show();
+            }
+            else if (data['ACCTYPE'] == 'F')
+            {   
+                $("#table1").show();
+                $("#table2").show();
+                //Show Killed and Injured Table
+            }
+            else 
+            {
+                $("#table1").hide();
+                $("#table2").hide(); 
+            }
+
+            /*function myFunction() {
+    var x = document.getElementById('myDIV');
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}*/
         }
       });
     });
-	
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-	document.getElementById("id_MONTH").value = selection;
+    var mon = selection.substring(0, 3);
+    document.getElementById("id_MONTH").value = mon;
     });
-	
+
+$("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
+    ps =  document.getElementById("id_PS").value
+    var psCode = ps.split("-");
+    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
+    document.getElementById("id_ACC_ID").value = id;
+});
+
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
-	document.getElementById("id_YEAR").value = selection;
-	var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
-	document.getElementById("id_ACC_ID").value = id;
+    document.getElementById("id_YEAR").value = selection;
+    var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
+    document.getElementById("id_ACC_ID").value = id;
     });
-	
+
+
 $("#id_DATE_OCC_day").change(function () {
     var selection = $("#id_DATE_OCC_day option:selected").text(); //grab the value selected
-	if (selection<=15) 
-	{document.getElementById("id_FN").value = 1; } 
-	else 
-	{ document.getElementById("id_FN").value = 2; }
+    if (selection<=15) 
+    {document.getElementById("id_FN").value = 1; } 
+    else 
+    { document.getElementById("id_FN").value = 2; }
+
     });
-//for adding to table1	
-var $TABLE = $('#table');
+
+var $TABLE = $('#table1');
 $('.zeroadd').click(function () {
   var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE.find('table').append($clone);
@@ -483,8 +509,12 @@ alert("you suck");
   var $clone2 = $TABLE2.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE2.find('table').append($clone2);
 });
+
 </script>
 </body>
 </html>
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
+
+
+
+
+
