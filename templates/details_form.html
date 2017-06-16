@@ -214,31 +214,44 @@ h2 { text-align: center; }
 <div>
 <h3>Accident Driver Details</h3>
 
-    <label for="drivname">Driver Name</label> 
+    <label>Driver Name</label> 
      {{ form.dri_name }}
-
-    <label for="addr">Address </label> 
+	 
+	<label>Age </label> 
+    {{ form.dri_age }}
+	
+    <label>Address </label> 
      {{ form.dri_add }}
 
-    <label for="arrest">Arrested</label> 
-    {{ form.arrest }}
+ <label>Sex </label> 
+     {{ form.dri_sex }}
+	
+ <label>Father's Name </label> 
+     {{ form.dri_fath }}
+	 
+    <label>Arrested</label> 
+    {{ form.dri_arrest }}
 
-    <label for="age">Age </label> 
-    {{ form.dri_age }}
-
-    <label for="lisno">License No.</label> 
+    <label>License No.</label> 
     {{ form.dri_lic_no }}
 
     <br>
 
-    <label for="placelisno">Place from where License was issued </label> 
+    <label">Place from where License was issued </label> 
     {{ form.dri_place }}
 
-    <label for="idate">Issued Date:</label> 
+    <label>Issued Date:</label> 
     {{ form.dri_lic_date_issu }}
 
-    <label for="udate">Upto Date:</label> 
+    <label>Upto Date:</label> 
     {{ form.dri_lic_date_upto }}
+	
+	   <label>License Status</label> 
+    {{ form.dri_lic_status }}
+
+	   <label>Drunk/Not Drunk</label> 
+    {{ form.ACCDRUNK }}
+
 
 </div>
 <div>
