@@ -6,12 +6,25 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
 
 <style type="text/css">
+
+div#table2 {
+    float: right;
+}
+div#table1 {
+    float: left;
+}
+
+#table1, #table2 {
+    width: 50%;
+}
 label {
     padding-left: 5px;
     padding-right: 5px;
+	font-weight: 400;
 }
 td {
     padding-right: 5px;
@@ -80,6 +93,44 @@ input {
 }
 
 h2 { text-align: center; }
+@import "compass/css3";
+
+.table-editable {
+  position: relative;
+  
+  .glyphicon {
+    font-size: 20px;
+  }
+}
+
+.table-remove {
+  color: #700;
+  cursor: pointer;
+  
+  &:hover {
+    color: #f00;
+  }
+}
+
+.table-up, .table-down {
+  color: #007;
+  cursor: pointer;
+  
+  &:hover {
+    color: #00f;
+  }
+}
+
+.table-add {
+  color: #070;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  
+  &:hover {
+    color: #0b0;
+  }
+}
 </style>
 
 </head>
@@ -137,10 +188,10 @@ h2 { text-align: center; }
 {{ form.TIME_TYPE }}
 
 <label>Time Slot</label>
-<select id="time" name="Time Slot">
+<!--<select id="time" name="Time Slot">
     <option value="p1">Approx</option>
     <option value="p2">INFIR</option>
-    </select>
+    </select> -->
 {{ form.TIME_SLOT }}
 
 <label>Day/Night</label> 
@@ -178,9 +229,53 @@ h2 { text-align: center; }
   <label>AccidentType</label>
  {{ form.ACCTYPE }}
 
-
-
 </div>
+<div id="alltables">
+<div id="table1" class="table-editable">
+    <span class="table-add glyphicon glyphicon-plus"></span>
+    <table class="table">
+	
+      <tr>
+        <th>Injured- Age</th>
+        <th>Injured- Sex</th>
+        <th>Injured- Type</th>
+
+      </tr>
+      <tr>
+        <td contenteditable="true">Stir Fry</td>
+        <td contenteditable="true">stir-fry</td>
+        <td contenteditable="true">stir-fry</td>
+      </tr>
+      <!-- This is our clonable table line -->
+      <tr class="hide">
+        <td contenteditable="true">Stir Fry</td>
+        <td contenteditable="true">stir-fry</td>
+        <td contenteditable="true">stir-fry</td>      </tr>
+    </table>
+  </div>
+  
+ <div id="table2" class="table-editable">
+    <span class="table-add glyphicon glyphicon-plus"></span>
+    <table class="table">
+      <tr>
+        <th>Killed- Age</th>
+        <th>Killed- Sex</th>
+        <th>Killed- Type</th>
+
+      </tr>
+      <tr>
+        <td contenteditable="true">Stir Fry</td>
+        <td contenteditable="true">stir-fry</td>
+        <td contenteditable="true">stir-fry</td>
+      </tr>
+      <!-- This is our clonable table line -->
+      <tr class="hide">
+        <td contenteditable="true">Stir Fry</td>
+        <td contenteditable="true">stir-fry</td>
+        <td contenteditable="true">stir-fry</td>      </tr>
+    </table>
+  </div>
+  </div>
 <div>
 <h3>Vehicle at fault</h3> 
 
@@ -369,6 +464,61 @@ $("#id_DATE_OCC_day").change(function () {
 	{ document.getElementById("id_FN").value = 2; }
 
     });
+
+	var $TABLE = $('#table');
+var $BTN = $('#export-btn');
+var $EXPORT = $('#export');
+
+$('.table-add').click(function () {
+  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+  $TABLE.find('table').append($clone);
+});
+
+$('.table-remove').click(function () {
+  $(this).parents('tr').detach();
+});
+
+$('.table-up').click(function () {
+  var $row = $(this).parents('tr');
+  if ($row.index() === 1) return; // Don't go above the header
+  $row.prev().before($row.get(0));
+});
+
+$('.table-down').click(function () {
+  var $row = $(this).parents('tr');
+  $row.next().after($row.get(0));
+});
+
+// A few jQuery helpers for exporting only
+jQuery.fn.pop = [].pop;
+jQuery.fn.shift = [].shift;
+
+$BTN.click(function () {
+  var $rows = $TABLE.find('tr:not(:hidden)');
+  var headers = [];
+  var data = [];
+  
+  // Get the headers (add special header logic here)
+  $($rows.shift()).find('th:not(:empty)').each(function () {
+    headers.push($(this).text().toLowerCase());
+  });
+  
+  // Turn all existing rows into a loopable array
+  $rows.each(function () {
+    var $td = $(this).find('td');
+    var h = {};
+    
+    // Use the headers from earlier to name our hash keys
+    headers.forEach(function (header, i) {
+      h[header] = $td.eq(i).text();   
+    });
+    
+    data.push(h);
+  });
+  
+  // Output the result
+  $EXPORT.text(JSON.stringify(data));
+});
 
 </script>
 </body>
