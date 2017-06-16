@@ -12,9 +12,11 @@
 <style type="text/css">
 
 div#table2 {
+    display: none;
     float: right;
 }
 div#table1 {
+    display: none;
     float: left;
 }
 
@@ -242,15 +244,15 @@ h2 { text-align: center; }
 
       </tr>
       <tr>
-        <td contenteditable="true">Stir Fry</td>
-        <td contenteditable="true">stir-fry</td>
-        <td contenteditable="true">stir-fry</td>
+        <td contenteditable="true">{{ formkil.INJAGE }}</td>
+        <td contenteditable="true">{{ formkil.INJSEX }}</td>
+        <td contenteditable="true">{{ formkil.INJTYPE }}</td>
       </tr>
       <!-- This is our clonable table line -->
       <tr class="hide">
-        <td contenteditable="true">Stir Fry</td>
-        <td contenteditable="true">stir-fry</td>
-        <td contenteditable="true">stir-fry</td>      </tr>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.SEX }}</td>
+        <td contenteditable="true">{{ formkil.TYPE }}/td>      </tr>
     </table>
   </div>
   
@@ -264,15 +266,15 @@ h2 { text-align: center; }
 
       </tr>
       <tr>
-        <td contenteditable="true">Stir Fry</td>
-        <td contenteditable="true">stir-fry</td>
-        <td contenteditable="true">stir-fry</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
       </tr>
       <!-- This is our clonable table line -->
       <tr class="hide">
-        <td contenteditable="true">Stir Fry</td>
-        <td contenteditable="true">stir-fry</td>
-        <td contenteditable="true">stir-fry</td>      </tr>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>
+        <td contenteditable="true">{{ formkil.AGE }}</td>      </tr>
     </table>
   </div>
   </div>
@@ -439,14 +441,47 @@ $.ajaxSetup({
         dataType: 'json',
         success: function (data) {
 			document.getElementById("id_ACCTYPE").value = data['ACCTYPE'];
+            if (data['ACCTYPE'] == 'S' || data['ACCTYPE'] == 'G' )
+            {
+                //Show Injured Table
+                $("#table2").hide();
+                $("#table1").show();
+            }
+            else if (data['ACCTYPE'] == 'F')
+            {   
+                $("#table1").show();
+                $("#table2").show();
+                //Show Killed and Injured Table
+            }
+            else 
+            {
+                $("#table1").hide();
+                $("#table2").hide(); 
+            }
+
+            /*function myFunction() {
+    var x = document.getElementById('myDIV');
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}*/
         }
       });
     });
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-	document.getElementById("id_MONTH").value = selection;
+    var mon = selection.substring(0, 3);
+	document.getElementById("id_MONTH").value = mon;
     });
 
+$("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
+    ps =  document.getElementById("id_PS").value
+    var psCode = ps.split("-");
+    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
+    document.getElementById("id_ACC_ID").value = id;
+});
 
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
