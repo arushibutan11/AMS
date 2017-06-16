@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from .models import details
+from .models import details, injured, killed
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 
@@ -22,6 +22,19 @@ class FirForm(forms.ModelForm):
 'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
  'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1']
 
+
+
+
+class InjForm(forms.ModelForm):
+	class Meta:
+ 		model = injured
+ 		fields = ['INJSEX', 'INJAGE', 'INJTYPE']
+
+class KilForm(forms.ModelForm):
+	class Meta:
+ 		model = killed
+ 		fields = ['SEX', 'AGE', 'TYPE']
+    
 '''   
         exclude=['ACC_ID','TIME_TYPE','ROAD', 'LOCATION','CATEGORY', 'TWW1', 'TWW2', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
  'INJGIRL', 'KILLED', 'KILMALE', 'KILFEMALE', 'KILBOY', 'KILGIRL', 'PEDESTRIAN', 'ACCTYPE',

@@ -5,6 +5,23 @@ from smart_selects.db_fields import ChainedForeignKey
 
 
 # Create your models here.
+SEX_Choices = (
+    ('M','Male'),('F','Female'),
+)
+
+AGE_Choices = (
+    ('<10','<10'),('11-18','11-18'),('19-30','19-30'),('31-40','31-40'),('>40','>40'),
+)
+
+INJ_TYPE_CHOICES = (
+    ('SCL','School Children'),('PPL','Police Person'),('OTH', 'Other'),
+)
+
+TIME_TYPE_CHOICES = (
+    ('IN FIR','IN FIR'), ('APPROX.','APPROX.'),
+)
+
+
 class circles(models.Model):
     DISTNAM = models.CharField(max_length=50)
     DIST = models.CharField(max_length=4)
@@ -87,7 +104,7 @@ class details(models.Model):
     SECTION = models.ForeignKey(sections)
 
     TIME_OCC = models.TimeField()
-    TIME_TYPE = models.CharField(max_length=15)
+    TIME_TYPE = models.CharField(max_length=15, choices = TIME_TYPE_CHOICES)
     DATE_OCC = models.DateField()
     PLACE_OCC = models.CharField(max_length=140)
 
@@ -133,7 +150,7 @@ class details(models.Model):
     MONTH = models.CharField(max_length=15)
     FN = models.CharField(max_length=15)
     ACCAGE = models.CharField(max_length=15)
-    ACCSEX = models.CharField(max_length=15)
+    ACCSEX = models.CharField(max_length=15, choices = SEX_Choices)
     ACCDRUNK = models.BooleanField()
     Intersection = models.CharField(max_length=150)
     routeno = models.CharField(max_length=15)
@@ -143,8 +160,8 @@ class details(models.Model):
     dri_lic_no = models.CharField(max_length=150)
     dri_name = models.CharField(max_length=150)
     dri_fath = models.CharField(max_length=150)
-    dri_sex = models.CharField(max_length=15)
-    dri_age = models.CharField(max_length=15)
+    dri_sex = models.CharField(max_length=15, choices = SEX_Choices)
+    dri_age = models.PositiveIntegerField()
     dri_add = models.CharField(max_length=150)
     dri_arrest = models.CharField(max_length=15)
     dri_place = models.CharField(max_length=150)
@@ -171,3 +188,22 @@ class details(models.Model):
     STATE = models.CharField(max_length=15)
     SCANNED = models.CharField(max_length=15)
     HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15)
+
+class injured(models.Model):
+    PS = models.CharField(max_length=5)
+    FIRNO = models.IntegerField()
+    YEAR = models.PositiveIntegerField()
+    INJSEX = models.CharField(max_length=15, choices = SEX_Choices)
+    INJAGE = models.CharField(max_length = 15, choices = AGE_Choices)
+    INJTYPE = models.CharField(max_length = 5, choices = INJ_TYPE_CHOICES)
+    ACCID_ID = models.ForeignKey(details)
+
+class killed(models.Model):
+    PS = models.CharField(max_length=5)
+    FIRNO = models.IntegerField()
+    YEAR = models.PositiveIntegerField()
+    SEX = models.CharField(max_length = 15, choices = SEX_Choices)
+    AGE = models.CharField(max_length = 15, choices = AGE_Choices)
+    TYPE = models.CharField(max_length = 20, choices = INJ_TYPE_CHOICES)
+    ACCID_ID = models.ForeignKey(details)
+
