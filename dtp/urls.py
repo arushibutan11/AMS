@@ -15,13 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from fir.views import getcircleinfo
+from fir.views import getcircleinfo, getsection
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^fir/', include('fir.urls')),
     url(r'^chaining/', include('smart_selects.urls')),
-    url(r'^getcircleinfo$', getcircleinfo)
+    url(r'^getcircleinfo$', getcircleinfo),
+    url(r'^getsection$', getsection)
+
 
 ]

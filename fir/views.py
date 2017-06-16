@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .models import details, circles
+from .models import details, circles, sections
 from .forms import FirForm
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -40,11 +40,15 @@ def getcircleinfo(request):
     if request.method == 'POST':
       circle = request.POST.get('circle')
       info = circles.objects.get(CIRCLENAM = circle)
-      print circle
-      print info.DIST
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
             
 
 
-
+@permission_classes((permissions.AllowAny,))
+def getsection(request):
+  
+    if request.method == 'POST':
+      section = request.POST.get('section')
+      info = sections.objects.get(SECTIONDTL = section)
+      return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
 

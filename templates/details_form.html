@@ -148,18 +148,6 @@ h2 { text-align: center; }
 
 
 </div>
-
-<div>
-
-    <label>Section </label> 
-{{ form.SECTION }}
-
-  <label>AccidentType</label>
- {{ form.ACCTYPE }}
-
-
-
-</div>
 <div>
 
 <label>Location </label> 
@@ -182,7 +170,17 @@ h2 { text-align: center; }
 {{ form.LONGITUDE }}
 
 </div>
+<div>
 
+    <label>Section </label> 
+{{ form.SECTION }}
+
+  <label>AccidentType</label>
+ {{ form.ACCTYPE }}
+
+
+
+</div>
 <div>
 <h3>Vehicle at fault</h3> 
 
@@ -291,6 +289,48 @@ $.ajaxSetup({
         success: function (data) {
 			document.getElementById("id_DIST").value = data['DIST'];
 			document.getElementById("id_RNG").value = data['RANGE'];
+        }
+      });
+    });
+	
+$("#id_SECTION").change(function () {
+    var selection = $("#id_SECTION option:selected").text(); //grab the value selected
+ 
+	function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+	$.post({
+        url: '/getsection',
+        data: {
+          'section': selection
+        },
+        dataType: 'json',
+        success: function (data) {
+			document.getElementById("id_ACCTYPE").value = data['ACCTYPE'];
         }
       });
     });

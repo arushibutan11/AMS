@@ -46,6 +46,12 @@ class sections(models.Model):
     ACCTYPEN = models.CharField(max_length = 25)
     def __str__(self):
         return self.SECTIONDTL
+    def as_json(self):
+        return dict(
+            SECTION=self.SECTION,
+            SECTIONDTL = self.SECTIONDTL,
+            ACCTYPE = self.ACCTYPE,
+            ACCTYPEN=self.ACCTYPEN)
 
 class policestation(models.Model):
     DISTNAM = models.CharField(max_length =  50)
