@@ -1,3 +1,22 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Marketplace
+Gist
+ @arushibutan11
+ Sign out
+ Unwatch 2
+  Star 0
+  Fork 0 arushibutan11/AMS
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Settings Insights 
+Tree: ef9a64c420 Find file Copy pathAMS/templates/details_form.html
+ef9a64c  an hour ago
+@arushibutan11 arushibutan11 Table working
+2 contributors @arushibutan11 @sanjamkr
+RawBlameHistory      
+480 lines (405 sloc)  11.1 KB
 <!DOCTYPE HTML>
 <html>  
 <head>
@@ -10,22 +29,6 @@
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
 
 <style type="text/css">
-
-<<<<<<< HEAD
-div#table2 {
-    display: none;
-    float: right;
-}
-div#table1 {
-    display: none;
-    float: left;
-}
-
-#table1, #table2 {
-    width: 50%;
-}
-=======
->>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
 label {
     padding-left: 5px;
     padding-right: 5px;
@@ -241,17 +244,6 @@ h2 { text-align: center; }
         <th></th>
       </tr>
       <tr>
-<<<<<<< HEAD
-        <td contenteditable="true">{{ formkil.INJAGE }}</td>
-        <td contenteditable="true">{{ formkil.INJSEX }}</td>
-        <td contenteditable="true">{{ formkil.INJTYPE }}</td>
-      </tr>
-      <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.SEX }}</td>
-        <td contenteditable="true">{{ formkil.TYPE }}/td>      </tr>
-=======
         <td contenteditable="true">Stir Fry</td>
         <td contenteditable="true">stir-fry</td>
         <td>
@@ -274,7 +266,6 @@ h2 { text-align: center; }
           <span class="table-down glyphicon glyphicon-arrow-down"></span>
         </td>
       </tr>
->>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
     </table>
   </div>
   
@@ -287,17 +278,6 @@ h2 { text-align: center; }
         
       </tr>
       <tr>
-<<<<<<< HEAD
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-      </tr>
-      <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>      </tr>
-=======
         <td contenteditable="true">Stir Fry</td>
         <td contenteditable="true">stir-fry</td>
    
@@ -308,7 +288,6 @@ h2 { text-align: center; }
         <td contenteditable="true">undefined</td>
         
       </tr>
->>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
     </table>
   </div>
 <div>
@@ -468,53 +447,15 @@ $.ajaxSetup({
         dataType: 'json',
         success: function (data) {
 			document.getElementById("id_ACCTYPE").value = data['ACCTYPE'];
-            if (data['ACCTYPE'] == 'S' || data['ACCTYPE'] == 'G' )
-            {
-                //Show Injured Table
-                $("#table2").hide();
-                $("#table1").show();
-            }
-            else if (data['ACCTYPE'] == 'F')
-            {   
-                $("#table1").show();
-                $("#table2").show();
-                //Show Killed and Injured Table
-            }
-            else 
-            {
-                $("#table1").hide();
-                $("#table2").hide(); 
-            }
-
-            /*function myFunction() {
-    var x = document.getElementById('myDIV');
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
-    }
-}*/
         }
       });
     });
 	
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-    var mon = selection.substring(0, 3);
-	document.getElementById("id_MONTH").value = mon;
+	document.getElementById("id_MONTH").value = selection;
     });
-<<<<<<< HEAD
-
-$("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
-    ps =  document.getElementById("id_PS").value
-    var psCode = ps.split("-");
-    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
-    document.getElementById("id_ACC_ID").value = id;
-});
-
-=======
 	
->>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
 	document.getElementById("id_YEAR").value = selection;
@@ -531,27 +472,19 @@ $("#id_DATE_OCC_day").change(function () {
     });
 //for adding to table1	
 var $TABLE = $('#table');
-
-
 $('.zeroadd').click(function () {
   var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE.find('table').append($clone);
 });
-
-
 //for adding to table2
 var $TABLE2 = $('#table2');
-
-
 $('.oneadd').click(function () {
 alert("you suck");
   var $clone2 = $TABLE2.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE2.find('table').append($clone2);
 });
-
-
-
-
 </script>
 </body>
 </html>
+Contact GitHub API Training Shop Blog About
+© 2017 GitHub, Inc. Terms Privacy Security Status Help
