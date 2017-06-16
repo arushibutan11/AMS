@@ -11,6 +11,7 @@
 
 <style type="text/css">
 
+<<<<<<< HEAD
 div#table2 {
     display: none;
     float: right;
@@ -23,6 +24,8 @@ div#table1 {
 #table1, #table2 {
     width: 50%;
 }
+=======
+>>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
 label {
     padding-left: 5px;
     padding-right: 5px;
@@ -93,10 +96,8 @@ input {
     margin: 5px 0 5px 3px;
     padding: 3px;
 }
-
 h2 { text-align: center; }
 @import "compass/css3";
-
 .table-editable {
   position: relative;
   
@@ -104,7 +105,6 @@ h2 { text-align: center; }
     font-size: 20px;
   }
 }
-
 .table-remove {
   color: #700;
   cursor: pointer;
@@ -113,7 +113,6 @@ h2 { text-align: center; }
     color: #f00;
   }
 }
-
 .table-up, .table-down {
   color: #007;
   cursor: pointer;
@@ -122,7 +121,6 @@ h2 { text-align: center; }
     color: #00f;
   }
 }
-
 .table-add {
   color: #070;
   cursor: pointer;
@@ -233,17 +231,17 @@ h2 { text-align: center; }
 
 </div>
 <div id="alltables">
-<div id="table1" class="table-editable">
-    <span class="table-add glyphicon glyphicon-plus"></span>
-    <table class="table">
-	
+ <div id="table" class="table-editable">
+    <span class="zeroadd table-add glyphicon glyphicon-plus"></span>
+    <table class="zerot table">
       <tr>
-        <th>Injured- Age</th>
-        <th>Injured- Sex</th>
-        <th>Injured- Type</th>
-
+        <th>Name</th>
+        <th>Value</th>
+        <th></th>
+        <th></th>
       </tr>
       <tr>
+<<<<<<< HEAD
         <td contenteditable="true">{{ formkil.INJAGE }}</td>
         <td contenteditable="true">{{ formkil.INJSEX }}</td>
         <td contenteditable="true">{{ formkil.INJTYPE }}</td>
@@ -253,19 +251,43 @@ h2 { text-align: center; }
         <td contenteditable="true">{{ formkil.AGE }}</td>
         <td contenteditable="true">{{ formkil.SEX }}</td>
         <td contenteditable="true">{{ formkil.TYPE }}/td>      </tr>
+=======
+        <td contenteditable="true">Stir Fry</td>
+        <td contenteditable="true">stir-fry</td>
+        <td>
+          <span class="table-remove glyphicon glyphicon-remove"></span>
+        </td>
+        <td>
+          <span class="table-up glyphicon glyphicon-arrow-up"></span>
+          <span class="table-down glyphicon glyphicon-arrow-down"></span>
+        </td>
+      </tr>
+      <!-- This is our clonable table line -->
+      <tr class="hide">
+        <td contenteditable="true">Untitled</td>
+        <td contenteditable="true">undefined</td>
+        <td>
+          <span class="table-remove glyphicon glyphicon-remove"></span>
+        </td>
+        <td>
+          <span class="table-up glyphicon glyphicon-arrow-up"></span>
+          <span class="table-down glyphicon glyphicon-arrow-down"></span>
+        </td>
+      </tr>
+>>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
     </table>
   </div>
   
  <div id="table2" class="table-editable">
-    <span class="table-add glyphicon glyphicon-plus"></span>
-    <table class="table">
+    <span class="oneadd table-add glyphicon glyphicon-plus"></span>
+    <table  class="onet table">
       <tr>
-        <th>Killed- Age</th>
-        <th>Killed- Sex</th>
-        <th>Killed- Type</th>
-
+        <th>Name</th>
+        <th>Value</th>
+        
       </tr>
       <tr>
+<<<<<<< HEAD
         <td contenteditable="true">{{ formkil.AGE }}</td>
         <td contenteditable="true">{{ formkil.AGE }}</td>
         <td contenteditable="true">{{ formkil.AGE }}</td>
@@ -275,8 +297,19 @@ h2 { text-align: center; }
         <td contenteditable="true">{{ formkil.AGE }}</td>
         <td contenteditable="true">{{ formkil.AGE }}</td>
         <td contenteditable="true">{{ formkil.AGE }}</td>      </tr>
+=======
+        <td contenteditable="true">Stir Fry</td>
+        <td contenteditable="true">stir-fry</td>
+   
+      </tr>
+      <!-- This is our clonable table line -->
+      <tr class="hide">
+        <td contenteditable="true">Untitled</td>
+        <td contenteditable="true">undefined</td>
+        
+      </tr>
+>>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
     </table>
-  </div>
   </div>
 <div>
 <h3>Vehicle at fault</h3> 
@@ -336,20 +369,15 @@ h2 { text-align: center; }
 
     <label">Place from where License was issued </label> 
     {{ form.dri_place }}
-
     <label>Issued Date:</label> 
     {{ form.dri_lic_date_issu }}
-
     <label>Upto Date:</label> 
     {{ form.dri_lic_date_upto }}
 	
 	   <label>License Status</label> 
     {{ form.dri_lic_status }}
-
 	   <label>Drunk/Not Drunk</label> 
     {{ form.ACCDRUNK }}
-
-
 </div>
 <div>
     <label for="remarks">Remarks</label> 
@@ -359,7 +387,6 @@ h2 { text-align: center; }
 </form>
 </div>
 <script>
-
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
  
@@ -470,11 +497,13 @@ $.ajaxSetup({
         }
       });
     });
+	
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
     var mon = selection.substring(0, 3);
 	document.getElementById("id_MONTH").value = mon;
     });
+<<<<<<< HEAD
 
 $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     ps =  document.getElementById("id_PS").value
@@ -483,77 +512,45 @@ $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     document.getElementById("id_ACC_ID").value = id;
 });
 
+=======
+	
+>>>>>>> ef9a64c420b13e5f98ba370af264cc9650a46162
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
 	document.getElementById("id_YEAR").value = selection;
 	var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
 	document.getElementById("id_ACC_ID").value = id;
     });
-
-
+	
 $("#id_DATE_OCC_day").change(function () {
     var selection = $("#id_DATE_OCC_day option:selected").text(); //grab the value selected
 	if (selection<=15) 
 	{document.getElementById("id_FN").value = 1; } 
 	else 
 	{ document.getElementById("id_FN").value = 2; }
-
     });
+//for adding to table1	
+var $TABLE = $('#table');
 
-	var $TABLE = $('#table');
-var $BTN = $('#export-btn');
-var $EXPORT = $('#export');
 
-$('.table-add').click(function () {
+$('.zeroadd').click(function () {
   var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE.find('table').append($clone);
 });
 
-$('.table-remove').click(function () {
-  $(this).parents('tr').detach();
+
+//for adding to table2
+var $TABLE2 = $('#table2');
+
+
+$('.oneadd').click(function () {
+alert("you suck");
+  var $clone2 = $TABLE2.find('tr.hide').clone(true).removeClass('hide table-line');
+  $TABLE2.find('table').append($clone2);
 });
 
-$('.table-up').click(function () {
-  var $row = $(this).parents('tr');
-  if ($row.index() === 1) return; // Don't go above the header
-  $row.prev().before($row.get(0));
-});
 
-$('.table-down').click(function () {
-  var $row = $(this).parents('tr');
-  $row.next().after($row.get(0));
-});
 
-// A few jQuery helpers for exporting only
-jQuery.fn.pop = [].pop;
-jQuery.fn.shift = [].shift;
-
-$BTN.click(function () {
-  var $rows = $TABLE.find('tr:not(:hidden)');
-  var headers = [];
-  var data = [];
-  
-  // Get the headers (add special header logic here)
-  $($rows.shift()).find('th:not(:empty)').each(function () {
-    headers.push($(this).text().toLowerCase());
-  });
-  
-  // Turn all existing rows into a loopable array
-  $rows.each(function () {
-    var $td = $(this).find('td');
-    var h = {};
-    
-    // Use the headers from earlier to name our hash keys
-    headers.forEach(function (header, i) {
-      h[header] = $td.eq(i).text();   
-    });
-    
-    data.push(h);
-  });
-  
-  // Output the result
-  $EXPORT.text(JSON.stringify(data));
-});
 
 </script>
 </body>
