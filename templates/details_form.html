@@ -477,16 +477,18 @@ $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     ps =  document.getElementById("id_PS").value
     var psCode = ps.split("-");
     var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
-    document.getElementById("id_ACC_ID").value = id;
+	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!="2007")
+    { document.getElementById("id_ACC_ID").value = id; }
 });
 
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
     document.getElementById("id_YEAR").value = selection;
-    var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
-    document.getElementById("id_ACC_ID").value = id;
+    //var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
+    //document.getElementById("id_ACC_ID").value = id;
     });
 
+	
 
 $("#id_DATE_OCC_day").change(function () {
     var selection = $("#id_DATE_OCC_day option:selected").text(); //grab the value selected
