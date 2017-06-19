@@ -4,13 +4,21 @@ from django.conf import settings
 from .models import details, injured, killed
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
-def my_date():
-	return '---'
+
 
 class FirForm(forms.ModelForm):
-    DATE_OCC = forms.DateField(input_formats = settings.DATE_INPUT_FORMATS,
+    DATE_OCC = forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
-        initial= my_date)
+        )
+    dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+        )
+    dri_lic_date_upto= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+        )
+    CONVERT_DATE=forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+        )
     class Meta:
         model = details
      	fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE',

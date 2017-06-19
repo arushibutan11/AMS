@@ -3,8 +3,11 @@ from __future__ import unicode_literals
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .models import details, circles, sections
-from .forms import FirForm
+from .models import details, circles, sections, injured, killed
+from .forms import FirForm, InjForm, KilForm
+from django.forms import ModelForm
+from django import forms
+from django.forms import modelformset_factory
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
@@ -12,26 +15,36 @@ from rest_framework import generics, permissions
 from rest_framework.response import Response
 import json
 
-
-
 # Create your views here.
 def create_fir(request):
-    #if not request.user.is_authenticated():
-       # return render(request, 'music/login.html')
-   # else:
+    InjFormSet = modelformset_factory(injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), widgets = {
+    'PS': forms.TextInput(attrs={'class': 'cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'cloned injcloned'}), 
+    'YEAR': forms.TextInput(attrs={'class': 'cloned injcloned'}),'ACCID_ID': forms.TextInput(attrs={'class': 'cloned injcloned'}),})
+    KilFormSet = modelformset_factory(killed, fields = ('AGE','SEX','TYPE'))
     if request.method == 'POST':
 
       form = FirForm(request.POST)
+      injform = InjFormSet(request.POST)
+      kilform = KilFormSet(request.POST)
       if form.is_valid():
-        fir = form.save()
-        
+        if form.data['ACCTYPE'] == 'F' and injform.is_valid() and kilform.is_valid():
+            fir = form.save()
+            inj = injform.save()
+            kil = kilform.save()  
+        elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G') and injform.is_valid():
+            fir = form.save()
+            inj = injform.save()
+        elif form.data['ACCTYPE'] == 'N':
+            fir = form.save()
         return HttpResponse('done')
       else:
         return HttpResponse('done not')
 
     else:
         form = FirForm()
-        return render(request,'details_form.html', { 'form': form})
+        injform = InjFormSet()
+        kilform = KilFormSet()
+        return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
 
 @permission_classes((permissions.AllowAny,))

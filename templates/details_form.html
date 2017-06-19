@@ -6,17 +6,20 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
+<script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
+<script type = "text/javascript" src="{% static 'fir/js/jquery-3.20.min.js' %}"></script>
+<script src="{% static 'fir/js/jquery.formset.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
 
 <style type="text/css">
 
 div#table2 {
-    display: none;
+    /*display: none;*/
     
 }
 div#table1 {
-    display: none;
+    /*display: none;*/
 }
 
 
@@ -231,30 +234,32 @@ h2 { text-align: center; }
 </div>
 <div id="alltables">
 <div id="table1" class="table-editable">
-    <span class="table-add glyphicon glyphicon-plus"></span>
+    
     <table class="table">
     
       <tr>
+        
         <th>Injured- Age</th>
         <th>Injured- Sex</th>
         <th>Injured- Type</th>
 
       </tr>
-      <tr>
-        <td contenteditable="true">{{ formkil.INJAGE }}</td>
-        <td contenteditable="true">{{ formkil.INJSEX }}</td>
-        <td contenteditable="true">{{ formkil.INJTYPE }}</td>
+      <tr class = "inj-formset">
+      {% for i in forminj %}
+        <td hidden> {{ i.PS }} </td>
+        <td hidden> {{ i.FIRNO }} </td>
+        <td hidden> {{ i.YEAR }} </td>
+        <td hidden> {{ i.ACCID_ID }} </td>
+        <td>{{ i.INJAGE }}</td>
+        <td>{{ i.INJSEX }}</td>
+        <td>{{ i.INJTYPE }}</td>
       </tr>
-      <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.SEX }}</td>
-        <td contenteditable="true">{{ formkil.TYPE }}/td>      </tr>
+      {% endfor %}
+</tr>
     </table>
   </div>
   
  <div id="table2" class="table-editable">
-    <span class="table-add glyphicon glyphicon-plus"></span>
     <table class="table">
       <tr>
         <th>Killed- Age</th>
@@ -262,39 +267,40 @@ h2 { text-align: center; }
         <th>Killed- Type</th>
 
       </tr>
-      <tr>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
+      {% for k in formkil %}
+      <tr  class = "kil-formset">
+        
+        <td>{{ k.AGE }}</td>
+        <td>{{ k.SEX }}</td>
+        <td>{{ k.TYPE }}</td>
       </tr>
-      <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>
-        <td contenteditable="true">{{ formkil.AGE }}</td>      </tr>
+      {% endfor %}
+      {{ formset.management_form }}
     </table>
   </div>
   </div>
 <div>
 <h3>Vehicle at fault</h3> 
 
-    <label for="typef">Type</label> 
-{{ form.VEHTYPE1}}
+    <label>Type</label> 
+{{ form.VEHTYPE1 }}
 
-    <label for="regnof">Registration-No. A</label> 
+ <label id="tww1" visible="false">TWW1</label> 
+{{ form.TWW1 }}
+
+    <label>Registration-No. A</label> 
     {{ form.RNOV1A }}
-    <label for="regnof">Registration-No. B</label> 
+    <label >Registration-No. B</label> 
     {{ form.RNOV1B }}
 
-
-    <label for="routeno">Route No.</label> 
+    <label id="route" visible="false">Route No.</label> 
     {{ form.routeno }}
 
 </div>
 <div>
 <h3>Victim Details</h3> 
 
-    <label for="typev">Type </label> 
+    <label>Type </label> 
 {{ form.VEHTYPE2 }}
 
     <label for="regnof">Registration-No. A</label> 
@@ -302,7 +308,9 @@ h2 { text-align: center; }
     <label for="regnof">Registration-No. B</label> 
     {{ form.RNOV2B }}
 
-    <label for="board">Boarding/De-boarding</label> 
+    <!--<label for="board>Boarding/De-boarding</label> -->
+    <label id="self_type" visible="false">Self Type</label>
+    {{ form.SELF_TYPE }}
 
 </div>
 <div>
@@ -351,11 +359,95 @@ h2 { text-align: center; }
 <div>
     <label for="remarks">Remarks</label> 
     {{ form.REMARK }}
+
+    <label>CONVERT</label>
+    {{ form.CONVERT }}
+
+    <label id="convert_date" visible="false">CONVERT DATE</label>
+    {{ form.CONVERT_DATE }}
+
+    <label>STATUS</label>
+    {{ form.STATUS }}
 </div>
+
 <input type="submit">
 </form>
 </div>
 <script>
+
+$("#id_CONVERT").change(function () {
+    var selection = $("#id_CONVERT option:selected").text();
+
+    if(selection=='TRUE')
+    {
+        document.getElementById("convert_date").style.visibility="visible";
+        $("#id_CONVERT_DATE").show();
+    }
+    else
+   {
+        document.getElementById("convert_date").style.visibility="hidden";
+       $("#id_CONVERT_DATE_month").hide();
+          $("#id_CONVERT_DATE_day").hide();
+            $("#id_CONVERT_DATE_year").hide();
+             
+    }});
+
+
+
+
+$("#id_VEHTYPE1").change(function () {
+    var selection = $("#id_VEHTYPE1 option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='BUS')
+    {
+    
+     document.getElementById("route").style.visibility = "visible";
+    $("#id_routeno").show();
+    }
+    else
+    {
+        document.getElementById("route").style.visibility = "hidden";
+        //$("#id_routeno").attr('disabled', true);
+         $("#id_routeno").hide()
+      
+    }
+    if(selection=='TWW')
+    {
+      document.getElementById("tww1").style.visibility = "visible";
+    $("#id_TWW1").show();  
+    }
+    else
+    {
+        document.getElementById("tww1").style.visibility = "hidden";
+        //$("#id_routeno").attr('disabled', true);
+         $("#id_TWW1").hide()
+      
+    }
+
+    });
+
+$("#id_VEHTYPE2").change(function () {
+    var selection = $("#id_VEHTYPE2 option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='SLF')
+    {
+     document.getElementById("self_type").style.visibility = "visible";
+    $("#id_SELF_TYPE").show();
+    }
+    else
+    {
+        document.getElementById("self_type").style.visibility = "hidden";
+        //$("#id_routeno").attr('disabled', true);
+         $("#id_SELF_TYPE").hide()
+      
+    }
+
+    });
+
+
+
+
+
 
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
@@ -477,7 +569,7 @@ $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     ps =  document.getElementById("id_PS").value
     var psCode = ps.split("-");
     var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
-	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!="2007")
+	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!="")
     { document.getElementById("id_ACC_ID").value = id; }
 });
 
@@ -490,13 +582,17 @@ $("#id_DATE_OCC_year").change(function () {
 
 	
 
-$("#id_DATE_OCC_day").change(function () {
-    var selection = $("#id_DATE_OCC_day option:selected").text(); //grab the value selected
-    if (selection<=15) 
-    {document.getElementById("id_FN").value = 1; } 
-    else 
-    { document.getElementById("id_FN").value = 2; }
-
+$("#id_DATE_OCC_day, #id_DATE_OCC_month").change(function () {
+    var selection = $("#id_DATE_OCC_day option:selected").text(); 
+    var month = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
+    var mon = month.substring(0, 3);
+    if(document.getElementById("id_DATE_OCC_month").value!="" && document.getElementById("id_DATE_OCC_day").value!="")
+    { 
+    	if (selection<=15) 
+    	{ document.getElementById("id_FN").value = mon + 1; } 
+    	else if (selection>15)
+    	{ document.getElementById("id_FN").value = mon + 2; }
+}
     });
 
 var $TABLE = $('#table1');
@@ -507,11 +603,18 @@ $('.zeroadd').click(function () {
 //for adding to table2
 var $TABLE2 = $('#table2');
 $('.oneadd').click(function () {
-alert("you suck");
   var $clone2 = $TABLE2.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE2.find('table').append($clone2);
 });
 
+$('.inj-formset').formset({
+    addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
+    deleteText: '<span class="glyphicon glyphicon-minus"></span>'    });
+$('.kil-formset').formset({
+    addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
+    deleteText: '<span class="glyphicon glyphicon-minus"></span>',
+    
+    });
 </script>
 </body>
 </html>
