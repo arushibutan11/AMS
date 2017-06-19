@@ -14,12 +14,8 @@
 
 <style type="text/css">
 
-div#table2 {
-    /*display: none;*/
-    
-}
-div#table1 {
-    /*display: none;*/
+label.firsttag {
+    width: 84px;
 }
 
 
@@ -32,9 +28,18 @@ td {
     padding-right: 5px;
 }
 select {
-    width: 169px;
+    width: 180px;
     padding: 3px;
 }
+
+div#table2 {
+    /*display: none;*/
+    
+}
+div#table1 {
+    /*display: none;*/
+}
+
 .form-style-6{
     font: 95% Arial, Helvetica, sans-serif;
     margin: 10px auto;
@@ -142,10 +147,10 @@ h2 { text-align: center; }
 <form name="myForm" action=" " method="Post">
 {% csrf_token %}
 <div>
-<label>Accident Id</label>
+<label class="firsttag">Accident Id</label>
  {{ form.ACC_ID }} 
  <br>
- <label>Fortnight</label>
+ <label class="firsttag">Fortnight</label>
 {{ form.FN }}
 
   <label>Month</label>
@@ -158,7 +163,7 @@ h2 { text-align: center; }
 
 <div>
 
-<label>Circle </label> 
+<label class="firsttag">Circle </label> 
 {{ form.CIRCLE }}
 
 <label>District</label> 
@@ -174,7 +179,7 @@ h2 { text-align: center; }
 
 <div>
 
-<label>FIR No.</label>
+<label class="firsttag">FIR No.</label>
 {{ form.FIRNO }}
 
 <label>Date </label> 
@@ -183,7 +188,7 @@ h2 { text-align: center; }
 </div>
 <div>
 
-<label>Time </label> 
+<label class="firsttag">Time </label> 
 {{ form.TIME_OCC }}
 
 <label>Time Type </label> 
@@ -203,7 +208,7 @@ h2 { text-align: center; }
 </div>
 <div>
 
-<label>Location </label> 
+<label class="firsttag">Location </label> 
 {{ form.LOCATION }}
 
 <label>Place of occurance  </label> 
@@ -216,7 +221,7 @@ h2 { text-align: center; }
 {{form.ROAD}}
 
 <br>
-<label>Latitude </label> 
+<label class="firsttag">Latitude </label> 
 {{ form.LATITUDE }}
 
 <label>Longitude </label> 
@@ -225,10 +230,10 @@ h2 { text-align: center; }
 </div>
 <div>
 
-    <label>Section </label> 
+    <label class="firsttag">Section </label> 
 {{ form.SECTION }}
 
-  <label>AccidentType</label>
+  <label>Accident Type</label>
  {{ form.ACCTYPE }}
 
 </div>
@@ -282,13 +287,15 @@ h2 { text-align: center; }
 <div>
 <h3>Vehicle at fault</h3> 
 
-    <label>Type</label> 
+    <label  class="firsttag">Type</label> 
 {{ form.VEHTYPE1 }}
 
- <label id="tww1" visible="false">TWW1</label> 
+
+ <label  id="tww1" visible="false">TWW1</label> 
 {{ form.TWW1 }}
 
-    <label>Registration-No. A</label> 
+<br>
+    <label class="firsttag" >Registration-No. A</label> 
     {{ form.RNOV1A }}
     <label >Registration-No. B</label> 
     {{ form.RNOV1B }}
@@ -300,10 +307,10 @@ h2 { text-align: center; }
 <div>
 <h3>Victim Details</h3> 
 
-    <label>Type </label> 
+    <label  class="firsttag">Type </label> 
 {{ form.VEHTYPE2 }}
-
-    <label for="regnof">Registration-No. A</label> 
+<br>
+    <label  class="firsttag" for="regnof">Registration-No. A</label> 
     {{ form.RNOV2A }}
     <label for="regnof">Registration-No. B</label> 
     {{ form.RNOV2B }}
@@ -316,58 +323,97 @@ h2 { text-align: center; }
 <div>
 <h3>Accident Driver Details</h3>
 
-    <label>Driver Name</label> 
+
+    <label  class="firsttag" >Driver Name</label> 
      {{ form.dri_name }}
      
     <label>Age </label> 
     {{ form.dri_age }}
     
-    <label>Address </label> 
-     {{ form.dri_add }}
-
- <label>Sex </label> 
+	<label>Sex </label> 
      {{ form.dri_sex }}
     
+	
+    <label>Address </label> 
+     {{ form.dri_add }}
+ 
  <label>Father's Name </label> 
      {{ form.dri_fath }}
      
-    <label>Arrested</label> 
+    <label class="firsttag">Arrested</label> 
     {{ form.dri_arrest }}
 
     <label>License No.</label> 
     {{ form.dri_lic_no }}
 
-    <br>
+   
 
     <label">Place from where License was issued </label> 
     {{ form.dri_place }}
-
-    <label>Issued Date:</label> 
+    <label>Drunk/Not Drunk</label> 
+    {{ form.ACCDRUNK }}
+	<br>
+    <label class="firsttag">Issued Date:</label> 
     {{ form.dri_lic_date_issu }}
 
-    <label>Upto Date:</label> 
+	<br>
+    <label class="firsttag" >Upto Date:</label> 
     {{ form.dri_lic_date_upto }}
-    
-       <label>License Status</label> 
+    <br>
+       <label class="firsttag" >License Status</label> 
     {{ form.dri_lic_status }}
 
-       <label>Drunk/Not Drunk</label> 
-    {{ form.ACCDRUNK }}
+   
 
 
 </div>
 <div>
-    <label for="remarks">Remarks</label> 
+    <label class="firsttag">Type of Accident</label> 
+    {{ form.ACCID_TYPE}}
+	
+	<label class="firsttag" >Victim</label> 
+    {{ form.VICTIM}}
+</div>
+<div>
+    <label class="firsttag" for="remarks">Remarks</label> 
     {{ form.REMARK }}
+	
+	  <label class="firsttag" for="remarks">Brief Facts</label> 
+    {{ form.BRIEF_FACTS }}
+	
+</div>
+<!--
+<div>
+  <label class="firsttag" for="remarks">Duplicate</label> 
+    {{ form.DUPL }}
+	
+	  <label for="remarks">Pending</label> 
+    {{ form.PENDING }}
+	
+	<br>
+	  <label for="remarks">Case Status</label> 
+    {{ form.case_status }}
+	
+	<br>
+		
+	  <label class="firsttag" >Victim</label> 
+    {{ form.VICTIM}}
+	
+</div> -->
+<div>
+    
 
-    <label>CONVERT</label>
-    {{ form.CONVERT }}
+    <label class="firsttag" for="remarks">Convert Case</label> 
+    {{ form.convert_case}}
 
-    <label id="convert_date" visible="false">CONVERT DATE</label>
+    <label id="convert_date" visible="false">Convert Date</label>
     {{ form.CONVERT_DATE }}
 
-    <label>STATUS</label>
-    {{ form.STATUS }}
+    <label>Case Status</label>
+    {{ form.case_status  }}
+	
+
+	
 </div>
 
 <input type="submit">
@@ -375,8 +421,8 @@ h2 { text-align: center; }
 </div>
 <script>
 
-$("#id_CONVERT").change(function () {
-    var selection = $("#id_CONVERT option:selected").text();
+$("#id_convert_case").change(function () {
+    var selection = $("#id_convert_case option:selected").text();
 
     if(selection=='TRUE')
     {
@@ -615,6 +661,45 @@ $('.kil-formset').formset({
     deleteText: '<span class="glyphicon glyphicon-minus"></span>',
     
     });
+	
+$("#id_TIME_OCC").change(function () {
+    var selection = document.getElementById("id_TIME_OCC").value;
+	//for day and night
+	if( selection >=0 && selection < 800 ) { document.getElementById("id_DAY_NIGHT").value = "Night"; }
+	else if(selection >=800 && selection <= 2400 ) { document.getElementById("id_DAY_NIGHT").value = "Day"; }
+	else { document.getElementById("id_DAY_NIGHT").value = "Unknown"; }
+	
+	//for timeslot
+	if( selection >=0 && selection < 0100 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
+	else if(selection >=0100 && selection < 0200 ) { document.getElementById("id_TIME_SLOT").value = "0100-0200"; }
+	else if(selection >=0200 && selection < 0300 ) { document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
+	else if(selection >=0300 && selection < 0400 ) { document.getElementById("id_TIME_SLOT").value = "0300-0400"; }
+	else if(selection >=0400 && selection < 0500 ) { document.getElementById("id_TIME_SLOT").value = "0400-0500"; }
+	else if(selection >=0500 && selection < 0600 ) { document.getElementById("id_TIME_SLOT").value = "0500-0600"; }
+	else if(selection >=0600 && selection < 0700 ) { document.getElementById("id_TIME_SLOT").value = "0600-0700"; }
+	else if(selection >=0700 && selection < 0800 ) { document.getElementById("id_TIME_SLOT").value = "0700-0800"; }
+	else if(selection >=0800 && selection < 0900 ) { document.getElementById("id_TIME_SLOT").value = "0800-0900"; }
+	else if(selection >=0900 && selection < 1000 ) { document.getElementById("id_TIME_SLOT").value = "0900-1000"; }
+	else if(selection >=1000 && selection < 1100 ) { document.getElementById("id_TIME_SLOT").value = "1000-1100"; }
+	else if(selection >=1100 && selection < 1200 ) { document.getElementById("id_TIME_SLOT").value = "1100-1200"; }
+	else if(selection >=1200 && selection < 1300 ) { document.getElementById("id_TIME_SLOT").value = "1200-1300"; }
+	else if(selection >=1300 && selection < 1400 ) { document.getElementById("id_TIME_SLOT").value = "1300-1400"; }
+	else if(selection >=1400 && selection < 1500 ) { document.getElementById("id_TIME_SLOT").value = "1400-1500"; }
+	else if(selection >=1500 && selection < 1600 ) { document.getElementById("id_TIME_SLOT").value = "1500-1600"; }
+	else if(selection >=1600 && selection < 1700 ) { document.getElementById("id_TIME_SLOT").value = "1600-1700"; }
+	else if(selection >=1700 && selection < 1800 ) { document.getElementById("id_TIME_SLOT").value = "1700-1800"; }
+	else if(selection >=1800 && selection < 1900 ) { document.getElementById("id_TIME_SLOT").value = "1800-1900"; }
+	else if(selection >=1900 && selection < 2000 ) { document.getElementById("id_TIME_SLOT").value = "1900-2000"; }
+	else if(selection >=2000 && selection < 2100 ) { document.getElementById("id_TIME_SLOT").value = "2000-2100"; }
+	else if(selection >=2100 && selection < 2200 ) { document.getElementById("id_TIME_SLOT").value = "2100-2200"; }
+	else if(selection >=2200 && selection < 2300 ) { document.getElementById("id_TIME_SLOT").value = "2200-2300"; }
+	else if(selection >=2300 && selection < 2400 ) { document.getElementById("id_TIME_SLOT").value = "2300-2400"; }
+	else { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME"; }
+
+
+
+
+     });
 </script>
 </body>
 </html>
