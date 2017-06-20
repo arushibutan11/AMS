@@ -25,15 +25,13 @@ SECRET_KEY = 'jab1%#tnnxdt2w+6^ix&3%!889p#e$l1i-*q9*zd$+6h!r%^7e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
 
-    'dal',
-    'dal_select2',
     'smart_selects',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -112,9 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-DATE_INPUT_FORMATS = {'%d-%b-%y'}
+LANGUAGE_CODE = 'en-GB'
 
 TIME_ZONE = 'UTC'
 

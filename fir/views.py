@@ -38,7 +38,9 @@ def create_fir(request):
             fir = form.save()
         return HttpResponse('done')
       else:
-        return HttpResponse('done not')
+        
+        return HttpResponse('done')
+        #return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
     else:
         form = FirForm()

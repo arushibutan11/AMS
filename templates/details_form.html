@@ -142,9 +142,24 @@ h2 { text-align: center; }
 
 </head>
 <body>
+{% if form.errors %}
+    {% for field in form %}
+        {{field}}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
 <div class="form-style-6">
 <h1>ACCIDENT REPORT FORM</h1>
-<form name="myForm" action=" " method="Post">
+<form name="myForm" action="{% url 'create_fir' %}" method="Post">
 {% csrf_token %}
 <div>
 <label class="firsttag">Accident Id</label>
@@ -254,6 +269,7 @@ h2 { text-align: center; }
 
       </tr>
       <tr class = "inj-formset">
+    {{ forminj.management_form }}
       {% for i in forminj %}
         <td hidden> {{ i.PS }} </td>
         <td hidden> {{ i.FIRNO }} </td>
@@ -264,6 +280,7 @@ h2 { text-align: center; }
         <td>{{ i.INJTYPE }}</td>
       </tr>
       {% endfor %}
+
 </tr>
     </table>
   </div>
@@ -276,6 +293,7 @@ h2 { text-align: center; }
         <th>Killed- Type</th>
 
       </tr>
+    {{ formkil.management_form }
       {% for k in formkil %}
       <tr  class = "kil-formset">
         
@@ -284,7 +302,7 @@ h2 { text-align: center; }
         <td>{{ k.TYPE }}</td>
       </tr>
       {% endfor %}
-      {{ formset.management_form }}
+}
     </table>
   </div>
   </div>
@@ -730,7 +748,7 @@ $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     ps =  document.getElementById("id_PS").value
     var psCode = ps.split("-");
     var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
-	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!="")
+	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!=0)
     { document.getElementById("id_ACC_ID").value = id; }
 });
 

@@ -7,7 +7,7 @@ import datetime
 
 
 class FirForm(forms.ModelForm):
-    DATE_OCC = forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
+    DATE_OCC = forms.DateField(required = False,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
         )
     dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
@@ -21,7 +21,7 @@ class FirForm(forms.ModelForm):
         )
     class Meta:
         model = details
-     	fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE',
+     	fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE', 'DATE_OCC',
  'PLACE_OCC','ROAD', 'ROADNAME', 'LOCATION','CATEGORY', 'VEHTYPE1', 'TWW1', 'RNOV1A', 'RNOV1B', 
  'VEHTYPE2', 'TWW2', 'RNOV2A', 'RNOV2B', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
  'INJGIRL', 'KILLED', 'KILMALE', 'KILFEMALE', 'KILBOY', 'KILGIRL', 'PEDESTRIAN', 'ACCTYPE',

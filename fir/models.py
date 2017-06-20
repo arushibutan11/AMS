@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 from django.db.models import Q
-
+import datetime
 
 # Create your models here.
 SEX_Choices = (
@@ -299,9 +299,9 @@ class details(models.Model):
 
     SECTION = models.ForeignKey(sections)
 
-    TIME_OCC = models.TimeField()
+    TIME_OCC = models.CharField(max_length=15)
     TIME_TYPE = models.CharField(max_length=15, choices = TIME_TYPE_CHOICES)
-    DATE_OCC = models.DateField()
+    DATE_OCC = models.DateField('DATE_OCC')
     PLACE_OCC = models.CharField(max_length=140)
 
     ROAD = ChainedForeignKey(
@@ -327,29 +327,28 @@ class details(models.Model):
     RNOV2A = models.CharField(max_length=10, blank =True)
     RNOV2B = models.CharField(max_length=4, blank =True)
     
-    SELF_TYPE = models.ForeignKey(self_type)
+    SELF_TYPE = models.ForeignKey(self_type, default=0)
     
-    INJURED = models.PositiveIntegerField(default = 0)
-    INJMALE = models.PositiveIntegerField(default = 0)
-    INJFEMALE = models.PositiveIntegerField(default = 0)
-    INJBOY = models.PositiveIntegerField(default = 0)
-    INJGIRL = models.PositiveIntegerField(default = 0)
-    KILLED = models.PositiveIntegerField(default = 0)
-    KILMALE = models.PositiveIntegerField(default = 0)
-    KILFEMALE = models.PositiveIntegerField(default = 0)
-    KILBOY = models.PositiveIntegerField(default = 0)
-    KILGIRL = models.PositiveIntegerField(default = 0)
-    PEDESTRIAN = models.PositiveIntegerField(default = 0)
+    INJURED = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    INJMALE = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    INJFEMALE = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    INJBOY = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    INJGIRL = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    KILLED = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    KILMALE = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    KILFEMALE = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    KILBOY = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    KILGIRL = models.PositiveIntegerField(default = 0, null = True, blank =True)
+    PEDESTRIAN = models.PositiveIntegerField(default = 0, null = True, blank =True)
     
     ACCTYPE = models.CharField(max_length=20)
 
-    ACCID_TYPE = models.ForeignKey(accid_type
-        )
+    ACCID_TYPE = models.ForeignKey(accid_type)
 
     VICTIM = models.CharField(max_length=100)
 
-    DUPL = models.CharField(max_length=15)
-    PENDING = models.CharField(max_length=15)
+    DUPL = models.CharField(max_length=15, blank = True)
+    PENDING = models.CharField(max_length=15, blank = True)
 
     DAY_NIGHT = models.CharField(max_length=15)
     YEAR = models.PositiveIntegerField()
@@ -357,51 +356,51 @@ class details(models.Model):
     MONTH = models.CharField(max_length=15)
     FN = models.CharField(max_length=15)
 
-    ACCAGE = models.CharField(max_length=15)
-    ACCSEX = models.CharField(max_length=15, choices = SEX_Choices)
+    ACCAGE = models.CharField(max_length=15, blank=True)
+    ACCSEX = models.CharField(max_length=15, choices = SEX_Choices, blank=True)
     ACCDRUNK = models.BooleanField()
 
-    Intersection = models.CharField(max_length=150)
-    routeno = models.CharField(max_length=15,null=True)
-    case_status = models.CharField(max_length=15)
-    convert_case = models.CharField(max_length=15)
+    Intersection = models.CharField(max_length=150, blank=True)
+    routeno = models.CharField(max_length=15,blank=True,default='')
+    case_status = models.CharField(max_length=15,blank=True)
+    convert_case = models.CharField(max_length=15,blank=True)
     
-    BRIEF_FACTS = models.CharField(max_length=500)
+    BRIEF_FACTS = models.CharField(max_length=500,blank=True)
     
     dri_lic_no = models.CharField(max_length=150,blank=True)
     dri_name = models.CharField(max_length=150,blank=True)
     dri_fath = models.CharField(max_length=150,blank=True)
-    dri_sex = models.CharField(max_length=15, choices = SEX_Choices)
-    dri_age = models.PositiveIntegerField(blank=True)
-    dri_add = models.CharField(max_length=150)
-    dri_arrest = models.CharField(max_length=15,choices=ARRESTED_Choices)
+    dri_sex = models.CharField(max_length=15, choices = SEX_Choices,blank=True)
+    dri_age = models.PositiveIntegerField(blank=True, null = True)
+    dri_add = models.CharField(max_length=150,blank=True)
+    dri_arrest = models.CharField(max_length=15,choices=ARRESTED_Choices,blank=True)
     dri_place = models.CharField(max_length=150,blank=True)
-    dri_lic_date_issu = models.DateField(blank=True)
-    dri_lic_date_upto = models.DateField(blank=True)
+    dri_lic_date_issu = models.DateField(blank=True, null = True)
+    dri_lic_date_upto = models.DateField(blank=True, null = True)
     dri_lic_status = models.CharField(max_length=15,blank=True)
     
-    REMARK = models.CharField(max_length=300)
-    CONFIRM = models.CharField(max_length=15)
+    REMARK = models.CharField(max_length=300,blank=True)
+    CONFIRM = models.CharField(max_length=15,blank=True)
     LONGITUDE = models.CharField(max_length=15)
     LATITUDE = models.CharField(max_length=15)
     
-    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices)
-    CONVERT_DATE = models.DateField()
-    CN_DT = models.CharField(max_length=150)
+    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,blank=True)
+    CONVERT_DATE = models.DateField(blank=True, null = True)
+    CN_DT = models.CharField(max_length=150,blank=True)
     
-    CONVERT_FN = models.CharField(max_length=150)
-    BUS_NO = models.CharField(max_length=15)
-    BLACK_SPOT = models.CharField(max_length=15)
-    BLACK_SPOT_NO = models.CharField(max_length=15)
-    FOR_BLK = models.CharField(max_length=15)
-    STATUS = models.CharField(max_length=15)
-    F_STATUS = models.CharField(max_length=15)
-    dri_add1 = models.CharField(max_length=15)
-    RIDER_HELMET = models.CharField(max_length=15)
-    PILLION_HELMET = models.CharField(max_length=15)
-    STATE = models.CharField(max_length=15)
-    SCANNED = models.CharField(max_length=15)
-    HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15)
+    CONVERT_FN = models.CharField(max_length=150,blank=True)
+    BUS_NO = models.CharField(max_length=15,blank=True)
+    BLACK_SPOT = models.CharField(max_length=15,blank=True)
+    BLACK_SPOT_NO = models.CharField(max_length=15,blank=True)
+    FOR_BLK = models.CharField(max_length=15,blank=True)
+    STATUS = models.CharField(max_length=15,blank=True)
+    F_STATUS = models.CharField(max_length=15,blank=True)
+    dri_add1 = models.CharField(max_length=15,blank=True)
+    RIDER_HELMET = models.CharField(max_length=15,blank=True)
+    PILLION_HELMET = models.CharField(max_length=15,blank=True)
+    STATE = models.CharField(max_length=15,blank=True)
+    SCANNED = models.CharField(max_length=15,blank=True)
+    HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,blank=True)
 
 class injured(models.Model):
     PS = models.CharField(max_length=5)
