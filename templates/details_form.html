@@ -210,6 +210,8 @@ h2 { text-align: center; }
 
 <label class="firsttag">Location </label> 
 {{ form.LOCATION }}
+<!--<label> Category</label>-->
+{{form.CATEGORY.as_hidden}}
 
 <label>Place of occurance  </label> 
 {{ form.PLACE_OCC }}
@@ -512,7 +514,7 @@ $("#id_VEHTYPE2").change(function () {
 
 
 
-
+/*CIRCLE*/
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
  
@@ -555,7 +557,8 @@ $.ajaxSetup({
         }
       });
     });
-    
+
+/*SECTION*/   
 $("#id_SECTION").change(function () {
     var selection = $("#id_SECTION option:selected").text(); //grab the value selected
  
@@ -612,17 +615,53 @@ $.ajaxSetup({
                 $("#table2").hide(); 
             }
 
-            /*function myFunction() {
-    var x = document.getElementById('myDIV');
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
-    }
-}*/
         }
       });
     });
+
+/*LOCATION*/
+$("#id_LOCATION").change(function () {
+    var selection = $("#id_LOCATION option:selected").text(); //grab the value selected
+ 
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+    $.post({
+        url: '/getlocation',
+        data: {
+          'location': selection
+        },
+        dataType: 'json',
+        success: function (data) {
+            document.getElementById("id_CATEGORY").value = data['CATEGORY'];
+        }
+      });
+    });
+
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
     var mon = selection.substring(0, 3);
