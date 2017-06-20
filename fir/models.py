@@ -8,7 +8,7 @@ from smart_selects.db_fields import ChainedForeignKey
 SEX_Choices = (
     ('M','Male'),('F','Female'),
 )
-convert_case_Choices=(
+CONVERT_Choices=(
     ('T','TRUE'),('F','FALSE'),)
 ARRESTED_Choices=(
     ('Y','Yes'),('N','No'),)
@@ -323,7 +323,7 @@ class details(models.Model):
     ACCDRUNK = models.BooleanField()
     Intersection = models.CharField(max_length=150)
     routeno = models.CharField(max_length=15,null=True)
-    case_status = models.CharField(max_length=15,choices=convert_case_Choices)
+    case_status = models.CharField(max_length=15)
     convert_case = models.CharField(max_length=15)
     BRIEF_FACTS = models.CharField(max_length=500)
     dri_lic_no = models.CharField(max_length=150)
@@ -341,7 +341,7 @@ class details(models.Model):
     CONFIRM = models.CharField(max_length=15)
     LONGITUDE = models.CharField(max_length=15)
     LATITUDE = models.CharField(max_length=15)
-    CONVERT = models.CharField(max_length=15)
+    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices)
     CONVERT_DATE = models.DateField()
     CN_DT = models.CharField(max_length=150)
     CONVERT_FN = models.CharField(max_length=150)

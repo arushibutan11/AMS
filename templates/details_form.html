@@ -315,6 +315,9 @@ h2 { text-align: center; }
     <label for="regnof">Registration-No. B</label> 
     {{ form.RNOV2B }}
 
+    <label id="Pedestrian" visible="false">Pedestrian</label>
+    {{ form.PEDESTRIAN }}
+
     <!--<label for="board>Boarding/De-boarding</label> -->
     <label id="self_type" visible="false">Self Type</label>
     {{ form.SELF_TYPE }}
@@ -404,7 +407,7 @@ h2 { text-align: center; }
     
 
     <label class="firsttag" for="remarks">Convert Case</label> 
-    {{ form.convert_case}}
+    {{ form.CONVERT}}
 
     <label id="convert_date" visible="false">Convert Date</label>
     {{ form.CONVERT_DATE }}
@@ -421,23 +424,24 @@ h2 { text-align: center; }
 </div>
 <script>
 
-$("#id_convert_case").change(function () {
-    var selection = $("#id_convert_case option:selected").text();
+$("#id_CONVERT").change(function () {
+    var selection = $("#id_CONVERT option:selected").text();
 
     if(selection=='TRUE')
     {
         document.getElementById("convert_date").style.visibility="visible";
-        $("#id_CONVERT_DATE").show();
+        $("#id_CONVERT_DATE_month").show();
+         $("#id_CONVERT_DATE_day").show();
+          $("#id_CONVERT_DATE_year").show();
     }
     else
    {
-        document.getElementById("convert_date").style.visibility="hidden";
+      document.getElementById("convert_date").style.visibility="hidden";
        $("#id_CONVERT_DATE_month").hide();
-          $("#id_CONVERT_DATE_day").hide();
-            $("#id_CONVERT_DATE_year").hide();
+       $("#id_CONVERT_DATE_day").hide();
+       $("#id_CONVERT_DATE_year").hide();
              
     }});
-
 
 
 
@@ -475,7 +479,7 @@ $("#id_VEHTYPE1").change(function () {
 $("#id_VEHTYPE2").change(function () {
     var selection = $("#id_VEHTYPE2 option:selected").text();
     //alert("you selected" + selection);
-    if (selection=='SLF')
+    if (selection=='SELF')
     {
      document.getElementById("self_type").style.visibility = "visible";
     $("#id_SELF_TYPE").show();
@@ -487,6 +491,20 @@ $("#id_VEHTYPE2").change(function () {
          $("#id_SELF_TYPE").hide()
       
     }
+     if (selection=='PEDESTRIAN')
+    {
+     document.getElementById("Pedestrian").style.visibility = "visible";
+    $("#id_PEDESTRIAN").show();
+    }
+
+    else
+    {
+        document.getElementById("Pedestrian").style.visibility = "hidden";
+        //$("#id_routeno").attr('disabled', true);
+         $("#id_PEDESTRIAN").hide()
+      
+    }
+
 
     });
 
