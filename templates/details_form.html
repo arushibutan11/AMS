@@ -222,6 +222,8 @@ h2 { text-align: center; }
 <label for="road">Road Name </label> 
 {{form.ROAD}}
 
+ {{form.ROADNAME.as_hidden}}
+
 <br>
 <label class="firsttag">Latitude </label> 
 {{ form.LATITUDE }}
@@ -344,7 +346,7 @@ h2 { text-align: center; }
  
  <label>Father's Name </label> 
      {{ form.dri_fath }}
-     
+     <br>
     <label class="firsttag">Arrested</label> 
     {{ form.dri_arrest }}
 
@@ -483,12 +485,12 @@ $("#id_VEHTYPE2").change(function () {
     //alert("you selected" + selection);
     if (selection=='SELF')
     {
-     document.getElementById("self_type").style.visibility = "visible";
+     $("#self_type").show();
     $("#id_SELF_TYPE").show();
     }
     else
     {
-        document.getElementById("self_type").style.visibility = "hidden";
+        $("#self_type").hide();
         //$("#id_routeno").attr('disabled', true);
          $("#id_SELF_TYPE").hide()
       
@@ -508,9 +510,22 @@ $("#id_VEHTYPE2").change(function () {
     }
 
 
+
     });
 
+$("#id_SELF_TYPE").change(function () {
+    var vehi2 = $("#id_VEHTYPE2 option:selected").text();
+    var self_type = $("#id_SELF_TYPE option:selected").val();
+    if (vehi2=='SELF')
+    {
+    
+        $("#id_ACCID_TYPE").val(self_type).change();
+    }
 
+
+    
+
+});
 
 
 
@@ -662,6 +677,49 @@ $.ajaxSetup({
       });
     });
 
+/*VICTIM*/
+$("#id_ACCID_TYPE").change(function () {
+    var selection = $("#id_ACCID_TYPE option:selected").val(); //grab the value selected
+ 
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+    $.post({
+        url: '/getacctype',
+        data: {
+          'accid_type': selection
+        },
+        dataType: 'json',
+        success: function (data) {
+            document.getElementById("id_VICTIM").value = data['VICTIM'];
+        }
+      });
+    });
+
 $("#id_DATE_OCC_month").change(function () {
     var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
     var mon = selection.substring(0, 3);
@@ -753,10 +811,15 @@ $("#id_TIME_OCC").change(function () {
 	else if(selection >=2300 && selection < 2400 ) { document.getElementById("id_TIME_SLOT").value = "2300-2400"; }
 	else { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME"; }
 
-
-
-
      });
+$(document).ready(function() {
+  $('#id_ROAD').change(function() {
+    var roadname = $("#id_ROAD option:selected").text();
+    $("#id_ROADNAME").val(roadname).change();
+  });
+});
+
+
 </script>
 </body>
 </html>

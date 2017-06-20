@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
+from django.db.models import Q
 
 
 # Create your models here.
@@ -88,8 +89,8 @@ class policestation(models.Model):
         return self.PSNAME
 
 class self_type(models.Model):
-    SNO=models.CharField(max_length=20)
-    CODE=models.CharField(max_length=20,primary_key=True)
+    SNO=models.CharField(max_length=20,primary_key=True)
+    CODE=models.CharField(max_length=20)
     TYPE=models.CharField(max_length=100)
     def __str__(self):
         return self.TYPE
@@ -104,7 +105,21 @@ class location(models.Model):
     def as_json(self):
         return dict(
             TYPE = self.TYPE,
-            CATEGORY = self.CATEGORY)    
+            CATEGORY = self.CATEGORY)
+
+class accid_type(models.Model):
+    SNO=models.PositiveIntegerField(primary_key=True)
+    TYPE=models.CharField(max_length=200)
+    CATEGORY = models.CharField(max_length = 100)
+    CODE=models.CharField(max_length=20, blank=True)
+    VICTIM=models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.TYPE
+    def as_json(self):
+        return dict(
+            SNO = self.SNO,
+            VICTIM = self.VICTIM)    
 
 class vehtype1(models.Model):
     VEHTYPE = models.CharField(max_length=20, primary_key= True)
@@ -303,42 +318,49 @@ class details(models.Model):
     CATEGORY = models.CharField(max_length=140)
     
     VEHTYPE1 = models.ForeignKey(vehtype1)
-    TWW1 = models.CharField(max_length=15)
-    RNOV1A = models.CharField(max_length=15)
-    RNOV1B = models.CharField(max_length=10)
+    TWW1 = models.CharField(max_length=15, blank =True)
+    RNOV1A = models.CharField(max_length=15, blank =True)
+    RNOV1B = models.CharField(max_length=10, blank =True)
     
     VEHTYPE2 = models.ForeignKey(vehtype2)
-    TWW2 = models.CharField(max_length=15)
-    RNOV2A = models.CharField(max_length=10)
-    RNOV2B = models.CharField(max_length=4)
+    TWW2 = models.CharField(max_length=15, blank =True)
+    RNOV2A = models.CharField(max_length=10, blank =True)
+    RNOV2B = models.CharField(max_length=4, blank =True)
     
     SELF_TYPE = models.ForeignKey(self_type)
     
-    INJURED = models.PositiveIntegerField()
-    INJMALE = models.PositiveIntegerField()
-    INJFEMALE = models.PositiveIntegerField()
-    INJBOY = models.PositiveIntegerField()
-    INJGIRL = models.PositiveIntegerField()
-    KILLED = models.PositiveIntegerField()
-    KILMALE = models.PositiveIntegerField()
-    KILFEMALE = models.PositiveIntegerField()
-    KILBOY = models.PositiveIntegerField()
-    KILGIRL = models.PositiveIntegerField()
-    PEDESTRIAN = models.PositiveIntegerField()
+    INJURED = models.PositiveIntegerField(default = 0)
+    INJMALE = models.PositiveIntegerField(default = 0)
+    INJFEMALE = models.PositiveIntegerField(default = 0)
+    INJBOY = models.PositiveIntegerField(default = 0)
+    INJGIRL = models.PositiveIntegerField(default = 0)
+    KILLED = models.PositiveIntegerField(default = 0)
+    KILMALE = models.PositiveIntegerField(default = 0)
+    KILFEMALE = models.PositiveIntegerField(default = 0)
+    KILBOY = models.PositiveIntegerField(default = 0)
+    KILGIRL = models.PositiveIntegerField(default = 0)
+    PEDESTRIAN = models.PositiveIntegerField(default = 0)
     
     ACCTYPE = models.CharField(max_length=20)
-    ACCID_TYPE = models.CharField(max_length=100)
+
+    ACCID_TYPE = models.ForeignKey(accid_type
+        )
+
     VICTIM = models.CharField(max_length=100)
+
     DUPL = models.CharField(max_length=15)
     PENDING = models.CharField(max_length=15)
+
     DAY_NIGHT = models.CharField(max_length=15)
     YEAR = models.PositiveIntegerField()
     TIME_SLOT = models.CharField(max_length=15)
     MONTH = models.CharField(max_length=15)
     FN = models.CharField(max_length=15)
+
     ACCAGE = models.CharField(max_length=15)
     ACCSEX = models.CharField(max_length=15, choices = SEX_Choices)
     ACCDRUNK = models.BooleanField()
+
     Intersection = models.CharField(max_length=150)
     routeno = models.CharField(max_length=15,null=True)
     case_status = models.CharField(max_length=15)

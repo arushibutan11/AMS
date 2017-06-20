@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from fir.views import getcircleinfo, getsection, getlocation
+from fir.views import getcircleinfo, getsection, getlocation, getacctype
 
 
 urlpatterns = [
@@ -24,7 +24,8 @@ urlpatterns = [
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^getcircleinfo$', getcircleinfo),
     url(r'^getsection$', getsection),
-    url(r'^getlocation$', getlocation)
+    url(r'^getlocation$', getlocation),
+    url(r'^getacctype$', getacctype)
 
 
 ]

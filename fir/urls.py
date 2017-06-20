@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^$', views.create_fir, name='create_fir'),
     url(r'^getcircleinfo$', views.getcircleinfo, name='getcircleinfo'),
     url(r'^getsection$', views.getsection, name='getsection'),
-    url(r'^getlocation$', views.getlocation, name='getlocation')
+    url(r'^getlocation$', views.getlocation, name='getlocation'),
+    url(r'^getacctype$', views.getacctype, name='getacctype')
 
 ]

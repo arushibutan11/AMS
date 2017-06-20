@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .models import details, circles, sections, injured, killed, location
+from .models import details, circles, sections, injured, killed, location, accid_type
 from .forms import FirForm, InjForm, KilForm
 from django.forms import ModelForm
 from django import forms
@@ -71,5 +71,13 @@ def getlocation(request):
     if request.method == 'POST':
       loc = request.POST.get('location')
       info = location.objects.get(TYPE = loc)
+      return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
+
+@permission_classes((permissions.AllowAny,))
+def getacctype(request):
+  
+    if request.method == 'POST':
+      acctype = request.POST.get('accid_type')
+      info = accid_type.objects.get(SNO = acctype)
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
             
