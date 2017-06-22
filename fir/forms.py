@@ -4,6 +4,7 @@ from django.conf import settings
 from .models import details, injured, killed
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
+from django.forms.formsets import formset_factory
 
 
 class FirForm(forms.ModelForm):
