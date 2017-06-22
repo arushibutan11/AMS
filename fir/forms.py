@@ -40,7 +40,34 @@ class FirForm(forms.ModelForm):
         cd = self.cleaned_data
         if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
             self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
-        return cd
+            
+        if cd.get('LATITUDE') > 29 or cd.get('LATITUDE') <= 28:
+             self.add_error('LATITUDE', "Check Value of Latitude")
+             
+        if cd.get('LONGITUDE') >= 78 or cd.get('LONGITUDE') < 76:
+             self.add_error('LONGITUDE', "Check Value of Longitude") 
+             
+        tim1 = cd.get('TIME_OCC')[:2]
+        tim2 = cd.get('TIME_OCC')[-2:]
+        tim1 = int(tim1)
+        tim2 = int(tim2)
+        if tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0:
+            self.add_error('TIME_OCC', "Enter a valid time")
+        return cd          
+        '''VEHTYPE2 = cd.get('VEHTYPE2')
+        VICTIM = cd.get('VICTIM')
+
+        if VEHTYPE2 == "PEDESTRIAN" and (VICTIM == "VEHICLES" or VICTIM == "SELF" or VICTIM == "PASSENGER" or VICTIM == "SELF/ANIMAL"):
+            self.add_error('VICTIM', "Victim is Pedestrian")        
+        elif VEHTYPE2 == "SELF" and (VICTIM == "PEDESTRIAN" or VICTIM == "PASSENGER" or VICTIM == "VEHICLES" or VICTIM == "VEHICLES/PED"):
+            self.add_error('VICTIM', "Victim is Self")
+        elif VEHTYPE2 == "ANIMAL" and (VICTIM == "SELF" or VICTIM == "PEDESTRIAN" or VICTIM == "PASSENGER" or VICTIM == "VEHICLES" or VICTIM == "VEHICLES/PED"):
+            self.add_error('VICTIM', "Victim is self/animal")
+        elif VEHTYPE2 == "PASSENGER" and (VICTIM == "SELF" or VICTIM == "PEDESTRIAN" or VICTIM == "SELF/ANIMAL" or VICTIM == "VEHICLES" or VICTIM == "VEHICLES/PED"):
+            self.add_error('VICTIM', "Victim is passenger")
+        elif (VEHTYPE2 != "SELF" and VEHTYPE2 != "PASSENGER" and VEHTYPE2 != "PEDESTRIAN" and VEHTYPE2 != "ANIMAL") and (VICTIM == "PEDESTRIAN" or VICTIM == "PASSENGER" or VICTIM == "SELF" or VICTIM == "SELF/ANIMAL"):
+            self.add_error('VICTIM', "Victim is vehicle")'''
+
 
 
 

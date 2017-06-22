@@ -459,9 +459,7 @@ h2 { text-align: center; }
 </form>
 </div>
 <script>
-$(document).ready(function() {
-    $("#table1").hide();
-});
+
 id_FIRNO.oninput = function () {
     if (this.value.length > 4) {
         this.value = this.value.slice(0,4); 
@@ -542,7 +540,7 @@ $("#id_VEHTYPE1").change(function () {
 
 $("#id_VEHTYPE2").change(function () {
     var selection = $("#id_VEHTYPE2 option:selected").text();
-    //alert("you selected" + selection);
+    //if selection == "PED" && (VICTIM1 = "VEHICLES" Or VICTIM1 = "SELF" Or VICTIM1 = "PASSENGER" Or VICTIM1 = "SELF/ANIMAL")
     if (selection=='SELF')
     {
      $("#self_type").show();
@@ -596,7 +594,7 @@ $("#id_SELF_TYPE").change(function () {
     
         $("#id_ACCID_TYPE").val(self_type).change();
     }
-
+    
 
     
 
