@@ -8,7 +8,7 @@ import datetime
 
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
-        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )
     dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),

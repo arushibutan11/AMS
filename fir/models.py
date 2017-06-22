@@ -297,7 +297,7 @@ class details(models.Model):
         auto_choose=True,
         sort=True)
 
-    FIRNO = models.PositiveIntegerField( validators=[MaxValueValidator(9999), MinValueValidator(0)])
+    FIRNO = models.PositiveIntegerField( validators=[MaxValueValidator(9999), MinValueValidator(1)])
 
     SECTION = models.ForeignKey(sections)
 

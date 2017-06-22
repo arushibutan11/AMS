@@ -16,7 +16,9 @@ function setreadonly() {
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
+$('#id_LOCATION').val('11');
 }
+
 </script>
 <style type="text/css">
 
@@ -39,11 +41,11 @@ select {
 }
 
 div#table2 {
-    /*display: none;*/
+    display: none;
     
 }
 div#table1 {
-    /*display: none;*/
+    display: none;
 }
 
 .form-style-6{
@@ -229,21 +231,22 @@ h2 { text-align: center; }
 </div>
 <div>
 
-<label class="firsttag">Location </label> 
-{{ form.LOCATION }}
-<!--<label> Category</label>-->
-{{form.CATEGORY.as_hidden}}
-
-<label>Place of occurance  </label> 
+<label class="firsttag">Place of occurance  </label> 
 {{ form.PLACE_OCC }}
-
-<label>Intersection  </label> 
-{{ form.Intersection}}
 
 <label for="road">Road Name </label> 
 {{form.ROAD}}
 
  {{form.ROADNAME.as_hidden}}
+
+<label>Location </label> 
+{{ form.LOCATION }}
+<!--<label> Category</label>-->
+{{form.CATEGORY.as_hidden}}
+
+<label>Intersection  </label> 
+{{ form.Intersection}}
+
 
 <br>
 <label class="firsttag">Latitude </label> 
@@ -260,6 +263,45 @@ h2 { text-align: center; }
 
   <label>Accident Type</label>
  {{ form.ACCTYPE }}
+
+</div>
+<div>
+<h3>Vehicle at fault</h3> 
+
+    <label  class="firsttag">Type</label> 
+{{ form.VEHTYPE1 }}
+
+
+ <label  id="tww1" visible="false">TWW1</label> 
+{{ form.TWW1 }}
+
+<br>
+    <label class="firsttag" >Registration-No. A</label> 
+    {{ form.RNOV1A }}
+    <label >Registration-No. B</label> 
+    {{ form.RNOV1B }}
+
+    <label id="route" visible="false">Route No.</label> 
+    {{ form.routeno }}
+
+</div>
+<div>
+<h3>Victim Vehicle</h3> 
+
+    <label  class="firsttag">Type </label> 
+{{ form.VEHTYPE2 }}
+<br>
+    <label  class="firsttag" for="regnof">Registration-No. A</label> 
+    {{ form.RNOV2A }}
+    <label for="regnof">Registration-No. B</label> 
+    {{ form.RNOV2B }}
+
+    <label id="Pedestrian" visible="false">Pedestrian</label>
+    {{ form.PEDESTRIAN }}
+
+    <!--<label for="board>Boarding/De-boarding</label> -->
+    <label id="self_type" visible="false">Self Type</label>
+    {{ form.SELF_TYPE }}
 
 </div>
 <div id="alltables">
@@ -311,45 +353,6 @@ h2 { text-align: center; }
     </table>
   </div>
   </div>
-<div>
-<h3>Vehicle at fault</h3> 
-
-    <label  class="firsttag">Type</label> 
-{{ form.VEHTYPE1 }}
-
-
- <label  id="tww1" visible="false">TWW1</label> 
-{{ form.TWW1 }}
-
-<br>
-    <label class="firsttag" >Registration-No. A</label> 
-    {{ form.RNOV1A }}
-    <label >Registration-No. B</label> 
-    {{ form.RNOV1B }}
-
-    <label id="route" visible="false">Route No.</label> 
-    {{ form.routeno }}
-
-</div>
-<div>
-<h3>Victim Details</h3> 
-
-    <label  class="firsttag">Type </label> 
-{{ form.VEHTYPE2 }}
-<br>
-    <label  class="firsttag" for="regnof">Registration-No. A</label> 
-    {{ form.RNOV2A }}
-    <label for="regnof">Registration-No. B</label> 
-    {{ form.RNOV2B }}
-
-    <label id="Pedestrian" visible="false">Pedestrian</label>
-    {{ form.PEDESTRIAN }}
-
-    <!--<label for="board>Boarding/De-boarding</label> -->
-    <label id="self_type" visible="false">Self Type</label>
-    {{ form.SELF_TYPE }}
-
-</div>
 <div>
 <h3>Accident Driver Details</h3>
 
@@ -814,15 +817,15 @@ $('.kil-formset').formset({
 $("#id_TIME_OCC").change(function () {
     var selection = document.getElementById("id_TIME_OCC").value;
 	//for day and night
-	if( selection >=0 && selection < 800 ) { document.getElementById("id_DAY_NIGHT").value = "Night"; }
-	else if(selection >=800 && selection <= 2400 ) { document.getElementById("id_DAY_NIGHT").value = "Day"; }
+	if( selection >=0800 && selection < 2100 ) { document.getElementById("id_DAY_NIGHT").value = "Day"; }
+	else if((selection >=2100 && selection <=2359) || (selection>=0000 && selection < 0800) ) { document.getElementById("id_DAY_NIGHT").value = "Night"; }
 	else { document.getElementById("id_DAY_NIGHT").value = "Unknown"; }
 	
 	//for timeslot
 	if( selection >=0 && selection < 0100 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
 	else if(selection >=0100 && selection < 0200 ) { document.getElementById("id_TIME_SLOT").value = "0100-0200"; }
-	else if(selection >=0200 && selection < 0300 ) { document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
-	else if(selection >=0300 && selection < 0400 ) { document.getElementById("id_TIME_SLOT").value = "0300-0400"; }
+	else if(selection >=0200 && selection < 0300 ) { alert("2-3 getting selected"); document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
+	else if(selection >=0300 && selection < 0400 ) { alert("3-4 getting selected"); document.getElementById("id_TIME_SLOT").value = "0300-0400"; }
 	else if(selection >=0400 && selection < 0500 ) { document.getElementById("id_TIME_SLOT").value = "0400-0500"; }
 	else if(selection >=0500 && selection < 0600 ) { document.getElementById("id_TIME_SLOT").value = "0500-0600"; }
 	else if(selection >=0600 && selection < 0700 ) { document.getElementById("id_TIME_SLOT").value = "0600-0700"; }
