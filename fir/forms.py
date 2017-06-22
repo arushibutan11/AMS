@@ -32,6 +32,13 @@ class FirForm(forms.ModelForm):
 'dri_lic_date_upto', 'dri_lic_status','REMARK', 'CONFIRM', 'LONGITUDE', 'LATITUDE', 'CONVERT',
 'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
  'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1']
+ 
+ 
+def clean(self):
+        cd = self.cleaned_data
+        if cd.get('') != cd.get('password_confirm'):
+            self.add_error('password_confirm', "passwords do not match !")
+        return cd
 
 
 
@@ -39,18 +46,10 @@ class FirForm(forms.ModelForm):
 class InjForm(forms.ModelForm):
 	class Meta:
  		model = injured
- 		fields = ['INJSEX', 'INJAGE', 'INJTYPE']
+ 		fields = ['INJSEX', 'INJAGE', 'INJTYPE', 'PS', 'YEAR', 'ACCID_ID', 'FIRNO']
 
 class KilForm(forms.ModelForm):
 	class Meta:
  		model = killed
- 		fields = ['SEX', 'AGE', 'TYPE']
+ 		fields = ['SEX', 'AGE', 'TYPE', 'PS', 'YEAR', 'ACCID_ID', 'FIRNO']
     
-'''   
-        exclude=['ACC_ID','TIME_TYPE','ROAD', 'LOCATION','CATEGORY', 'TWW1', 'TWW2', 'SELF_TYPE', 'INJURED', 'INJMALE','INJFEMALE', 'INJBOY',
- 'INJGIRL', 'KILLED', 'KILMALE', 'KILFEMALE', 'KILBOY', 'KILGIRL', 'PEDESTRIAN', 'ACCTYPE',
-'ACCID_TYPE','VICTIM', 'DUPL', 'PENDING','DAY_NIGHT','YEAR','TIME_SLOT', 'MONTH','FN','ACCAGE','ACCSEX',
-'ACCDRUNK', 'routeno', 'case_status','convert_case', 'BRIEF_FACTS' , 'dri_fath', 'dri_sex', 'dri_lic_status','CONFIRM','CONVERT',
-'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
- 'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1']
-   '''

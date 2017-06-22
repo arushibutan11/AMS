@@ -7,16 +7,16 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
-<script type = "text/javascript" src="{% static 'fir/js/jquery-3.20.min.js' %}"></script>
 <script src="{% static 'fir/js/jquery.formset.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
-<!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
+
 <script>
 function setreadonly() {
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
+$('#id_SELF_TYPE').val('19');
 }
 
 </script>
@@ -40,13 +40,13 @@ select {
     padding: 3px;
 }
 
-div#table2 {
+/*div#table2 {
     display: none;
     
 }
 div#table1 {
     display: none;
-}
+}*/
 
 .form-style-6{
     font: 95% Arial, Helvetica, sans-serif;
@@ -152,7 +152,7 @@ h2 { text-align: center; }
 <body onload="setreadonly()">
 {% if form.errors %}
     {% for field in form %}
-        {{field}}
+        {{field.label}}
         {% for error in field.errors %}
             <div class="alert alert-danger">
                 <strong>{{ error|escape }}</strong>
@@ -165,6 +165,7 @@ h2 { text-align: center; }
         </div>
     {% endfor %}
 {% endif %}
+
 <div class="form-style-6">
 <h1>ACCIDENT REPORT FORM</h1>
 <form name="myForm" action="{% url 'create_fir' %}" method="Post">
@@ -311,8 +312,8 @@ h2 { text-align: center; }
     
       <tr>
         
-        <th>Injured- Age</th>
         <th>Injured- Sex</th>
+        <th>Injured- Age</th>
         <th>Injured- Type</th>
 
       </tr>
@@ -323,8 +324,8 @@ h2 { text-align: center; }
         <td hidden> {{ i.FIRNO }} </td>
         <td hidden> {{ i.YEAR }} </td>
         <td hidden> {{ i.ACCID_ID }} </td>
-        <td>{{ i.INJAGE }}</td>
         <td>{{ i.INJSEX }}</td>
+        <td>{{ i.INJAGE }}</td>
         <td>{{ i.INJTYPE }}</td>
       </tr>
       {% endfor %}
@@ -336,17 +337,21 @@ h2 { text-align: center; }
  <div id="table2" class="table-editable">
     <table class="table">
       <tr>
-        <th>Killed- Age</th>
+
         <th>Killed- Sex</th>
+        <th>Killed- Age</th>
         <th>Killed- Type</th>
 
       </tr>
     {{ formkil.management_form }}
       {% for k in formkil %}
       <tr  class = "kil-formset">
-        
-        <td>{{ k.AGE }}</td>
+        <td hidden> {{ k.PS }} </td>
+        <td hidden> {{ k.FIRNO }} </td>
+        <td hidden> {{ k.YEAR }} </td>
+        <td hidden> {{ k.ACCID_ID }} </td>
         <td>{{ k.SEX }}</td>
+        <td>{{ k.AGE }}</td>
         <td>{{ k.TYPE }}</td>
       </tr>
       {% endfor %}
@@ -685,11 +690,19 @@ $.ajaxSetup({
                 $("#table2").hide();
                 $("#table1").show();
             }
-            else if (data['ACCTYPE'] == 'F')
+            else if (data['ACCTYPE'] == 'F') 
             {   
-                $("#table1").show();
-                $("#table2").show();
-                //Show Killed and Injured Table
+                $("#table1").hide(); //Hide Injured Table
+                $("#table2").show(); //Show Killed Table
+
+                
+                
+                if ( (data['SECTIONDTL'].indexOf('338')) >= 0 || (data['SECTIONDTL'].indexOf('337')) >= 0)
+                 { 
+                    $("#table1").show(); //Show Injured Table
+                 }
+
+                
             }
             else 
             {
@@ -794,13 +807,23 @@ $("#id_DATE_OCC_month").change(function () {
     });
 
 $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
-    ps =  document.getElementById("id_PS").value
+    var ps =  document.getElementById("id_PS").value;
+    var firno =  document.getElementById("id_FIRNO").value;
+    firno =  parseInt(firno);
     var psCode = ps.split("-");
-    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  document.getElementById("id_FIRNO").value;
+    var yr = document.getElementById("id_DATE_OCC_year").value;
+    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  firno;
 	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!=0)
-    { document.getElementById("id_ACC_ID").value = id; }
+    { document.getElementById("id_ACC_ID").value = id; 
+      $('.iACCID_ID').val(id);
+      $('.iPS').val(psCode[1]);
+      $('.iYEAR').val(yr);
+      $('.iFIRNO').val(firno);
+      
+    }
 });
 
+    
 $("#id_DATE_OCC_year").change(function () {
     var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
     document.getElementById("id_YEAR").value = selection;
@@ -827,20 +850,26 @@ var $TABLE = $('#table1');
 $('.zeroadd').click(function () {
   var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE.find('table').append($clone);
+  
+
+  
 });
 //for adding to table2
 var $TABLE2 = $('#table2');
 $('.oneadd').click(function () {
   var $clone2 = $TABLE2.find('tr.hide').clone(true).removeClass('hide table-line');
   $TABLE2.find('table').append($clone2);
+  alert('click one');
 });
 
 $('.inj-formset').formset({
     addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
-    deleteText: '<span class="glyphicon glyphicon-minus"></span>'    });
+    deleteText: '<span class="zerominus glyphicon glyphicon-minus"></span>',
+    keepFieldValues: '.iPS'     });
 $('.kil-formset').formset({
-    addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
-    deleteText: '<span class="glyphicon glyphicon-minus"></span>',
+    addText: '<span class="oneadd table-add glyphicon glyphicon-plus"></span>',
+    deleteText: '<span class="oneminus glyphicon glyphicon-minus"></span>',
+    keepFieldValues: '.iPS'
     
     });
 	
@@ -886,6 +915,22 @@ $(document).ready(function() {
   });
 });
 
+$('.zeroadd, .oneadd').click(function () {
+
+    var ps =  document.getElementById("id_PS").value;
+    var firno =  document.getElementById("id_FIRNO").value;
+    firno =  parseInt(firno);
+    var psCode = ps.split("-");
+    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  firno;
+    var yr = document.getElementById("id_DATE_OCC_year").value;
+      
+      $('.iACCID_ID').val(id);
+      $('.iPS').val(psCode[1]);
+      $('.iYEAR').val(yr);
+      $('.iFIRNO').val(firno);
+    
+    
+    });
 
 </script>
 </body>

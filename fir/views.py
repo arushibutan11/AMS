@@ -19,9 +19,11 @@ import json
 # Create your views here.
 def create_fir(request):
     InjFormSet = modelformset_factory(injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), widgets = {
-    'PS': forms.TextInput(attrs={'class': 'cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'cloned injcloned'}), 
-    'YEAR': forms.TextInput(attrs={'class': 'cloned injcloned'}),'ACCID_ID': forms.TextInput(attrs={'class': 'cloned injcloned'}),})
-    KilFormSet = modelformset_factory(killed, fields = ('AGE','SEX','TYPE'))
+    'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+    'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),'ACCID_ID': forms.TextInput(attrs={'class': 'iACCID_ID cloned injcloned'}),})
+    KilFormSet = modelformset_factory(killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE','ACCID_ID' ), widgets = {
+    'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
+    'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),'ACCID_ID': forms.TextInput(attrs={'class': 'iACCID_ID cloned kilcloned'}),})
     if request.method == 'POST':
 
       form = FirForm(request.POST)
