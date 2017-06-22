@@ -20,6 +20,8 @@ class FirForm(forms.ModelForm):
     CONVERT_DATE=forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
         )
+    BRIEF_FACTS = forms.CharField( required = False, widget=forms.Textarea)
+    REMARK = forms.CharField( required = False, widget=forms.Textarea)
     class Meta:
         model = details
      	fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE', 'DATE_OCC',
@@ -34,10 +36,10 @@ class FirForm(forms.ModelForm):
  'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1']
  
  
-def clean(self):
+    def clean(self):
         cd = self.cleaned_data
-        if cd.get('') != cd.get('password_confirm'):
-            self.add_error('password_confirm', "passwords do not match !")
+        if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
+            self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
         return cd
 
 

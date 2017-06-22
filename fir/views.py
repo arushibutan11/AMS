@@ -46,8 +46,8 @@ def create_fir(request):
         return HttpResponse('done')
       else:
         
-        return HttpResponse('validation done')
-        #return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
+        #return HttpResponse('validation done')
+        return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
     else:
         form = FirForm()

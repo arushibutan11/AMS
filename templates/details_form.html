@@ -152,10 +152,11 @@ h2 { text-align: center; }
 <body onload="setreadonly()">
 {% if form.errors %}
     {% for field in form %}
-        {{field.label}}
+        
         {% for error in field.errors %}
+        
             <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
+                <strong>{{field.label}} : {{ error|escape }}</strong>
             </div>
         {% endfor %}
     {% endfor %}
@@ -458,7 +459,9 @@ h2 { text-align: center; }
 </form>
 </div>
 <script>
-
+$(document).ready(function() {
+    $("#table1").hide();
+});
 id_FIRNO.oninput = function () {
     if (this.value.length > 4) {
         this.value = this.value.slice(0,4); 
