@@ -4,6 +4,8 @@ from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 from django.db.models import Q
 import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 # Create your models here.
 SEX_Choices = (
@@ -295,11 +297,11 @@ class details(models.Model):
         auto_choose=True,
         sort=True)
 
-    FIRNO = models.IntegerField()
+    FIRNO = models.PositiveIntegerField( validators=[MaxValueValidator(9999), MinValueValidator(0)])
 
     SECTION = models.ForeignKey(sections)
 
-    TIME_OCC = models.CharField(max_length=15)
+    TIME_OCC = models.CharField(max_length=4)
     TIME_TYPE = models.CharField(max_length=15, choices = TIME_TYPE_CHOICES)
     DATE_OCC = models.DateField('DATE_OCC')
     PLACE_OCC = models.CharField(max_length=140)
@@ -319,12 +321,12 @@ class details(models.Model):
     
     VEHTYPE1 = models.ForeignKey(vehtype1)
     TWW1 = models.CharField(max_length=15, blank =True)
-    RNOV1A = models.CharField(max_length=15, blank =True)
-    RNOV1B = models.CharField(max_length=10, blank =True)
+    RNOV1A = models.CharField(max_length=4, blank =True)
+    RNOV1B = models.CharField(max_length=4, blank =True)
     
     VEHTYPE2 = models.ForeignKey(vehtype2)
     TWW2 = models.CharField(max_length=15, blank =True)
-    RNOV2A = models.CharField(max_length=10, blank =True)
+    RNOV2A = models.CharField(max_length=4, blank =True)
     RNOV2B = models.CharField(max_length=4, blank =True)
     
     SELF_TYPE = models.ForeignKey(self_type, default=0)
@@ -371,7 +373,7 @@ class details(models.Model):
     dri_name = models.CharField(max_length=150,blank=True)
     dri_fath = models.CharField(max_length=150,blank=True)
     dri_sex = models.CharField(max_length=15, choices = SEX_Choices,blank=True)
-    dri_age = models.PositiveIntegerField(blank=True, null = True)
+    dri_age = models.PositiveIntegerField(blank=True,null = True, validators=[MaxValueValidator(99), MinValueValidator(0)])
     dri_add = models.CharField(max_length=150,blank=True)
     dri_arrest = models.CharField(max_length=15,choices=ARRESTED_Choices,blank=True)
     dri_place = models.CharField(max_length=150,blank=True)
@@ -379,7 +381,7 @@ class details(models.Model):
     dri_lic_date_upto = models.DateField(blank=True, null = True)
     dri_lic_status = models.CharField(max_length=15,blank=True)
     
-    REMARK = models.CharField(max_length=300,blank=True)
+    REMARK = models.CharField(max_length=500,blank=True)
     CONFIRM = models.CharField(max_length=15,blank=True)
     LONGITUDE = models.CharField(max_length=15)
     LATITUDE = models.CharField(max_length=15)

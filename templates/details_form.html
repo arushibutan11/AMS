@@ -11,7 +11,13 @@
 <script src="{% static 'fir/js/jquery.formset.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <!--<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>-->
-
+<script>
+function setreadonly() {
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
+}
+</script>
 <style type="text/css">
 
 label.firsttag {
@@ -141,7 +147,7 @@ h2 { text-align: center; }
 </style>
 
 </head>
-<body>
+<body onload="setreadonly()">
 {% if form.errors %}
     {% for field in form %}
         {{field}}
@@ -293,7 +299,7 @@ h2 { text-align: center; }
         <th>Killed- Type</th>
 
       </tr>
-    {{ formkil.management_form }
+    {{ formkil.management_form }}
       {% for k in formkil %}
       <tr  class = "kil-formset">
         
@@ -302,7 +308,6 @@ h2 { text-align: center; }
         <td>{{ k.TYPE }}</td>
       </tr>
       {% endfor %}
-}
     </table>
   </div>
   </div>
@@ -445,6 +450,17 @@ h2 { text-align: center; }
 </form>
 </div>
 <script>
+
+id_FIRNO.oninput = function () {
+    if (this.value.length > 4) {
+        this.value = this.value.slice(0,4); 
+    }
+}
+id_dri_age.oninput = function () {
+    if (this.value.length > 2) {
+        this.value = this.value.slice(0,2); 
+    }
+}
 
 $("#id_CONVERT").change(function () {
     var selection = $("#id_CONVERT option:selected").text();

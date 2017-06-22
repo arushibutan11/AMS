@@ -24,6 +24,7 @@ def create_fir(request):
     if request.method == 'POST':
 
       form = FirForm(request.POST)
+      print request.POST.get("FIRNO")
       injform = InjFormSet(request.POST)
       kilform = KilFormSet(request.POST)
       if form.is_valid():
@@ -36,6 +37,9 @@ def create_fir(request):
             inj = injform.save()
         elif form.data['ACCTYPE'] == 'N':
             fir = form.save()
+        else:
+            fir = form.save()
+
         return HttpResponse('done')
       else:
         
