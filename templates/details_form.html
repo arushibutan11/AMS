@@ -276,9 +276,9 @@ h2 { text-align: center; }
 {{ form.TWW1 }}
 
 <br>
-    <label class="firsttag" >Registration-No. A</label> 
+    <label class="firsttag" id="RNOV1A" >Registration-No. A</label> 
     {{ form.RNOV1A }}
-    <label >Registration-No. B</label> 
+    <label id="RNOV1B" >Registration-No. B</label> 
     {{ form.RNOV1B }}
 
     <label id="route" visible="false">Route No.</label> 
@@ -291,9 +291,9 @@ h2 { text-align: center; }
     <label  class="firsttag">Type </label> 
 {{ form.VEHTYPE2 }}
 <br>
-    <label  class="firsttag" for="regnof">Registration-No. A</label> 
+    <label  class="firsttag" for="regnof"  id="RNOV2A">Registration-No. A</label> 
     {{ form.RNOV2A }}
-    <label for="regnof">Registration-No. B</label> 
+    <label for="regnof"  id="RNOV2B">Registration-No. B</label> 
     {{ form.RNOV2B }}
 
     <label id="Pedestrian" visible="false">Pedestrian</label>
@@ -489,7 +489,7 @@ $("#id_CONVERT").change(function () {
 $("#id_VEHTYPE1").change(function () {
     var selection = $("#id_VEHTYPE1 option:selected").text();
     //alert("you selected" + selection);
-    if (selection=='BUS')
+    if (selection=='BUS DTC')
     {
     
      document.getElementById("route").style.visibility = "visible";
@@ -513,6 +513,21 @@ $("#id_VEHTYPE1").change(function () {
         //$("#id_routeno").attr('disabled', true);
          $("#id_TWW1").hide()
       
+    }
+    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
+    {
+        document.getElementById("RNOV1A").style.visibility = "hidden";
+        document.getElementById("RNOV1B").style.visibility = "hidden";
+        //$("#id_routeno").attr('disabled', true);
+        $("#id_RNOV1A").hide()
+        $("#id_RNOV1B").hide()
+    }
+    else
+    {
+        document.getElementById("RNOV1A").style.visibility = "visible";
+        document.getElementById("RNOV1B").style.visibility = "visible";
+        $("#id_RNOV1A").show(); 
+        $("#id_RNOV1B").show(); 
     }
 
     });
@@ -544,6 +559,21 @@ $("#id_VEHTYPE2").change(function () {
         //$("#id_routeno").attr('disabled', true);
          $("#id_PEDESTRIAN").hide()
       
+    }
+      if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF' || selection=='PASSENGER' || selection=='CYCLE')
+    {
+        document.getElementById("RNOV2A").style.visibility = "hidden";
+        document.getElementById("RNOV2B").style.visibility = "hidden";
+        //$("#id_routeno").attr('disabled', true);
+        $("#id_RNOV2A").hide()
+        $("#id_RNOV2B").hide()
+    }
+    else
+    {
+        document.getElementById("RNOV2A").style.visibility = "visible";
+        document.getElementById("RNOV2B").style.visibility = "visible";
+        $("#id_RNOV2A").show(); 
+        $("#id_RNOV2B").show(); 
     }
 
 
