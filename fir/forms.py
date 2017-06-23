@@ -5,7 +5,7 @@ from .models import details, injured, killed
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
-from django.forms.models import BaseModelFormSet
+from django.forms.models import BaseModelFormSet, inlineformset_factory
 
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
@@ -40,13 +40,14 @@ class FirForm(forms.ModelForm):
         cd = self.cleaned_data
         if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
             self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
+
         LONGITUDE = float (cd.get('LONGITUDE'))
         LATITUDE = float  (cd.get('LATITUDE'))  
         if LATITUDE > 29.0 or LATITUDE <= 28.0:
              self.add_error('LATITUDE', "Check Value of Latitude")
              
         if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
-             self.add_error('LONGITUDE', "Check Value of Longitude") 
+            self.add_error('LONGITUDE', "Check Value of Longitude") 
              
         tim1 = cd.get('TIME_OCC')[:2]
         tim2 = cd.get('TIME_OCC')[-2:]
@@ -75,15 +76,21 @@ class FirForm(forms.ModelForm):
 
 
 
-class InjForm(BaseModelFormSet):
+class InjForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
+    class Meta:
+        model = injured
+        exclude = ('ACCID_ID',)
+    '''def __init__(self, *args, **kwargs):
         super(InjForm, self).__init__(*args, **kwargs)
-        self.queryset = injured.objects.none()
+        self.queryset = injured.objects.none()'''
 
-class KilForm(BaseModelFormSet):
 
-    def __init__(self, *args, **kwargs):
+
+class KilForm(forms.ModelForm):
+    class Meta:
+        model = killed
+        exclude = ('ACCID_ID',)
+    '''def __init__(self, *args, **kwargs):
         super(KilForm, self).__init__(*args, **kwargs)
-        self.queryset = killed.objects.none()
-    
+        self.queryset = killed.objects.none()'''

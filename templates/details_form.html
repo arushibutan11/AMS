@@ -150,6 +150,7 @@ h2 { text-align: center; }
 
 </head>
 <body onload="setreadonly()">
+
 {% if form.errors %}
     {% for field in form %}
         
@@ -171,6 +172,7 @@ h2 { text-align: center; }
 <h1>ACCIDENT REPORT FORM</h1>
 <form name="myForm" action="{% url 'create_fir' %}" method="Post">
 {% csrf_token %}
+    {{ forminj.management_form }}
 <div>
 <label class="firsttag">Accident Id</label>
  {{ form.ACC_ID }} 
@@ -319,7 +321,7 @@ h2 { text-align: center; }
 
       </tr>
       <tr class = "inj-formset">
-    {{ forminj.management_form }}
+
       {% for i in forminj %}
         {% if i.errors %}
             {% for field in i %}
@@ -340,7 +342,7 @@ h2 { text-align: center; }
         <td hidden> {{ i.PS }} </td>
         <td hidden> {{ i.FIRNO }} </td>
         <td hidden> {{ i.YEAR }} </td>
-        <td hidden> {{ i.ACCID_ID }} </td>
+
         <td>{{ i.INJSEX }}</td>
         <td>{{ i.INJAGE }}</td>
         <td>{{ i.INJTYPE }}</td>
@@ -366,7 +368,7 @@ h2 { text-align: center; }
         <td hidden> {{ k.PS }} </td>
         <td hidden> {{ k.FIRNO }} </td>
         <td hidden> {{ k.YEAR }} </td>
-        <td hidden> {{ k.ACCID_ID }} </td>
+
         <td>{{ k.SEX }}</td>
         <td>{{ k.AGE }}</td>
         <td>{{ k.TYPE }}</td>
@@ -471,7 +473,7 @@ h2 { text-align: center; }
 	
 </div>
 
-<input type="submit">
+<input type="submit" class = "formsubmit">
 </form>
 </div>
 <script>
@@ -490,7 +492,7 @@ id_dri_age.oninput = function () {
 $("#id_CONVERT").change(function () {
     var selection = $("#id_CONVERT option:selected").text();
 
-    if(selection=='TRUE')
+    if(selection=='YES')
     {
         document.getElementById("convert_date").style.visibility="visible";
         $("#id_CONVERT_DATE_month").show();
@@ -882,12 +884,12 @@ $('.oneadd').click(function () {
 $('.inj-formset').formset({
     addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
     deleteText: '<span class="zerominus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iACCID_ID, .iYEAR, .iFIRNO'     
+    keepFieldValues: '.iPS, .iYEAR, .iFIRNO'     
 });
 $('.kil-formset').formset({
     addText: '<span class="oneadd table-add glyphicon glyphicon-plus"></span>',
     deleteText: '<span class="oneminus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iACCID_ID, .iYEAR, .iFIRNO'
+    keepFieldValues: '.iPS, .iYEAR, .iFIRNO'
     
     });
 	
@@ -933,7 +935,7 @@ $(document).ready(function() {
   });
 });
 
-$('.zeroadd, .oneadd').click(function () {
+$('.zeroadd, .oneadd, .formsubmit').click(function () {
 
     var ps =  document.getElementById("id_PS").value;
     var firno =  document.getElementById("id_FIRNO").value;
@@ -942,7 +944,6 @@ $('.zeroadd, .oneadd').click(function () {
     var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  firno;
     var yr = document.getElementById("id_DATE_OCC_year").value;
       
-      $('.iACCID_ID').val(id);
       $('.iPS').val(psCode[1]);
       $('.iYEAR').val(yr);
       $('.iFIRNO').val(firno);
