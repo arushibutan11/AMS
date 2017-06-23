@@ -17,6 +17,7 @@ $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
 $('#id_SELF_TYPE').val('19');
+$('#id_TIME_OCC').attr("list","unks");
 }
 
 </script>
@@ -217,6 +218,9 @@ h2 { text-align: center; }
 
 <label class="firsttag">Time </label> 
 {{ form.TIME_OCC }}
+<datalist id="unks">
+  <option value="Unknown">Unknown</option>
+</datalist>
 
 <label>Time Type </label> 
 {{ form.TIME_TYPE }}
