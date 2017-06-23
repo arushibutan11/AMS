@@ -12,7 +12,7 @@ SEX_Choices = (
     ('M','Male'),('F','Female'),
 )
 CONVERT_Choices=(
-    ('T','TRUE'),('F','FALSE'),)
+    ('Y','YES'),('N','NO'),)
 ARRESTED_Choices=(
     ('Y','Yes'),('N','No'),)
 
@@ -383,8 +383,8 @@ class details(models.Model):
     
     REMARK = models.CharField(max_length=500,null=True,blank=True)
     CONFIRM = models.CharField(max_length=15,null=True,blank=True)
-    LONGITUDE = models.CharField(max_length=1)
-    LATITUDE = models.CharField(max_length=15)
+    LONGITUDE = models.CharField(max_length=5)
+    LATITUDE = models.CharField(max_length=5)
     
     CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,blank=True)
     CONVERT_DATE = models.DateField(blank=True, null = True)

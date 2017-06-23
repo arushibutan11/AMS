@@ -41,10 +41,10 @@ class FirForm(forms.ModelForm):
         if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
             self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
             
-        if cd.get('LATITUDE') > 29 or cd.get('LATITUDE') <= 28:
+        if int(cd.get('LATITUDE')) > 29 or int(cd.get('LATITUDE')) < 28:
              self.add_error('LATITUDE', "Check Value of Latitude")
              
-        if cd.get('LONGITUDE') >= 78 or cd.get('LONGITUDE') < 76:
+        if int(cd.get('LONGITUDE')) > 78 or int(cd.get('LONGITUDE')) < 76:
              self.add_error('LONGITUDE', "Check Value of Longitude") 
              
         tim1 = cd.get('TIME_OCC')[:2]
