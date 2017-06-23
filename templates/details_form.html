@@ -901,9 +901,12 @@ $("#id_TIME_OCC").change(function () {
 	else { document.getElementById("id_DAY_NIGHT").value = "Unknown"; }
 	
 	//for timeslot
+	second = selection;
+	second = second.slice(2,4);
 	selection = selection.slice(0,2);
 	selection = parseInt(selection);
-	if( selection >=0 && selection < 1 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
+	if(second >60 && second <= 99 ) { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME"; }
+	else if( selection >=0 && selection < 1 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
 	else if(selection >=1 && selection < 2 ) { document.getElementById("id_TIME_SLOT").value = "0100-0200"; }
 	else if(selection >=2 && selection < 3 ) { document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
 	else if(selection >=3 && selection < 4 ) { document.getElementById("id_TIME_SLOT").value = "0300-0400"; }
