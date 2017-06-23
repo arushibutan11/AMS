@@ -5,7 +5,7 @@ from .models import details, injured, killed
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
-
+from django.forms.models import BaseModelFormSet
 
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
@@ -40,11 +40,12 @@ class FirForm(forms.ModelForm):
         cd = self.cleaned_data
         if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
             self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
-            
-        if cd.get('LATITUDE') > 29 or cd.get('LATITUDE') <= 28:
+        LONGITUDE = float (cd.get('LONGITUDE'))
+        LATITUDE = float  (cd.get('LATITUDE'))  
+        if LATITUDE > 29.0 or LATITUDE <= 28.0:
              self.add_error('LATITUDE', "Check Value of Latitude")
              
-        if cd.get('LONGITUDE') >= 78 or cd.get('LONGITUDE') < 76:
+        if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
              self.add_error('LONGITUDE', "Check Value of Longitude") 
              
         tim1 = cd.get('TIME_OCC')[:2]
@@ -53,32 +54,36 @@ class FirForm(forms.ModelForm):
         tim2 = int(tim2)
         if tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0:
             self.add_error('TIME_OCC', "Enter a valid time")
-        return cd          
-        '''VEHTYPE2 = cd.get('VEHTYPE2')
-        VICTIM = cd.get('VICTIM')
 
-        if VEHTYPE2 == "PEDESTRIAN" and (VICTIM == "VEHICLES" or VICTIM == "SELF" or VICTIM == "PASSENGER" or VICTIM == "SELF/ANIMAL"):
+        VEHTYPE2 = str(cd.get('VEHTYPE2'))        
+        VICTIM = str(cd.get('VICTIM'))
+
+        if ("PEDESTRIAN" in VEHTYPE2) and ("VEHICLES" in VICTIM or "SELF"  in VICTIM or "PASSENGER"  in VICTIM or "SELF/ANIMAL" in VICTIM ):
             self.add_error('VICTIM', "Victim is Pedestrian")        
-        elif VEHTYPE2 == "SELF" and (VICTIM == "PEDESTRIAN" or VICTIM == "PASSENGER" or VICTIM == "VEHICLES" or VICTIM == "VEHICLES/PED"):
+        elif (VEHTYPE2 == "SELF") and ("PEDESTRIAN" in VICTIM or "PASSENGER" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is Self")
-        elif VEHTYPE2 == "ANIMAL" and (VICTIM == "SELF" or VICTIM == "PEDESTRIAN" or VICTIM == "PASSENGER" or VICTIM == "VEHICLES" or VICTIM == "VEHICLES/PED"):
+        elif ("ANIMAL" in VEHTYPE2) and (VICTIM == "SELF" or "PEDESTRIAN" in VICTIM or "PASSENGER" in VICTIM or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is self/animal")
-        elif VEHTYPE2 == "PASSENGER" and (VICTIM == "SELF" or VICTIM == "PEDESTRIAN" or VICTIM == "SELF/ANIMAL" or VICTIM == "VEHICLES" or VICTIM == "VEHICLES/PED"):
+        elif ("PASSENGER" in VEHTYPE2) and ("SELF" in VICTIM  or "PEDESTRIAN" in VICTIM  or "SELF/ANIMAL" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is passenger")
-        elif (VEHTYPE2 != "SELF" and VEHTYPE2 != "PASSENGER" and VEHTYPE2 != "PEDESTRIAN" and VEHTYPE2 != "ANIMAL") and (VICTIM == "PEDESTRIAN" or VICTIM == "PASSENGER" or VICTIM == "SELF" or VICTIM == "SELF/ANIMAL"):
-            self.add_error('VICTIM', "Victim is vehicle")'''
+        elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
+            self.add_error('VICTIM', "Victim is vehicle")       
+        return cd          
 
 
 
 
 
-class InjForm(forms.ModelForm):
-	class Meta:
- 		model = injured
- 		fields = ['INJSEX', 'INJAGE', 'INJTYPE', 'PS', 'YEAR', 'ACCID_ID', 'FIRNO']
 
-class KilForm(forms.ModelForm):
-	class Meta:
- 		model = killed
- 		fields = ['SEX', 'AGE', 'TYPE', 'PS', 'YEAR', 'ACCID_ID', 'FIRNO']
+class InjForm(BaseModelFormSet):
+
+    def __init__(self, *args, **kwargs):
+        super(InjForm, self).__init__(*args, **kwargs)
+        self.queryset = injured.objects.none()
+
+class KilForm(BaseModelFormSet):
+
+    def __init__(self, *args, **kwargs):
+        super(KilForm, self).__init__(*args, **kwargs)
+        self.queryset = killed.objects.none()
     

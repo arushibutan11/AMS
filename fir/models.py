@@ -383,7 +383,7 @@ class details(models.Model):
     
     REMARK = models.CharField(max_length=500,null=True,blank=True)
     CONFIRM = models.CharField(max_length=15,null=True,blank=True)
-    LONGITUDE = models.CharField(max_length=1)
+    LONGITUDE = models.CharField(max_length=15)
     LATITUDE = models.CharField(max_length=15)
     
     CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,blank=True)

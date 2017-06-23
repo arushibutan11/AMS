@@ -321,6 +321,22 @@ h2 { text-align: center; }
       <tr class = "inj-formset">
     {{ forminj.management_form }}
       {% for i in forminj %}
+        {% if i.errors %}
+            {% for field in i %}
+        
+        {% for error in field.errors %}
+        
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+    {% endif %}
         <td hidden> {{ i.PS }} </td>
         <td hidden> {{ i.FIRNO }} </td>
         <td hidden> {{ i.YEAR }} </td>
@@ -866,11 +882,12 @@ $('.oneadd').click(function () {
 $('.inj-formset').formset({
     addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
     deleteText: '<span class="zerominus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS'     });
+    keepFieldValues: '.iPS, .iACCID_ID, .iYEAR, .iFIRNO'     
+});
 $('.kil-formset').formset({
     addText: '<span class="oneadd table-add glyphicon glyphicon-plus"></span>',
     deleteText: '<span class="oneminus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS'
+    keepFieldValues: '.iPS, .iACCID_ID, .iYEAR, .iFIRNO'
     
     });
 	
