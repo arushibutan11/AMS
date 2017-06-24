@@ -40,21 +40,23 @@ class FirForm(forms.ModelForm):
         cd = self.cleaned_data
         if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
             self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
-        if cd.get('LONGITUDE') != '' or cd.get('LONGITUDE') != '':
+        if cd.get('LONGITUDE') != '': 
             LONGITUDE = float (cd.get('LONGITUDE'))
+            if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
+                self.add_error('LONGITUDE', "Check Value of Longitude")             
+        if cd.get('LONGITUDE') != '':
             LATITUDE = float  (cd.get('LATITUDE'))  
             if LATITUDE > 29.0 or LATITUDE <= 28.0:
                 self.add_error('LATITUDE', "Check Value of Latitude")             
-            if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
-                self.add_error('LONGITUDE', "Check Value of Longitude") 
-             
-        tim1 = cd.get('TIME_OCC')[:2]
-        tim2 = cd.get('TIME_OCC')[-2:]
-        tim1 = int(tim1)
-        tim2 = int(tim2)
 
-        if cd.get('TIME_OCC') is not "UNKNOWN" and (tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0):
-            self.add_error('TIME_OCC', "Enter a valid time")
+             
+        if cd.get('TIME_OCC') is not "UNK":
+            tim1 = cd.get('TIME_OCC')[:2]
+            tim2 = cd.get('TIME_OCC')[-2:]
+            tim1 = int(tim1)
+            tim2 = int(tim2)
+            if (tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0):
+                self.add_error('TIME_OCC', "Enter a valid time")
 
         VEHTYPE2 = str(cd.get('VEHTYPE2'))        
         VICTIM = str(cd.get('VICTIM'))

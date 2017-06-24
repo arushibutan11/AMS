@@ -33,8 +33,8 @@ def create_fir2(request):
     if request.method == 'POST':
 
       form = FirForm(request.POST)
-      injform = InjInlineFormSet(request.POST)
-      kilform = KilInlineFormSet(request.POST)
+      injform = InjInlineFormSet(request.POST, prefix = 'injured')
+      kilform = KilInlineFormSet(request.POST, prefix = 'killed')
       if form.is_valid():
         fir = form.save()
         injform = InjInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'injured')

@@ -916,7 +916,9 @@ $("#id_TIME_OCC").change(function () {
 	second = second.slice(2,4);
 	selection = selection.slice(0,2);
 	selection = parseInt(selection);
-	if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";	}
+	if(second >=60 && second <= 99 ) { 
+    document.getElementById("id_TIME_OCC").value = "UNK";	
+    document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";	}
 	else if( selection >=0 && selection < 1 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
 	else if(selection >=1 && selection < 2 ) { document.getElementById("id_TIME_SLOT").value = "0100-0200"; }
 	else if(selection >=2 && selection < 3 ) { document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
@@ -942,7 +944,7 @@ $("#id_TIME_OCC").change(function () {
 	else if(selection >=22 && selection < 23 ) { document.getElementById("id_TIME_SLOT").value = "2200-2300"; }
 	else if(selection >=23 && selection < 24 ) { document.getElementById("id_TIME_SLOT").value = "2300-2400"; }
 	else { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";
-document.getElementById("id_TIME_OCC").value = "UNKNOWN";	}
+document.getElementById("id_TIME_OCC").value = "UNK";	}
 
      });
 $(document).ready(function() {
