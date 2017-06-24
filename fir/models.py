@@ -27,7 +27,10 @@ INJ_TYPE_CHOICES = (
 TIME_TYPE_CHOICES = (
     ('IN FIR','IN FIR'), ('APPROX.','APPROX.'),
 )
-
+CONVERT_STAT_Choices = (
+    ('NO INFORMATION','NO INFORMATION'),('PENDING INVESTIGATION','PENDING INVESTIGATION'),('PENDING TRIAL', 'PENDING TRIAL'),
+    ('CONVICTED','CONVICTED'),('ACQUITTED','ACQUITTED'),('CANCELLED', 'CANCELLED'),
+)
 
 class circles(models.Model):
     DISTNAM = models.CharField(max_length=50)
@@ -301,10 +304,10 @@ class details(models.Model):
 
     SECTION = models.ForeignKey(sections)
 
-    TIME_OCC = models.CharField(max_length=4,null=True,blank=True)
+    TIME_OCC = models.CharField(max_length=4,default='',blank=True)
     TIME_TYPE = models.CharField(max_length=15, choices = TIME_TYPE_CHOICES)
     DATE_OCC = models.DateField('DATE_OCC')
-    PLACE_OCC = models.CharField(max_length=140)
+    PLACE_OCC = models.CharField(max_length=140,blank=True, default='')
 
     ROAD = ChainedForeignKey(
         roads,
@@ -316,41 +319,41 @@ class details(models.Model):
 
     ROADNAME = models.CharField(max_length=150)
     
-    LOCATION = models.ForeignKey(location)
-    CATEGORY = models.CharField(max_length=140,null=True,blank=True)
+    LOCATION = models.ForeignKey(location, blank=True,default = 0)
+    CATEGORY = models.CharField(max_length=140,blank=True, default =0)
     
     VEHTYPE1 = models.ForeignKey(vehtype1)
-    TWW1 = models.CharField(max_length=15,null=True,blank=True)
-    RNOV1A = models.CharField(max_length=4, null=True,blank=True)
-    RNOV1B = models.CharField(max_length=4,null=True,blank=True)
+    TWW1 = models.CharField(max_length=15,blank=True, default=0)
+    RNOV1A = models.CharField(max_length=4, default=0, blank=True)
+    RNOV1B = models.CharField(max_length=4, default=0, blank=True)
     
     VEHTYPE2 = models.ForeignKey(vehtype2)
-    TWW2 = models.CharField(max_length=15, null=True,blank=True)
-    RNOV2A = models.CharField(max_length=4, null =True,blank=True)
-    RNOV2B = models.CharField(max_length=4, null =True,blank=True)
+    TWW2 = models.CharField(max_length=15, default=0, blank=True)
+    RNOV2A = models.CharField(max_length=4, default=0, blank=True)
+    RNOV2B = models.CharField(max_length=4, default=0, blank=True)
     
-    SELF_TYPE = models.ForeignKey(self_type, default=0,null=True)
+    SELF_TYPE = models.ForeignKey(self_type, default=0,blank=True)
     
-    INJURED = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    INJMALE = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    INJFEMALE = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    INJBOY = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    INJGIRL = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    KILLED = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    KILMALE = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    KILFEMALE = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    KILBOY = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    KILGIRL = models.PositiveIntegerField(default = 0, null = True,blank=True)
-    PEDESTRIAN = models.PositiveIntegerField(default = 0, null = True,blank=True)
+    INJURED = models.PositiveIntegerField(default = 0, blank=True)
+    INJMALE = models.PositiveIntegerField(default = 0, blank=True)
+    INJFEMALE = models.PositiveIntegerField(default = 0, blank=True)
+    INJBOY = models.PositiveIntegerField(default = 0, blank=True)
+    INJGIRL = models.PositiveIntegerField(default = 0,blank=True)
+    KILLED = models.PositiveIntegerField(default = 0,blank=True)
+    KILMALE = models.PositiveIntegerField(default = 0,blank=True)
+    KILFEMALE = models.PositiveIntegerField(default = 0,blank=True)
+    KILBOY = models.PositiveIntegerField(default = 0,blank=True)
+    KILGIRL = models.PositiveIntegerField(default = 0,blank=True)
+    PEDESTRIAN = models.PositiveIntegerField(default = 0,blank=True)
     
-    ACCTYPE = models.CharField(max_length=20,null=True,blank=True)
+    ACCTYPE = models.CharField(max_length=20,blank=True)
 
-    ACCID_TYPE = models.ForeignKey(accid_type)
+    ACCID_TYPE = models.ForeignKey(accid_type, default = 0)
 
-    VICTIM = models.CharField(max_length=100,null=True)
+    VICTIM = models.CharField(max_length=100,blank = True, default = 0)
 
-    DUPL = models.CharField(max_length=15, null =True,blank=True)
-    PENDING = models.CharField(max_length=15,blank=True,null=True)
+    DUPL = models.CharField(max_length=15, blank=True, default = 0)
+    PENDING = models.CharField(max_length=15,blank=True,default = 0)
 
     DAY_NIGHT = models.CharField(max_length=15)
     YEAR = models.PositiveIntegerField()
@@ -358,53 +361,53 @@ class details(models.Model):
     MONTH = models.CharField(max_length=15)
     FN = models.CharField(max_length=15)
 
-    ACCAGE = models.CharField(max_length=15, null=True,blank=True)
-    ACCSEX = models.CharField(max_length=15, choices = SEX_Choices, null=True,blank=True)
+    ACCAGE = models.CharField(max_length=15, blank=True,default=0)
+    ACCSEX = models.CharField(max_length=15, choices = SEX_Choices, blank=True, default = '')
     ACCDRUNK = models.BooleanField()
 
-    Intersection = models.CharField(max_length=150, null=True,blank=True)
-    routeno = models.CharField(max_length=15,null=True,blank=True)
-    case_status = models.CharField(max_length=15,null=True,blank=True)
-    convert_case = models.CharField(max_length=15,null=True,blank=True)
+    Intersection = models.CharField(max_length=150, blank=True, default = '')
+    routeno = models.CharField(max_length=15, default = 0, blank=True)
+    case_status = models.CharField(max_length=15, blank=True, choices = CONVERT_STAT_Choices, default = '')
+    convert_case = models.CharField(max_length=15,blank=True, default = '')
     
-    BRIEF_FACTS = models.CharField(max_length=500,null=True,blank=True)
+    BRIEF_FACTS = models.CharField(max_length=500,blank=True, default = '')
     
-    dri_lic_no = models.CharField(max_length=150,blank=True,null=True)
-    dri_name = models.CharField(max_length=150,null=True,blank=True)
-    dri_fath = models.CharField(max_length=150,null=True,blank=True)
-    dri_sex = models.CharField(max_length=15, choices = SEX_Choices,null=True,blank=True)
-    dri_age = models.PositiveIntegerField(null = True, validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True)
-    dri_add = models.CharField(max_length=150,null=True,blank=True)
-    dri_arrest = models.CharField(max_length=15,choices=ARRESTED_Choices,null=True,blank=True)
-    dri_place = models.CharField(max_length=150,null=True,blank=True)
-    dri_lic_date_issu = models.DateField(null = True,blank=True)
-    dri_lic_date_upto = models.DateField(null = True,blank=True)
-    dri_lic_status = models.CharField(max_length=15,null=True,blank=True)
+    dri_lic_no = models.CharField(max_length=150,blank=True, default = '')
+    dri_name = models.CharField(max_length=150,blank=True, default = '')
+    dri_fath = models.CharField(max_length=150,blank=True, default = '')
+    dri_sex = models.CharField(max_length=15, choices = SEX_Choices,blank=True,default='')
+    dri_age = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0)
+    dri_add = models.CharField(max_length=150,blank=True, default = '')
+    dri_arrest = models.CharField(max_length=15,choices=ARRESTED_Choices,blank=True, default = '')
+    dri_place = models.CharField(max_length=150,blank=True, default = '')
+    dri_lic_date_issu = models.DateField(null=True)
+    dri_lic_date_upto = models.DateField(null=True)
+    dri_lic_status = models.CharField(max_length=15,blank=True, default = '')
     
-    REMARK = models.CharField(max_length=500,null=True,blank=True)
-    CONFIRM = models.CharField(max_length=15,null=True,blank=True)
-    LONGITUDE = models.CharField(max_length=15)
-    LATITUDE = models.CharField(max_length=15)
+    REMARK = models.CharField(max_length=500, default = '', blank=True)
+    CONFIRM = models.CharField(max_length=15, default = '' ,blank=True)
+    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '')
+    LATITUDE = models.CharField(max_length=15, blank = True, default = '')
 
 
     
-    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,blank=True)
-    CONVERT_DATE = models.DateField(blank=True, null = True)
-    CN_DT = models.CharField(max_length=150,null=True,blank=True)
+    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,default = 'No')
+    CONVERT_DATE = models.DateField(null=True)
+    CN_DT = models.CharField(max_length=150,blank=True, default = 0)
     
-    CONVERT_FN = models.CharField(max_length=150,null=True,blank=True)
-    BUS_NO = models.CharField(max_length=15,null=True,blank=True)
-    BLACK_SPOT = models.CharField(max_length=15,null=True,blank=True)
-    BLACK_SPOT_NO = models.CharField(max_length=15,null=True,blank=True)
-    FOR_BLK = models.CharField(max_length=15,null=True,blank=True)
-    STATUS = models.CharField(max_length=15,null=True,blank=True)
-    F_STATUS = models.CharField(max_length=15,null=True,blank=True)
-    dri_add1 = models.CharField(max_length=15,null=True,blank=True)
-    RIDER_HELMET = models.CharField(max_length=15,null=True,blank=True)
-    PILLION_HELMET = models.CharField(max_length=15,null=True,blank=True)
-    STATE = models.CharField(max_length=15,null=True,blank=True)
-    SCANNED = models.CharField(max_length=15,null=True,blank=True)
-    HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,null=True,blank=True)
+    CONVERT_FN = models.CharField(max_length=150,blank=True, default = 0)
+    BUS_NO = models.CharField(max_length=15, default = 0, blank=True)
+    BLACK_SPOT = models.CharField(max_length=15, default = '', blank=True)
+    BLACK_SPOT_NO = models.CharField(max_length=15,default=0,blank=True)
+    FOR_BLK = models.CharField(max_length=15,default='',blank=True)
+    STATUS = models.CharField(max_length=15,default='',blank=True)
+    F_STATUS = models.CharField(max_length=15,default='',blank=True)
+    dri_add1 = models.CharField(max_length=15,default='',blank=True)
+    RIDER_HELMET = models.CharField(max_length=15,default='',blank=True)
+    PILLION_HELMET = models.CharField(max_length=15,default='',blank=True)
+    STATE = models.CharField(max_length=15,default='',blank=True)
+    SCANNED = models.CharField(max_length=15,default='',blank=True)
+    HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)
 
 class injured(models.Model):
     PS = models.CharField(max_length=5)
