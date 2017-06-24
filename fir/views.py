@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from django.forms.formsets import formset_factory
 from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
+from django.db.models import Q
 import json
 
 def create_fir2(request):    
@@ -36,114 +37,97 @@ def create_fir2(request):
       kilform = KilInlineFormSet(request.POST)
       if form.is_valid():
         fir = form.save()
-        injform = InjInlineFormSet(request.POST, request.FILES, instance=fir)
-        kilform = KilInlineFormSet(request.POST, request.FILES, instance=fir)
+        injform = InjInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'injured')
+        kilform = KilInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'killed')
+        cd = form.cleaned_data
+        firid = str(cd.get('ACC_ID'))
 
-        CNTM = 0
-        CNTF = 0
-        CNTB = 0
-        CNTG = 0
-        CNTMI = 0
-        CNTFI = 0
-        CNTBI = 0
-        CNTGI = 0
-
-        if form.data['ACCTYPE'] == 'F' and kilform.is_valid():
-
-            for k in kilform:
-              kd = k.cleaned_data
-              sex = kd.get('SEX')
-              age = kd.get('AGE')
-
-              if (sex == "M") and (age == "<10"):
-                CNTB = CNTB + 1
-              elif (sex == "F") and (age == "<10"):
-                CNTG = CNTG + 1
-              elif (sex == "M"):
-                CNTM = CNTM + 1
-              elif (sex == "F"):
-                CNTF = CNTF + 1
-            KILLED =  CNTB + CNTG + CNTM + CNTF
-            fir.KILLED = KILLED
-            fir.KILMALE = CNTM
-            fir.KILFEMALE = CNTF
-            fir.KILBOY = CNTB
-            fir.KILGIRL = CNTG
+        if form.data['ACCTYPE'] == 'F':
+          if kilform.is_valid():
             kil = kilform.save()
-
-
+            count_kil(firid)
             sec = form.data['SECTION']
             sec_obj = sections.objects.get(pk = sec)
             
-            if ('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL) and injform.is_valid():
-              for k in injform:
-                kd = k.cleaned_data
-                sex = kd.get('INJSEX')
-                age = kd.get('INJAGE')
-                if (sex == "M") and (age == "<10"):
-                  CNTBI = CNTBI + 1
-                elif (sex == "F") and (age == "<10"):
-                  CNTGI = CNTGI + 1
-                elif (sex == "M"):
-                  CNTMI = CNTMI + 1
-                elif (sex == "F"):
-                  CNTFI = CNTFI + 1
+            if ('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
+              if injform.is_valid():
+                inj = injform.save()
+                count_inj(firid)
+              #Injform is invalid and Kilform is valid
+              else:
+                return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
+          else:
+            #If Kilform is invalid
+            return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
-              INJURED =  CNTBI + CNTGI + CNTMI + CNTFI
-              fir.INJURED = INJURED
-              fir.INJMALE = CNTMI
-              fir.INJFEMALE = CNTFI
-              fir.INJBOY = CNTBI
-              fir.INJGIRL = CNTGI            
-              inj = injform.save()
-
-            fir.save()
-
-
-        elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G') and injform.is_valid():
-            CNTB = 0
-            CNTG = 0
-            CNTF = 0
-            CNTM = 0
-            for k in injform:
-              kd = k.cleaned_data
-              sex = kd.get('INJSEX')
-              age = kd.get('INJAGE')
-              if (sex == "M") and (age == "<10"):
-                CNTB = CNTB + 1
-              elif (sex == "F") and (age == "<10"):
-                CNTG = CNTG + 1
-              elif (sex == "M"):
-                CNTM = CNTM + 1
-              elif (sex == "F"):
-                CNTF = CNTF + 1
-
-              INJURED =  CNTB + CNTG + CNTM + CNTF
-              fir.INJURED = INJURED
-              fir.INJMALE = CNTM
-              fir.INJFEMALE = CNTF
-              fir.INJBOY = CNTB
-              fir.INJGIRL = CNTG            
-            fir.save()           
+        elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G'):
+          if injform.is_valid():
+            count_inj(firid)          
             inj = injform.save()
+          else: 
+            # If Injform is invalid
+            return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
         elif form.data['ACCTYPE'] == 'N':
-            fir = form.save()
+            pass
 
         else:
             return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
         return HttpResponse('done')
       else:
-        
-        #return HttpResponse('validation done')
+        #if main form is not Valid
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
+    #If method is not POST
     else:
         form = FirForm()
-        injform = InjInlineFormSet()
-        kilform = KilInlineFormSet()
+        injform = InjInlineFormSet(prefix = 'injured')
+        kilform = KilInlineFormSet(prefix = 'killed')
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
+
+
+def count_inj(firid):
+    is_fir = Q(ACCID_ID = firid)
+    is_male = Q(INJSEX = "F")
+    is_female = Q(INJSEX = "M")
+    is_minor = Q(INJAGE = "<10")
+    CNTB = injured.objects.filter(is_fir & is_male & is_minor).count()
+    CNTG = injured.objects.filter(is_fir & is_female & is_minor).count()
+    CNTM = injured.objects.filter(is_fir & is_male & ~(is_minor)).count()
+    CNTF = injured.objects.filter(is_fir & is_female & ~(is_minor)).count()
+    INJURED = CNTB + CNTG + CNTM + CNTF
+    acc = details.objects.get(pk = firid)
+    acc.INJURED = INJURED
+    acc.INJMALE = CNTM
+    acc.INJFEMALE = CNTF
+    acc.INJBOY = CNTB
+    acc.INJGIRL = CNTG
+    if (acc.VEHTYPE2_id == "PED"):
+      acc.PEDESTRIAN = acc.PEDESTRIAN +  INJURED 
+    acc.save()
+
+def count_kil(firid):
+    is_fir = Q(ACCID_ID = firid)
+    is_male = Q(SEX = "M")
+    is_female = Q(SEX = "F")
+    is_minor = Q(AGE = "<10")
+    CNTB = killed.objects.filter(is_fir & is_male & is_minor).count()
+    CNTG = killed.objects.filter(is_fir & is_female & is_minor).count()
+    CNTM = killed.objects.filter(is_fir & is_male & ~(is_minor)).count()
+    CNTF = killed.objects.filter(is_fir & is_female & ~(is_minor)).count()
+    KILLED = CNTB + CNTG + CNTM + CNTF
+    acc = details.objects.get(pk = firid)
+    acc.KILLED = KILLED
+    acc.KILMALE = CNTM
+    acc.KILFEMALE = CNTF
+    acc.KILBOY = CNTB
+    acc.KILGIRL = CNTG
+    if (acc.VEHTYPE2_id == "PED"):
+      acc.PEDESTRIAN = KILLED 
+    acc.save() 
+
+
 @permission_classes((permissions.AllowAny,))
 def getcircleinfo(request):
   

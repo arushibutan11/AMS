@@ -391,7 +391,7 @@ class details(models.Model):
 
 
     
-    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,default = 'No')
+    CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,default = 'N')
     CONVERT_DATE = models.DateField(null=True)
     CN_DT = models.CharField(max_length=150,blank=True, default = 0)
     

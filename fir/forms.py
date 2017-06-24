@@ -83,6 +83,7 @@ class InjForm(forms.ModelForm):
     '''def __init__(self, *args, **kwargs):
         super(InjForm, self).__init__(*args, **kwargs)
         self.queryset = injured.objects.none()'''
+   
 
 
 

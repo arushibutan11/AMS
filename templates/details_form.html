@@ -2,13 +2,16 @@
 <html>  
 <head>
  {% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
+<script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
-<script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
-<script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
-<script src="{% static 'fir/js/jquery.formset.js' %}"></script>
-<link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
+
+
 
 <script>
 function setreadonly() {
@@ -42,11 +45,11 @@ select {
     padding: 3px;
 }
 
-/*div#table2 {
+#id_CONVERT_DATE_month,#id_CONVERT_DATE_day,#id_CONVERT_DATE_year,#convert_date {
     display: none;
     
 }
-div#table1 {
+/*div#table1 {
     display: none;
 }*/
 
@@ -305,8 +308,8 @@ h2 { text-align: center; }
     <label for="regnof"  id="RNOV2B">Registration-No. B</label> 
     {{ form.RNOV2B }}
 
-    <label id="Pedestrian" visible="false">Pedestrian</label>
-    {{ form.PEDESTRIAN }}
+
+    {{ form.PEDESTRIAN.as_hidden }}
 
     <!--<label for="board>Boarding/De-boarding</label> -->
     <label id="self_type" visible="false">Self Type</label>
@@ -481,6 +484,9 @@ h2 { text-align: center; }
 <input type="submit" class = "formsubmit">
 </form>
 </div>
+
+
+<script src="{% static 'fir/js/jquery.formset.js' %}"></script>
 <script>
 
 id_FIRNO.oninput = function () {
@@ -499,14 +505,14 @@ $("#id_CONVERT").change(function () {
 
     if(selection=='YES')
     {
-        document.getElementById("convert_date").style.visibility="visible";
+        $("#convert_date").show();
         $("#id_CONVERT_DATE_month").show();
          $("#id_CONVERT_DATE_day").show();
           $("#id_CONVERT_DATE_year").show();
     }
-    else
+    else if (selection=='NO')
    {
-      document.getElementById("convert_date").style.visibility="hidden";
+      $("#convert_date").hide();
        $("#id_CONVERT_DATE_month").hide();
        $("#id_CONVERT_DATE_day").hide();
        $("#id_CONVERT_DATE_year").hide();
@@ -576,7 +582,7 @@ $("#id_VEHTYPE2").change(function () {
          $("#id_SELF_TYPE").hide()
       
     }
-     if (selection=='PEDESTRIAN')
+     /*if (selection=='PEDESTRIAN')
     {
      document.getElementById("Pedestrian").style.visibility = "visible";
     $("#id_PEDESTRIAN").show();
@@ -588,7 +594,7 @@ $("#id_VEHTYPE2").change(function () {
         //$("#id_routeno").attr('disabled', true);
          $("#id_PEDESTRIAN").hide()
       
-    }
+    }*/
       if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF' || selection=='PASSENGER' || selection=='CYCLE')
     {
         document.getElementById("RNOV2A").style.visibility = "hidden";
@@ -626,6 +632,7 @@ $("#id_SELF_TYPE").change(function () {
 
 
 /*CIRCLE*/
+
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
  
@@ -889,12 +896,14 @@ $('.oneadd').click(function () {
 $('.inj-formset').formset({
     addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
     deleteText: '<span class="zerominus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iYEAR, .iFIRNO'     
+    keepFieldValues: '.iPS, .iYEAR, .iFIRNO',
+    prefix: 'injured'     
 });
 $('.kil-formset').formset({
     addText: '<span class="oneadd table-add glyphicon glyphicon-plus"></span>',
     deleteText: '<span class="oneminus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iYEAR, .iFIRNO'
+    keepFieldValues: '.iPS, .iYEAR, .iFIRNO',
+    prefix: 'killed'
     
     });
 	
@@ -960,6 +969,8 @@ $('.zeroadd, .oneadd, .formsubmit').click(function () {
     
     
     });
+
+
 
 </script>
 </body>
