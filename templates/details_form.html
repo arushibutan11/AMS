@@ -20,7 +20,6 @@ $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
 $('#id_SELF_TYPE').val('0');
-$('#id_TIME_OCC').attr("list","unks");
 
 }
 
@@ -222,9 +221,7 @@ h2 { text-align: center; }
 
 <label class="firsttag">Time </label> 
 {{ form.TIME_OCC }}
-<datalist id="unks">
-  <option value="Unknown">Unknown</option>
-</datalist>
+
 
 <label>Time Type </label> 
 {{ form.TIME_TYPE }}
@@ -919,7 +916,7 @@ $("#id_TIME_OCC").change(function () {
 	second = second.slice(2,4);
 	selection = selection.slice(0,2);
 	selection = parseInt(selection);
-	if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME"; }
+	if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";	}
 	else if( selection >=0 && selection < 1 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
 	else if(selection >=1 && selection < 2 ) { document.getElementById("id_TIME_SLOT").value = "0100-0200"; }
 	else if(selection >=2 && selection < 3 ) { document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
@@ -944,7 +941,8 @@ $("#id_TIME_OCC").change(function () {
 	else if(selection >=21 && selection < 22 ) { document.getElementById("id_TIME_SLOT").value = "2100-2200"; }
 	else if(selection >=22 && selection < 23 ) { document.getElementById("id_TIME_SLOT").value = "2200-2300"; }
 	else if(selection >=23 && selection < 24 ) { document.getElementById("id_TIME_SLOT").value = "2300-2400"; }
-	else { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME"; }
+	else { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";
+document.getElementById("id_TIME_OCC").value = "UNKNOWN";	}
 
      });
 $(document).ready(function() {

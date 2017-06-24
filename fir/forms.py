@@ -52,7 +52,8 @@ class FirForm(forms.ModelForm):
         tim2 = cd.get('TIME_OCC')[-2:]
         tim1 = int(tim1)
         tim2 = int(tim2)
-        if tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0:
+
+        if cd.get('TIME_OCC') is not "UNKNOWN" and (tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0):
             self.add_error('TIME_OCC', "Enter a valid time")
 
         VEHTYPE2 = str(cd.get('VEHTYPE2'))        
