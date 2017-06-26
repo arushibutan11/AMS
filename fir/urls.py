@@ -8,7 +8,7 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
+    url(r'^home$', views.home, name='home'),
     url(r'^$', views.create_fir2, name='create_fir'),
     url(r'^getcircleinfo$', views.getcircleinfo, name='getcircleinfo'),
     url(r'^getsection$', views.getsection, name='getsection'),
@@ -16,5 +16,5 @@ urlpatterns = [
     url(r'^getacctype$', views.getacctype, name='getacctype'),
     url(r'^signup/$', views.signup, name='signup'),
    	url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
-    url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html', 'next_page': '/'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
 ]

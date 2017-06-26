@@ -1,12 +1,105 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <style type="text/css">
+  
+ 
+div#menu {
+    text-align: center;
+}
+  
+h1, h2 {
+text-align:center; }
+    
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+}
+  input {
+    background-color: white
+    color: white;
+    margin: 5px 0 5px 3px;
+    padding: 3px;
+}
+div#formbox {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    display: inline-block;
+  
+}
+label {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: 400;
+}
+input[type="submit"],
+input[type="button"]{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background: #2196F3;
+    border-bottom: 2px solid #30C29E;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;    
+    color: #fff;
+}
+input[type="text"],
+{
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    background: #fff;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+}
 
-{% block title %}Login{% endblock %}
 
-{% block content %}
+</style>
+    <meta charset="utf-8">
+    <title>{% block title %}Accident Monitoring System{% endblock %}</title>
+  </head>
+  <body>
+    <header>
+      <h1>Delhi Traffic Police</h1>
+      {% if user.is_authenticated %}
+        <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
+      {% else %}
+        <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> <div>
+      {% endif %}
+      <hr>
+    </header>
+    <main>
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+<div id="formbox">
+{% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+<br>
     <button type="submit">Login</button>
+
+</div>
   </form>
-{% endblock %}
+    </main>
+  </body>
+</html>
+

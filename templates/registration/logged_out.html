@@ -1,9 +1,37 @@
-{% extends 'base.html' %}
-
-{% block title %}See you!{% endblock %}
-
-{% block content %}
-  <h2>Logged out</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <style type="text/css">
+  div#menu {
+    text-align: center;
+}
+  
+h1, h2, p {
+text-align:center; }
+  
+  </style>
+    <meta charset="utf-8">
+    <title>{% block title %}Accident Monitoring System{% endblock %}</title>
+  </head>
+  <body>
+    <header>
+      <h1>Delhi Traffic Police</h1>
+      {% if user.is_authenticated %}
+       <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
+      {% else %}
+       <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> </div>
+      {% endif %}
+      <hr>
+    </header>
+    <main>
+<h2>Logged out</h2>
   <p>You have been successfully logged out.</p>
   <p><a href="{% url 'login' %}">Log in</a> again.</p>
-{% endblock %}
+	  
+    </main>
+  </body>
+</html>
+
+
+
+  

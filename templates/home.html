@@ -1,5 +1,56 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <style type="text/css">
+  
 
-{% block content %}
-  <h2>Welcome, {{ user.circle }}!</h2>
-{% endblock %}
+main {
+    text-align: -WEBKIT-CENTER;
+}
+  div#menu {
+    text-align: center;
+}
+  
+h1, h2 {
+text-align:center; }
+
+.box {
+    width: 200px;
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    border: 2px solid #a1a1ab;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+  
+  </style>
+    <meta charset="utf-8">
+    <title>{% block title %}Accident Monitoring System{% endblock %}</title>
+  </head>
+  <body>
+    <header>
+      <h1>Delhi Traffic Police</h1>
+      {% if user.is_authenticated %}
+       <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
+      {% else %}
+       <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> </div>
+      {% endif %}
+      <hr>
+    </header>
+    <main>
+      <h2>Welcome {{ user.username }}!</h2>
+	  
+	  <div class="box"><a href="http://localhost:8000/fir">Add an Accident Report</a></div>
+	  <div class="box">View Analysis and Reports</div>
+	  <div class="box">Edit a Report</div>
+
+	  
+    </main>
+  </body>
+</html>
+
+
