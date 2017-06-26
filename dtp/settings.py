@@ -49,8 +49,8 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'django.middleware.clickjacking.XFrameOptionsMiddleware', ]
+
 
 ROOT_URLCONF = 'dtp.urls'
 
@@ -131,3 +131,4 @@ STATIC_URL = '/static/'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
+GOOGLE_RECAPTCHA_SECRET_KEY = '6Lfd8iYUAAAAAGCC-LXkYded7hMrhLB2KJ65XDsD'

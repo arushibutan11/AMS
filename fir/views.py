@@ -21,6 +21,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .models import profile
+import urllib
+import urllib2
+from django.conf import settings
+from django.contrib import messages
 
 
 
@@ -28,17 +32,33 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.refresh_from_db() 
-            user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
-            user.profile.emp_id = form.cleaned_data.get('emp_id')
-            user.profile.circle = form.cleaned_data.get('circle')
-            user.profile.designation = form.cleaned_data.get('designation')
-            user.save()
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('home')  
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            url = 'https://www.google.com/recaptcha/api/siteverify'
+            values = {
+                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                'response': recaptcha_response
+            }
+            data = urllib.urlencode(values)
+            req = urllib2.Request(url, data)
+            response = urllib2.urlopen(req)
+            result = json.load(response)
+            ''' End reCAPTCHA validation '''
+
+            if result['success']:
+                user = form.save()
+                user.refresh_from_db() 
+                user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
+                user.profile.emp_id = form.cleaned_data.get('emp_id')
+                user.profile.circle = form.cleaned_data.get('circle')
+                user.profile.designation = form.cleaned_data.get('designation')
+                user.save()
+                raw_password = form.cleaned_data.get('password1')
+                user = authenticate(username=user.username, password=raw_password)
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
+            
             
     else:
         form = SignUpForm()

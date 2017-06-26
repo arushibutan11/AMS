@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
   <style type="text/css">
   
- 
+ .g-recaptcha {
+    text-align: -webkit-center;
+    padding-bottom: 1em;
+}
+
 div#menu {
     text-align: center;
 }
@@ -81,7 +88,7 @@ input[type="text"],
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
-<div id="formbox">
+	<div id="formbox">
 {% for field in form %}
       <p>
         {{ field.label_tag }}<br>
@@ -95,9 +102,12 @@ input[type="text"],
       </p>
     {% endfor %}
 <br>
-    <button type="submit">Login</button>
+<div class="g-recaptcha" data-sitekey="6Lfd8iYUAAAAAOZAbxu1ITGL2ksj-RdOV82l17Qn"></div>
 
-</div>
+    <button type="submit">Login</button>
+		</div>
+
+
   </form>
     </main>
   </body>

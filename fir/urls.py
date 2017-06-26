@@ -8,7 +8,7 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    url(r'^home$', views.home, name='home'),
+    url(r'^home', views.home, name='home'),
     url(r'^$', views.create_fir2, name='create_fir'),
     url(r'^getcircleinfo$', views.getcircleinfo, name='getcircleinfo'),
     url(r'^getsection$', views.getsection, name='getsection'),
