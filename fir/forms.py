@@ -6,6 +6,25 @@ from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
 from django.forms.models import BaseModelFormSet, inlineformset_factory
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
+
+
+class SignUpForm(UserCreationForm):
+    name = forms.CharField(max_length=50, required= True)
+    emp_id = forms.CharField(max_length=15, required= True, label="Employee ID")
+    circle = forms.CharField(max_length=30, required= True)
+    designation = forms.CharField(max_length=30, required= True)
+
+
+    class Meta:
+        model = User
+        fields = ('username', 'name', 'emp_id', 'circle', 'designation', 'password1', 'password2', )
+
+    def __init__(self, *args, **kwargs):
+        super( SignUpForm, self ).__init__(*args, **kwargs)
+    
 
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,

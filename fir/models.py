@@ -5,6 +5,10 @@ from smart_selects.db_fields import ChainedForeignKey
 from django.db.models import Q
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -31,6 +35,22 @@ CONVERT_STAT_Choices = (
     ('NO INFORMATION','NO INFORMATION'),('PENDING INVESTIGATION','PENDING INVESTIGATION'),('PENDING TRIAL', 'PENDING TRIAL'),
     ('CONVICTED','CONVICTED'),('ACQUITTED','ACQUITTED'),('CANCELLED', 'CANCELLED'),
 )
+
+class profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default = "0")
+    emp_id = models.CharField(max_length=15, default = "0")
+    circle = models.CharField(max_length=30, default = "no")
+    district_circle = models.CharField(max_length=30, blank = True)
+    range_circle = models.CharField(max_length=30, blank = True)
+    designation = models.CharField(max_length=30, default = "INs")
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        profile.objects.create(user=instance)
+    instance.profile.save()
+
 
 class circles(models.Model):
     DISTNAM = models.CharField(max_length=50)

@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url,include
+from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from fir.views import getcircleinfo, getsection, getlocation, getacctype
 
@@ -25,7 +26,10 @@ urlpatterns = [
     url(r'^getcircleinfo$', getcircleinfo),
     url(r'^getsection$', getsection),
     url(r'^getlocation$', getlocation),
-    url(r'^getacctype$', getacctype)
+    url(r'^getacctype$', getacctype),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout')
+
 
 
 ]

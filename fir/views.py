@@ -3,11 +3,11 @@ from __future__ import unicode_literals
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .models import details, circles, sections, injured, killed, location, accid_type
-from .forms import FirForm, InjForm, KilForm
+from .models import details, circles, sections, injured, killed, location, accid_type, profile
+from .forms import FirForm, InjForm, KilForm, SignUpForm
 from django.forms import ModelForm
 from django import forms
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
@@ -17,6 +17,33 @@ from django.forms.models import inlineformset_factory
 from django.forms import modelformset_factory
 from django.db.models import Q
 import json
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()  # load the profile instance created by the signal
+            user.profile.emp_id = form.cleaned_data.get('emp_id')
+            user.profile.name = form.cleaned_data.get('name')
+            user.profile.circle = form.cleaned_data.get('circle')
+            user.profile.designation = form.cleaned_data.get('designation')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('home')  
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
 
 def create_fir2(request):    
     InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
