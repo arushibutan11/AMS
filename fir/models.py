@@ -36,21 +36,10 @@ CONVERT_STAT_Choices = (
     ('CONVICTED','CONVICTED'),('ACQUITTED','ACQUITTED'),('CANCELLED', 'CANCELLED'),
 )
 
-class profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, default = "0")
-    emp_id = models.CharField(max_length=15, default = "0")
-    circle = models.CharField(max_length=30, default = "no")
-    district_circle = models.CharField(max_length=30, blank = True)
-    range_circle = models.CharField(max_length=30, blank = True)
-    designation = models.CharField(max_length=30, default = "INs")
-
-@receiver(post_save, sender=User)
-def update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        profile.objects.create(user=instance)
-    instance.profile.save()
-
+designation_choices = (
+    ('DCP','DCP'),('ACP','ACP'),('INSPECTOR', 'INSPECTOR'),
+    ('ACCIDENT RESEARCH CELL','ACCIDENT RESEARCH CELL'),
+)
 
 class circles(models.Model):
     DISTNAM = models.CharField(max_length=50)
@@ -71,6 +60,22 @@ class circles(models.Model):
             RANGE=self.RANGE,
             RANGENAM=self.RANGENAM)
             
+
+class profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default = "0")
+    emp_id = models.CharField(max_length=15, default = "0")
+    circle = models.CharField(max_length=15, default = "0")
+    district_circle = models.CharField(max_length=30, blank = True)
+    range_circle = models.CharField(max_length=30, blank = True)
+    designation = models.CharField(max_length=30, choices = designation_choices)
+
+@receiver(post_save, sender=User)
+def update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        profile.objects.create(user=instance)
+    instance.profile.save()
+
 
 class roads(models.Model):
     RNG =  models.CharField(max_length = 5, blank = True)

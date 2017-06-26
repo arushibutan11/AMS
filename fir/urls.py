@@ -4,6 +4,8 @@ from django.conf.urls import url
 from django.views import generic
 from django.views.generic.edit import CreateView
 from fir import views
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
@@ -12,5 +14,7 @@ urlpatterns = [
     url(r'^getsection$', views.getsection, name='getsection'),
     url(r'^getlocation$', views.getlocation, name='getlocation'),
     url(r'^getacctype$', views.getacctype, name='getacctype'),
-    url(r'^signup/$', views.signup, name='signup')
+    url(r'^signup/$', views.signup, name='signup'),
+   	url(r'^login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html', 'next_page': '/'}, name='logout'),
 ]

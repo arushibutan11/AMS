@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .models import details, circles, sections, injured, killed, location, accid_type, profile
+from .models import details, circles, sections, injured, killed, location, accid_type
 from .forms import FirForm, InjForm, KilForm, SignUpForm
 from django.forms import ModelForm
 from django import forms
@@ -20,6 +20,8 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from .models import profile
+
 
 
 def signup(request):
@@ -27,9 +29,9 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
+            user.refresh_from_db() 
+            user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
             user.profile.emp_id = form.cleaned_data.get('emp_id')
-            user.profile.name = form.cleaned_data.get('name')
             user.profile.circle = form.cleaned_data.get('circle')
             user.profile.designation = form.cleaned_data.get('designation')
             user.save()
@@ -37,6 +39,7 @@ def signup(request):
             user = authenticate(username=user.username, password=raw_password)
             login(request, user)
             return redirect('home')  
+            
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
