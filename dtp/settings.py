@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
 
     'smart_selects',
+    'report_builder',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -65,6 +66,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
             ],
         },
     },
@@ -72,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dtp.wsgi.application'
 
+REPORT_BUILDER_INCLUDE = ['fir.details', 'fir.injured', 'fir.killed']
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
