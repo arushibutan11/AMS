@@ -6,7 +6,7 @@
 
   <style type="text/css">
   
- .text-danger {
+ .alert {
     color: red;
     font-size: 0.9em;
 }
@@ -95,8 +95,16 @@ input[type="text"],
     {% csrf_token %}
 	<div id="formbox">
 <div class = "loginform">
-{% if login_message %}<div class="text-danger">{{login_message}}</div>{% endif %}
 <div class="loginfield">
+{% if messages %}
+<div class="span12">
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message|safe }}
+    </div>
+{% endfor %}
+</div>
+{% endif %}
 <input readonly onfocus="this.removeAttribute('readonly');" placeholder = "Username" type=text value="" name=name class="logininput">
 </div>
 <div class="loginfield">
@@ -114,4 +122,3 @@ input[type="text"],
     </main>
   </body>
 </html>
-

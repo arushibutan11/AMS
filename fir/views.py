@@ -27,41 +27,49 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 import re
+from django.contrib import messages
+
 
 
 @user_passes_test(lambda user: not user.username, login_url='/fir/home', redirect_field_name=None)
 def login(request):
+  print "inside req"
   if request.method=='POST':
+      print "in post"
       name = request.POST.get('name', None)
       pwd = request.POST.get('pwd', None)
-      try:
-          user = authenticate(username=name, password=pwd)
-      except KeyError:
-          return render(request, 'login.html', {'login_message' : 'Fill in all fields'})
-      if user is not None:
-          if user.is_active:
-              authlogin(request, user)
-              return redirect('home')
-          else: 
-              return render(request, 'login.html', {'login_message' : 'Your account is disabled. Please contact the system administrator.'})
-
-
+      if ( pwd is '' or name is '' ):
+          messages.error(request, "Fill in all the fields.")
       else:
-        return render(request, 'login.html', {'login_message' : 'Invalid Username or Password'})
-  return render(request, 'login.html', {'login_message' : ''})    
-'''recaptcha_response = request.POST.get('g-recaptcha-response')
-            url = 'https://www.google.com/recaptcha/api/siteverify'
-            values = {
+          recaptcha_response = request.POST.get('g-recaptcha-response')
+          url = 'https://www.google.com/recaptcha/api/siteverify'
+          values = {
                 'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
                 'response': recaptcha_response
             }
-            data = urllib.urlencode(values)
-            req = urllib2.Request(url, data)
-            response = urllib2.urlopen(req)
-            result = json.load(response)
-             End reCAPTCHA validation 
+          data = urllib.urlencode(values)
+          req = urllib2.Request(url, data)
+          response = urllib2.urlopen(req)
+          result = json.load(response)
+          '''End reCAPTCHA validation'''
 
-            if result['success']: '''
+          if result['success']:  
+              user = authenticate(username=name, password=pwd)
+              if user is not None:
+                  if user.is_active:
+                      authlogin(request, user)
+                      print "after authlogin"
+                      return redirect('home')
+                  else: 
+                      messages.error(request, "Your account is disabled. Please contact the system administrator.")      
+              else:
+                  messages.error(request, "Invalid Username or Password")
+          else:
+              messages.error(request, "Invalid reCAPTCHA. Please try again.")      
+
+  print "form rendered"    
+  return render(request, 'login.html')
+
 
 def log_end(request):
     logout(request)
@@ -71,6 +79,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            print "hello"
             user = form.save()
             user.refresh_from_db() 
             user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
@@ -80,7 +89,7 @@ def signup(request):
             user.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
+            authlogin(request, user)
             return redirect('home')
     else:
         form = SignUpForm()
