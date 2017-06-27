@@ -77,11 +77,11 @@ input[type="text"],
   <body>
     <header>
       <h1>Delhi Traffic Police</h1>
-      {% if user.is_authenticated %}
+     <!-- {% if user.is_authenticated %}
         <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
       {% else %}
         <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> <div>
-      {% endif %}
+      {% endif %} -->
       <hr>
     </header>
     <main>
@@ -89,18 +89,15 @@ input[type="text"],
   <form method="post">
     {% csrf_token %}
 	<div id="formbox">
-{% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
+<div class = "loginform">
+{% if login_message %}<div class="text-danger">{{login_message}}</div>{% endif %}
+<div class="loginfield">
+<input placeholder = "Username" type=text name=name class="logininput">
+</div>
+<div class="loginfield">
+<input type=password name=pwd placeholder="Password" class="logininput">
+</div>
+</div>
 <br>
 <div class="g-recaptcha" data-sitekey="6Lfd8iYUAAAAAOZAbxu1ITGL2ksj-RdOV82l17Qn"></div>
 
