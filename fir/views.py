@@ -106,7 +106,7 @@ def create_fir(request):
 
     if request.method == 'POST':
 
-      form = FirForm(request.POST)
+      form = FirForm(request.POST,request.FILES)
       injform = InjInlineFormSet(request.POST, prefix = 'injured')
       kilform = KilInlineFormSet(request.POST, prefix = 'killed')
       if form.is_valid():

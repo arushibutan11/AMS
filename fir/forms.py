@@ -38,6 +38,8 @@ class FirForm(forms.ModelForm):
         )
     BRIEF_FACTS = forms.CharField( required = False, widget=forms.Textarea)
     REMARK = forms.CharField( required = False, widget=forms.Textarea)
+    file = forms.FileField()
+
     class Meta:
         model = details
      	fields=['ACC_ID','RNG','CIRCLE','DIST','PS','FIRNO','SECTION','TIME_OCC','TIME_TYPE', 'DATE_OCC',
@@ -49,7 +51,10 @@ class FirForm(forms.ModelForm):
 'dri_name', 'dri_fath', 'dri_sex','dri_age','dri_add','dri_arrest','dri_place','dri_lic_date_issu',
 'dri_lic_date_upto', 'dri_lic_status','REMARK', 'CONFIRM', 'LONGITUDE', 'LATITUDE', 'CONVERT',
 'CONVERT_DATE', 'CN_DT', 'CONVERT_FN','BUS_NO', 'BLACK_SPOT', 'BLACK_SPOT_NO', 'FOR_BLK', 'STATUS',
- 'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1']
+ 'F_STATUS','dri_add1','RIDER_HELMET', 'PILLION_HELMET', 'STATE', 'SCANNED', 'HIT_AND_RUN_UPDATE1','VICTIM_PERSON_STATUS',
+ 'AREA_TYPE','ROAD_LEVEL','SEPERATION','ROAD_CHARACTER','SURFACE_TYPE','SURFACE_CONDITION','ROAD_CONDITION','STUDY_PARAMETER','VEHICLE_LOADED_CONDITION','EDU_QUAL'
+
+ ,'WORK_STATUS','DRIVER_FAULT','VEH_MECH_FAULT','ROAD_ENV_FAULT','ROAD_ENGG_FAULT','VICTIM_FAULT','WEATHER_COND','REMEDIES','FIR_PHOTO' , 'ACC_PHOTO' ]
  
  
     def clean(self):
@@ -62,7 +67,7 @@ class FirForm(forms.ModelForm):
                 self.add_error('LONGITUDE', "Check Value of Longitude")             
         if cd.get('LONGITUDE') != '':
             LATITUDE = float  (cd.get('LATITUDE'))  
-            if LATITUDE > 29.0 or LATITUDE <= 28.0:
+            if LATITUDE > 29.0 or LATITUDE <28.0:
                 self.add_error('LATITUDE', "Check Value of Latitude")             
 
              

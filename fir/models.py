@@ -138,6 +138,7 @@ class location(models.Model):
             TYPE = self.TYPE,
             CATEGORY = self.CATEGORY)
 
+
 class accid_type(models.Model):
     SNO=models.PositiveIntegerField(primary_key=True)
     TYPE=models.CharField(max_length=200)
@@ -152,6 +153,153 @@ class accid_type(models.Model):
             SNO = self.SNO,
             VICTIM = self.VICTIM)    
 
+
+
+class victim_person_status(models.Model):
+
+    Victim_Person_Status=models.CharField(max_length=100,primary_key=True)
+    def __str__(self):
+        return self.Victim_Person_Status             
+                                        
+class area_type(models.Model):
+          
+    Atype_Code=models.CharField(max_length=20,primary_key=True)
+    Area_Type=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.Area_Type
+
+class road_level(models.Model):
+          
+    RL_Code=models.CharField(max_length=20,primary_key=True)
+    RL_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.RL_Name
+
+
+class seperation(models.Model):
+          
+    S_Code=models.CharField(max_length=20,primary_key=True)
+    S_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.S_Name
+
+
+class road_character(models.Model):
+          
+    RC_Code=models.CharField(max_length=20,primary_key=True)
+    RC_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.RC_Name
+
+class surface_type(models.Model):
+          
+    SFT_Code=models.CharField(max_length=20,primary_key=True)
+    SFT_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.SFT_Name
+
+
+class surface_condition(models.Model):
+          
+    SC_Code=models.CharField(max_length=20,primary_key=True)
+    SC_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.SC_Name
+
+class road_condition(models.Model):
+          
+    RCN_Code=models.CharField(max_length=20,primary_key=True)
+    RCN_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.RCN_Name
+   
+
+class study_parameter(models.Model):
+          
+    SPM_Code=models.CharField(max_length=20,primary_key=True)
+    SPM_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.SPM_Name
+    
+class vehicle_loaded_condition(models.Model):
+          
+    VLC_Code=models.CharField(max_length=20,primary_key=True)
+    VLC_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.VLC_Name
+    
+
+class edu_qual(models.Model):
+          
+    EDQF_Code=models.CharField(max_length=20,primary_key=True)
+    EDQF_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.EDQF_Name
+    
+
+class work_status(models.Model):
+          
+    WS_Code=models.CharField(max_length=20,primary_key=True)
+    WS_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.WS_Name
+   
+
+class driver_fault(models.Model):
+          
+    DF_Code=models.CharField(max_length=20,primary_key=True)
+    DF_Details=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.DF_Details
+    
+
+class veh_mech_fault(models.Model):
+          
+    VMF_Code=models.CharField(max_length=20,primary_key=True)
+    VMF_Details=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.VMF_Details
+   
+
+class road_env_fault(models.Model):
+          
+    REF_Code=models.CharField(max_length=20,primary_key=True)
+    REF_Details=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.REF_Details
+  
+
+
+class road_engg_fault(models.Model):
+          
+    RENF_Code=models.CharField(max_length=20,primary_key=True)
+    RENF_Details=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.RENF_Details
+ 
+
+class victim_fault(models.Model):
+          
+    VF_Code=models.CharField(max_length=20,primary_key=True)
+    VF_Details=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.VF_Details
+  
+class weather_cond(models.Model):
+          
+    WC_Code=models.CharField(max_length=20,primary_key=True)
+    WC_Details=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.WC_Details
+    
+ 
+class remedies(models.Model):
+          
+    Rem_Code=models.CharField(max_length=20,primary_key=True)
+    Rem_Description=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.Rem_Description
+ 
 class vehtype1(models.Model):
     VEHTYPE = models.CharField(max_length=20, primary_key= True)
     VEHDETL = models.CharField(max_length=20)
@@ -434,6 +582,31 @@ class details(models.Model):
     STATE = models.CharField(max_length=15,default='',blank=True)
     SCANNED = models.CharField(max_length=15,default='',blank=True)
     HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)
+
+    VICTIM_PERSON_STATUS = models.ForeignKey(victim_person_status,default='',blank=True)
+    AREA_TYPE = models.ForeignKey(area_type,default='',blank=True)
+    ROAD_LEVEL = models.ForeignKey(road_level,default='',blank=True)
+    SEPERATION = models.ForeignKey(seperation,default='',blank=True)
+    ROAD_CHARACTER = models.ForeignKey(road_character,default='',blank=True)
+    SURFACE_TYPE = models.ForeignKey(surface_type,default='',blank=True)
+    SURFACE_CONDITION = models.ForeignKey(surface_condition,default='',blank=True)
+    ROAD_CONDITION = models.ForeignKey(road_condition,default='',blank=True)
+    STUDY_PARAMETER = models.ForeignKey(study_parameter,default='',blank=True)
+    VEHICLE_LOADED_CONDITION = models.ForeignKey(vehicle_loaded_condition,default='',blank=True)
+    EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True)
+    WORK_STATUS = models.ForeignKey(work_status,default='',blank=True)
+    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True)
+    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,default='',blank=True)
+    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,default='',blank=True)
+    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,default='',blank=True)
+    VICTIM_FAULT = models.ForeignKey(victim_fault,default='',blank=True)
+    WEATHER_COND = models.ForeignKey(weather_cond,default='',blank=True)
+    REMEDIES = models.ForeignKey(remedies,default='',blank=True)
+    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
+    ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
+
+
+
 
 class injured(models.Model):
     PS = models.CharField(max_length=5)
