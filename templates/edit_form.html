@@ -174,9 +174,9 @@ h2 { text-align: center; }
 
 <div class="form-style-6">
 <h1>ACCIDENT REPORT FORM</h1>
-<form name="myForm" action="{% url 'create_fir' %}" method="Post">
+<form name="myForm" action="{% url 'edit_fir' fir.ACC_ID%}" method="Post">
 {% csrf_token %}
-    {{ forminj.management_form }}
+
 <div>
 <label class="firsttag">Accident Id</label>
  {{ form.ACC_ID }} 
@@ -326,7 +326,7 @@ h2 { text-align: center; }
 
       </tr>
       <tr class = "inj-formset">
-
+    {{ forminj.management_form }}
       {% for i in forminj %}
         {% if i.errors %}
             {% for field in i %}
@@ -347,8 +347,8 @@ h2 { text-align: center; }
         <td hidden> {{ i.PS }} </td>
         <td hidden> {{ i.FIRNO }} </td>
         <td hidden> {{ i.YEAR }} </td>
-        <td hidden>{{i.ACCID_ID}}</td>
-        <td hidden>{{i.id}}</td>
+
+        {% for hidden in i.hidden_fields %} {{ hidden }} {% endfor %}
         <td>{{ i.INJSEX }}</td>
         <td>{{ i.INJAGE }}</td>
         <td>{{ i.INJTYPE }}</td>
@@ -370,12 +370,29 @@ h2 { text-align: center; }
       </tr>
     {{ formkil.management_form }}
       {% for k in formkil %}
+        {% if k.errors %}
+            {% for field in k %}
+        
+        {% for error in field.errors %}
+        
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+    {% endif %}
+
       <tr  class = "kil-formset">
         <td hidden> {{ k.PS }} </td>
         <td hidden> {{ k.FIRNO }} </td>
         <td hidden> {{ k.YEAR }} </td>
-        <td hidden>{{k.ACCID_ID}}</td>
-        <td hidden>{{k.id}}</td>
+
+        {% for hidden in k.hidden_fields %} {{ hidden }} {% endfor %}
 
         <td>{{ k.SEX }}</td>
         <td>{{ k.AGE }}</td>

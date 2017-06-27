@@ -8,7 +8,7 @@ from .forms import FirForm, InjForm, KilForm, SignUpForm
 from django.forms import ModelForm
 from django import forms
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -140,23 +140,70 @@ def create_fir(request):
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
 def edit_fir(request,acc_id):
+    InjInlineFormSet = inlineformset_factory(details, injured,can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE','ACCID_ID'), widgets = {
+'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
+form=InjForm, extra = 0)
+
+
+    KilInlineFormSet = inlineformset_factory(details, killed, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE', 'ACCID_ID'), 
+  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
+  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
+  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
+  form=KilForm, extra = 0)
     fir = get_object_or_404(details, pk = acc_id)
     #If Method is POST
     if request.method == 'POST':        
         injform = InjInlineFormSet(request.POST,instance=fir, prefix = 'injured')
         kilform = KilInlineFormSet(request.POST,instance=fir, prefix = 'killed')
-        form = FirForm(request.POST,instance = fir, prefix = 'details')
+        form = FirForm(request.POST,instance = fir)
         if form.is_valid():
             form.save()
-    
+            if form.data['ACCTYPE'] == 'F':
+              if kilform.is_valid():
+                kil = kilform.save()
+                count_kil(acc_id)
+                sec = form.data['SECTION']
+                sec_obj = sections.objects.get(pk = sec)
+                
+                if ('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
+                  if injform.is_valid():
+                    inj = injform.save()
+                    count_inj(acc_id)
+                  #Injform is invalid and Kilform is valid
+                  else:
+                    return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+              else:
+                #If Kilform is invalid
+                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+            elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G'):
+              if injform.is_valid():
+                count_inj(firid)          
+                inj = injform.save()
+              else: 
+                # If Injform is invalid
+                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+            elif form.data['ACCTYPE'] == 'N':
+                pass
+
+            else:
+                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+            return HttpResponseRedirect('/fir/edit_fir/'+str(fir.ACC_ID)+'/')
+        else:
+            #if main form is not Valid
+            return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
     #If Method is Not POST
     else:
         fir = get_object_or_404(details, pk = acc_id)
 
         injform = InjInlineFormSet(instance = fir, prefix = 'injured')
         kilform = KilInlineFormSet(instance = fir, prefix = 'killed')
-        form = FirForm(instance = fir, prefix = 'details')
-        return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
+        form = FirForm(instance = fir)
+        return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
         
 
 def count_inj(firid):
@@ -235,14 +282,4 @@ def getacctype(request):
       info = accid_type.objects.get(SNO = acctype)
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
 
-InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
-'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
-'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
-form=InjForm, extra = 1)
 
-
-KilInlineFormSet = inlineformset_factory(details, killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE'), 
-  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
-  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
-  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
-  form=KilForm, extra = 1)
