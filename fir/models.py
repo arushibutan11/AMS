@@ -37,6 +37,7 @@ CONVERT_STAT_Choices = (
 )
 
 designation_choices = (
+     ('', '-----------'),
     ('DCP','DCP'),('ACP','ACP'),('INSPECTOR', 'INSPECTOR'),
     ('ACCIDENT RESEARCH CELL','ACCIDENT RESEARCH CELL'),
 )
@@ -65,7 +66,7 @@ class profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, default = "0")
     emp_id = models.CharField(max_length=15, default = "0")
-    circle = models.CharField(max_length=15, default = "0")
+    circle = models.ForeignKey(circles)
     district_circle = models.CharField(max_length=30, blank = True)
     range_circle = models.CharField(max_length=30, blank = True)
     designation = models.CharField(max_length=30, choices = designation_choices)
