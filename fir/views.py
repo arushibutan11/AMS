@@ -7,7 +7,7 @@ from .models import details, circles, sections, injured, killed, location, accid
 from .forms import FirForm, InjForm, KilForm, SignUpForm
 from django.forms import ModelForm
 from django import forms
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
@@ -25,6 +25,7 @@ import urllib
 import urllib2
 from django.conf import settings
 from django.contrib import messages
+
 
 
 
@@ -68,17 +69,7 @@ def signup(request):
 def home(request):
     return render(request, 'home.html')
 
-def create_fir2(request):    
-    InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
-    'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
-    'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
-    form=InjForm, extra = 1)
-
-    KilInlineFormSet = inlineformset_factory(details, killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE'), 
-      widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
-      'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
-      'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
-      form=KilForm, extra = 1)
+def create_fir(request):    
 
     if request.method == 'POST':
 
@@ -124,7 +115,7 @@ def create_fir2(request):
         else:
             return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
-        return HttpResponse('done')
+        return HttpResponseRedirect('/fir/edit_fir/'+str(fir.ACC_ID)+'/')
       else:
         #if main form is not Valid
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
@@ -136,6 +127,25 @@ def create_fir2(request):
         kilform = KilInlineFormSet(prefix = 'killed')
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
+def edit_fir(request,acc_id):
+    fir = get_object_or_404(details, pk = acc_id)
+    #If Method is POST
+    if request.method == 'POST':        
+        injform = InjInlineFormSet(request.POST,instance=fir, prefix = 'injured')
+        kilform = KilInlineFormSet(request.POST,instance=fir, prefix = 'killed')
+        form = FirForm(request.POST,instance = fir, prefix = 'details')
+        if form.is_valid():
+            form.save()
+    
+    #If Method is Not POST
+    else:
+        fir = get_object_or_404(details, pk = acc_id)
+
+        injform = InjInlineFormSet(instance = fir, prefix = 'injured')
+        kilform = KilInlineFormSet(instance = fir, prefix = 'killed')
+        form = FirForm(instance = fir, prefix = 'details')
+        return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
+        
 
 def count_inj(firid):
     is_fir = Q(ACCID_ID = firid)
@@ -178,6 +188,7 @@ def count_kil(firid):
     acc.save() 
 
 
+
 @permission_classes((permissions.AllowAny,))
 def getcircleinfo(request):
   
@@ -211,4 +222,15 @@ def getacctype(request):
       acctype = request.POST.get('accid_type')
       info = accid_type.objects.get(SNO = acctype)
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
-            
+
+InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
+'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
+form=InjForm, extra = 1)
+
+
+KilInlineFormSet = inlineformset_factory(details, killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE'), 
+  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
+  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
+  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
+  form=KilForm, extra = 1)
