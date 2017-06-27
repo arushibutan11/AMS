@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^getsection$', getsection),
     url(r'^getlocation$', getlocation),
     url(r'^getacctype$', getacctype),
-    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^login/$', auth_views.login, name='login', kwargs={'redirect_authenticated_user': True}),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^report_builder/', include('report_builder.urls'))
 
