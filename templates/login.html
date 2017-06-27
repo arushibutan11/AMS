@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <style type="text/css">
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+
+
+  <style type="text/css">
   
- 
+ .text-danger {
+    color: red;
+    font-size: 0.9em;
+}
+  
+ .g-recaptcha {
+    text-align: -webkit-center;
+    padding-bottom: 1em;
+}
+
 div#menu {
     text-align: center;
 }
@@ -70,36 +82,36 @@ input[type="text"],
   <body>
     <header>
       <h1>Delhi Traffic Police</h1>
-        {% if user.is_authenticated %}
-        <div id="menu"> <a href="">logout</a> </div>
+      {% if user.is_authenticated %}
+        <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
       {% else %}
         <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> <div>
       {% endif %} 
       <hr>
     </header>
     <main>
-     <h2>Sign up</h2>
+  <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
 	<div id="formbox">
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-       <!-- {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %} -->
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
+<div class = "loginform">
+{% if login_message %}<div class="text-danger">{{login_message}}</div>{% endif %}
+<div class="loginfield">
+<input readonly onfocus="this.removeAttribute('readonly');" placeholder = "Username" type=text value="" name=name class="logininput">
+</div>
+<div class="loginfield">
+<input readonly onfocus="this.removeAttribute('readonly');" type=password name=pwd placeholder="Password" value="" class="logininput">
+</div>
+</div>
+<br>
+<div class="g-recaptcha" data-sitekey="6Lfd8iYUAAAAAOZAbxu1ITGL2ksj-RdOV82l17Qn"></div>
+
+    <button type="submit">Login</button>
 		</div>
+
 
   </form>
     </main>
   </body>
 </html>
 
-  

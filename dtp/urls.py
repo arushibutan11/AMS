@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
-from fir.views import getcircleinfo, getsection, getlocation, getacctype
+from fir.views import getcircleinfo, getsection, getlocation, getacctype, log_end, login
 
 
 urlpatterns = [
@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^getsection$', getsection),
     url(r'^getlocation$', getlocation),
     url(r'^getacctype$', getacctype),
-    url(r'^login/$', auth_views.login, name='login', kwargs={'redirect_authenticated_user': True}),
+    url(r'^login$', login),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^report_builder/', include('report_builder.urls'))
 

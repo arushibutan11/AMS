@@ -18,22 +18,37 @@ from django.forms import modelformset_factory
 from django.db.models import Q
 import json
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login as authlogin, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .models import profile
 import urllib
 import urllib2
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
 
+@user_passes_test(lambda user: not user.username, login_url='/fir/home', redirect_field_name=None)
+def login(request):
+  if request.method=='POST':
+      name = request.POST.get('name', None)
+      pwd = request.POST.get('pwd', None)
+      try:
+          user = authenticate(username=name, password=pwd)
+      except KeyError:
+          return render(request, 'login.html', {'login_message' : 'Fill in all fields'})
+      if user is not None:
+          if user.is_active:
+              authlogin(request, user)
+              return redirect('home')
+          else: 
+              return render(request, 'login.html', {'login_message' : 'Your account is disabled. Please contact the system administrator.'})
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            recaptcha_response = request.POST.get('g-recaptcha-response')
+      else:
+        return render(request, 'login.html', {'login_message' : 'Invalid Username or Password'})
+  return render(request, 'login.html', {'login_message' : ''})    
+'''recaptcha_response = request.POST.get('g-recaptcha-response')
             url = 'https://www.google.com/recaptcha/api/siteverify'
             values = {
                 'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
@@ -43,33 +58,38 @@ def signup(request):
             req = urllib2.Request(url, data)
             response = urllib2.urlopen(req)
             result = json.load(response)
-            ''' End reCAPTCHA validation '''
+             End reCAPTCHA validation 
 
-            if result['success']:
-                user = form.save()
-                user.refresh_from_db() 
-                user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
-                user.profile.emp_id = form.cleaned_data.get('emp_id')
-                user.profile.circle = form.cleaned_data.get('circle')
-                user.profile.designation = form.cleaned_data.get('designation')
-                user.save()
-                raw_password = form.cleaned_data.get('password1')
-                user = authenticate(username=user.username, password=raw_password)
-                login(request, user)
-                return redirect('home')
-            else:
-                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
-            
-            
+            if result['success']: '''
+
+def log_end(request):
+    logout(request)
+    return HttpResponseRedirect('logout.html')
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db() 
+            user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
+            user.profile.emp_id = form.cleaned_data.get('emp_id')
+            user.profile.circle = form.cleaned_data.get('circle')
+            user.profile.designation = form.cleaned_data.get('designation')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-@login_required
+@login_required(login_url='/fir/login/')
 def home(request):
     return render(request, 'home.html')
 
-@login_required
+@login_required(login_url='/fir/login/')
 def create_fir(request):        
     InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
     'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
