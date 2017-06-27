@@ -140,10 +140,11 @@ def create_fir(request):
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
 def edit_fir(request,acc_id):
-    InjInlineFormSet = inlineformset_factory(details, injured,can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE','ACCID_ID'), widgets = {
-'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
-'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
-form=InjForm, extra = 0)
+    InjInlineFormSet = inlineformset_factory(details, injured, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), 
+  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),
+  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
+  form=InjForm, extra = 0)
 
 
     KilInlineFormSet = inlineformset_factory(details, killed, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE', 'ACCID_ID'), 

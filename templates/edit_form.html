@@ -15,12 +15,9 @@
 
 <script>
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
-$('#id_LOCATION').val('11');
-$('#id_SELF_TYPE').val('0');
-
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE , #id_FIRNO , #id_PS, #id_DATE_OCC_year, #id_DATE_OCC_month, #id_DATE_OCC_day').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE,  #id_FIRNO , #id_PS, #id_DATE_OCC_year, #id_DATE_OCC_month, #id_DATE_OCC_day').css({"background-color": "rgb(247, 247, 247)"});
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_FIRNO , id_PS, id_DATE_OCC_year, id_DATE_OCC_month, id_DATE_OCC_day ').css({"border": "1px #aaaaaa solid"});
 }
 
 </script>
@@ -178,8 +175,9 @@ h2 { text-align: center; }
 {% csrf_token %}
 
 <div>
-<label class="firsttag">Accident Id</label>
- {{ form.ACC_ID }} 
+<label class="firsttag">Accident Id:</label>
+ {{ form.ACC_ID.as_hidden }} 
+ {{fir.ACC_ID}}
  <br>
  <label class="firsttag">Fortnight</label>
 {{ form.FN }}
@@ -194,28 +192,31 @@ h2 { text-align: center; }
 
 <div>
 
-<label class="firsttag">Circle </label> 
-{{ form.CIRCLE }}
+<label class="firsttag">Circle: </label> 
+{{ form.CIRCLE.as_hidden }}
+{{ fir.CIRCLE }}
 
 <label>District</label> 
 {{ form.DIST }}
 
+
 <label>Range </label> 
 {{ form.RNG }}
 
-<label>Police Station </label>
-{{ form.PS }}
-
+<label>Police Station: </label>
+{{ form.PS.as_hidden }}
+{{ fir.PS }}
 </div>
 
 <div>
 
-<label class="firsttag">FIR No.</label>
-{{ form.FIRNO }}
+<label class="firsttag">FIR No.:</label>
+{{ form.FIRNO.as_hidden }}
+{{fir.FIRNO}}
 
-<label>Date </label> 
-{{ form.DATE_OCC }}
-
+<label>Date: </label> 
+{{ form.DATE_OCC.as_hidden }}
+{{ fir.DATE_OCC }}
 </div>
 <div>
 
@@ -317,19 +318,17 @@ h2 { text-align: center; }
 <div id="table1" class="table-editable">
     
     <table class="table">
-    
       <tr>
-        
+
         <th>Injured- Sex</th>
         <th>Injured- Age</th>
         <th>Injured- Type</th>
 
       </tr>
-      <tr class = "inj-formset">
     {{ forminj.management_form }}
-      {% for i in forminj %}
-        {% if i.errors %}
-            {% for field in i %}
+      {% for k in forminj %}
+        {% if k.errors %}
+            {% for field in k %}
         
         {% for error in field.errors %}
         
@@ -344,18 +343,19 @@ h2 { text-align: center; }
         </div>
     {% endfor %}
     {% endif %}
-        <td hidden> {{ i.PS }} </td>
-        <td hidden> {{ i.FIRNO }} </td>
-        <td hidden> {{ i.YEAR }} </td>
 
-        {% for hidden in i.hidden_fields %} {{ hidden }} {% endfor %}
-        <td>{{ i.INJSEX }}</td>
-        <td>{{ i.INJAGE }}</td>
-        <td>{{ i.INJTYPE }}</td>
+      <tr  class = "inj-formset">
+        <td hidden> {{ k.PS }} </td>
+        <td hidden> {{ k.FIRNO }} </td>
+        <td hidden> {{ k.YEAR }} </td>
+
+        {% for hidden in k.hidden_fields %} {{ hidden }} {% endfor %}
+
+        <td>{{ k.INJSEX }}</td>
+        <td>{{ k.INJAGE }}</td>
+        <td>{{ k.INJTYPE }}</td>
       </tr>
       {% endfor %}
-
-</tr>
     </table>
   </div>
   
@@ -980,8 +980,8 @@ $('.zeroadd, .oneadd, .formsubmit').click(function () {
     var firno =  document.getElementById("id_FIRNO").value;
     firno =  parseInt(firno);
     var psCode = ps.split("-");
-    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  firno;
-    var yr = document.getElementById("id_DATE_OCC_year").value;
+    var id = document.getElementById("id_YEAR").value +  psCode[1] +  firno;
+    var yr = document.getElementById("id_YEAR").value;
       
       $('.iPS').val(psCode[1]);
       $('.iYEAR').val(yr);
