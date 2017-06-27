@@ -69,6 +69,7 @@ class profile(models.Model):
     district_circle = models.CharField(max_length=30, blank = True)
     range_circle = models.CharField(max_length=30, blank = True)
     designation = models.CharField(max_length=30, choices = designation_choices)
+    #max_attempts = models.PositiveIntegerField(blank = True, default='0')
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):

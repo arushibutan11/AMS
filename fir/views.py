@@ -69,7 +69,19 @@ def signup(request):
 def home(request):
     return render(request, 'home.html')
 
-def create_fir(request):    
+@login_required
+def create_fir(request):        
+    InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
+    'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+    'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
+    form=InjForm, extra = 1)
+
+    KilInlineFormSet = inlineformset_factory(details, killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE'), 
+      widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
+      'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
+      'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
+      form=KilForm, extra = 1)
+
 
     if request.method == 'POST':
 
