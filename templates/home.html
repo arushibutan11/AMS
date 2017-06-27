@@ -34,11 +34,11 @@ a {
   <body>
     <header>
       <h1>Delhi Traffic Police</h1>
-      {% if user.is_authenticated %}
-       <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
+        {% if user.is_authenticated %}
+        <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
       {% else %}
-       <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> </div>
-      {% endif %}
+        <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> <div>
+      {% endif %} 
       <hr>
     </header>
     <main>

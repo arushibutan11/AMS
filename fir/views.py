@@ -7,8 +7,8 @@ from .models import details, circles, sections, injured, killed, location, accid
 from .forms import FirForm, InjForm, KilForm, SignUpForm
 from django.forms import ModelForm
 from django import forms
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -18,21 +18,37 @@ from django.forms import modelformset_factory
 from django.db.models import Q
 import json
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login as authlogin, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .models import profile
 import urllib
 import urllib2
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
 
+@user_passes_test(lambda user: not user.username, login_url='/fir/home', redirect_field_name=None)
+def login(request):
+  if request.method=='POST':
+      name = request.POST.get('name', None)
+      pwd = request.POST.get('pwd', None)
+      try:
+          user = authenticate(username=name, password=pwd)
+      except KeyError:
+          return render(request, 'login.html', {'login_message' : 'Fill in all fields'})
+      if user is not None:
+          if user.is_active:
+              authlogin(request, user)
+              return redirect('home')
+          else: 
+              return render(request, 'login.html', {'login_message' : 'Your account is disabled. Please contact the system administrator.'})
 
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            recaptcha_response = request.POST.get('g-recaptcha-response')
+
+      else:
+        return render(request, 'login.html', {'login_message' : 'Invalid Username or Password'})
+  return render(request, 'login.html', {'login_message' : ''})    
+'''recaptcha_response = request.POST.get('g-recaptcha-response')
             url = 'https://www.google.com/recaptcha/api/siteverify'
             values = {
                 'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
@@ -42,33 +58,39 @@ def signup(request):
             req = urllib2.Request(url, data)
             response = urllib2.urlopen(req)
             result = json.load(response)
-            ''' End reCAPTCHA validation '''
+             End reCAPTCHA validation 
 
-            if result['success']:
-                user = form.save()
-                user.refresh_from_db() 
-                user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
-                user.profile.emp_id = form.cleaned_data.get('emp_id')
-                user.profile.circle = form.cleaned_data.get('circle')
-                user.profile.designation = form.cleaned_data.get('designation')
-                user.save()
-                raw_password = form.cleaned_data.get('password1')
-                user = authenticate(username=user.username, password=raw_password)
-                login(request, user)
-                return redirect('home')
-            else:
-                messages.error(request, 'Invalid reCAPTCHA. Please try again.')
-            
-            
+            if result['success']: '''
+
+def log_end(request):
+    logout(request)
+    return HttpResponseRedirect('logout.html')
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db() 
+            user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
+            user.profile.emp_id = form.cleaned_data.get('emp_id')
+            user.profile.circle = form.cleaned_data.get('circle')
+            user.profile.designation = form.cleaned_data.get('designation')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-@login_required
+@login_required(login_url='/fir/login/')
 def home(request):
     return render(request, 'home.html')
 
-def create_fir2(request):    
+@login_required(login_url='/fir/login/')
+def create_fir(request):        
     InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
     'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
     'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
@@ -79,6 +101,7 @@ def create_fir2(request):
       'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
       'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
       form=KilForm, extra = 1)
+
 
     if request.method == 'POST':
 
@@ -124,7 +147,7 @@ def create_fir2(request):
         else:
             return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
-        return HttpResponse('done')
+        return HttpResponseRedirect('/fir/edit_fir/'+str(fir.ACC_ID)+'/')
       else:
         #if main form is not Valid
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
@@ -136,6 +159,73 @@ def create_fir2(request):
         kilform = KilInlineFormSet(prefix = 'killed')
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
+def edit_fir(request,acc_id):
+    InjInlineFormSet = inlineformset_factory(details, injured, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), 
+  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),
+  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
+  form=InjForm, extra = 0)
+
+
+    KilInlineFormSet = inlineformset_factory(details, killed, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE', 'ACCID_ID'), 
+  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
+  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
+  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
+  form=KilForm, extra = 0)
+    fir = get_object_or_404(details, pk = acc_id)
+    #If Method is POST
+    if request.method == 'POST':        
+        injform = InjInlineFormSet(request.POST,instance=fir, prefix = 'injured')
+        kilform = KilInlineFormSet(request.POST,instance=fir, prefix = 'killed')
+        form = FirForm(request.POST,instance = fir)
+        if form.is_valid():
+            form.save()
+            if form.data['ACCTYPE'] == 'F':
+              if kilform.is_valid():
+                kil = kilform.save()
+                count_kil(acc_id)
+                sec = form.data['SECTION']
+                sec_obj = sections.objects.get(pk = sec)
+                
+                if ('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
+                  if injform.is_valid():
+                    inj = injform.save()
+                    count_inj(acc_id)
+                  #Injform is invalid and Kilform is valid
+                  else:
+                    return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+              else:
+                #If Kilform is invalid
+                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+            elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G'):
+              if injform.is_valid():
+                count_inj(firid)          
+                inj = injform.save()
+              else: 
+                # If Injform is invalid
+                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+            elif form.data['ACCTYPE'] == 'N':
+                pass
+
+            else:
+                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+            return HttpResponseRedirect('/fir/edit_fir/'+str(fir.ACC_ID)+'/')
+        else:
+            #if main form is not Valid
+            return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+
+    #If Method is Not POST
+    else:
+        fir = get_object_or_404(details, pk = acc_id)
+
+        injform = InjInlineFormSet(instance = fir, prefix = 'injured')
+        kilform = KilInlineFormSet(instance = fir, prefix = 'killed')
+        form = FirForm(instance = fir)
+        return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+        
 
 def count_inj(firid):
     is_fir = Q(ACCID_ID = firid)
@@ -178,6 +268,7 @@ def count_kil(firid):
     acc.save() 
 
 
+
 @permission_classes((permissions.AllowAny,))
 def getcircleinfo(request):
   
@@ -211,4 +302,5 @@ def getacctype(request):
       acctype = request.POST.get('accid_type')
       info = accid_type.objects.get(SNO = acctype)
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
-            
+
+
