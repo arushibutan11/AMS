@@ -204,20 +204,41 @@ def edit_fir(request,acc_id):
                   #Injform is invalid and Kilform is valid
                   else:
                     return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+                #If Section is not 338/337 but Inj form is not empty
+                else:
+                    if injform != None:
+                        injorm = None
+                        injured.objects.filter(ACCID_ID=acc_id).delete()
+                        inj = injorm.save()
+                        count_inj(acc_id)
               else:
                 #If Kilform is invalid
                 return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
 
             elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G'):
               if injform.is_valid():
-                count_inj(firid)          
+        
                 inj = injform.save()
+                if kilform != None:
+                    kilorm = None
+                    killed.objects.filter(ACCID_ID=acc_id).delete()
+                    kil = kilform.save()
+                    count_kil(acc_id)
+                count_inj(firid)  
               else: 
                 # If Injform is invalid
                 return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
 
             elif form.data['ACCTYPE'] == 'N':
-                pass
+                if injform != None or kilform!=None:
+                        injorm = None
+                        kilform = None
+                        injured.objects.filter(ACCID_ID=acc_id).delete()
+                        killed.objects.filter(ACCID_ID=acc_id).delete()
+                        kil= injform.save()
+                        inj = injorm.save()
+                        count_kil(acc_id)
+                        count_inj(acc_id)
 
             else:
                 return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
