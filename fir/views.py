@@ -35,7 +35,6 @@ from django.contrib import messages
 def login(request):
   print "inside req"
   if request.method=='POST':
-      print "in post"
       name = request.POST.get('name', None)
       pwd = request.POST.get('pwd', None)
       if ( pwd is '' or name is '' ):
@@ -67,7 +66,6 @@ def login(request):
           else:
               messages.error(request, "Invalid reCAPTCHA. Please try again.")      
 
-  print "form rendered"    
   return render(request, 'login.html')
 
 
@@ -79,7 +77,6 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            print "hello"
             user = form.save()
             user.refresh_from_db() 
             user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal

@@ -41,7 +41,63 @@ designation_choices = (
     ('DCP','DCP'),('ACP','ACP'),('INSPECTOR', 'INSPECTOR'),
     ('ACCIDENT RESEARCH CELL','ACCIDENT RESEARCH CELL'),
 )
-
+circle_choices = (
+('', '-----------'),
+('PGC','PAHAR GANJ CIRCLE'),
+('KBC','KAROL BAGH CIRCLE'),
+('KMC','KAMLA MARKET CIRCLE'),
+('DGC','DARYA GANJ CIRCLE'),
+('KPC','KALYAN PURI CIRCLE'),
+('VKC','VIVEK VIHAR CIRCLE'),
+('MWC','MANDAWALI CIRCLE'),
+('GNC','GANDHI NAGAR CIRCLE'),
+('KOT','KOTWALI CIRCLE'),
+('CLC','CIVIL LINES CIRCLE'),
+('SBC','SADAR BAZAR CIRCLE'),
+('SMC','SABZI MANDI CIRCLE'),
+('PTC','PARLIAMENT STREET CIRCLE'),
+('TRC','TUGHLAK ROAD CIRCLE'),
+('PTH','PARLIAMENT HOUSE CIRCLE'),
+('TMC','TILAK MARG CIRCLE'),
+('CHP','CHANAKYA PURI CIRCLE'),
+('BKR','BARA KHAMBA ROAD CIRCLE'),
+('SHD','SHAHDARA CIRCLE'),
+('SLC','KHAZOORI CIRCLE'),
+('SPC','SEEMA PURI CIRCLE'),
+('MTC','MODEL TOWN CIRCLE'),
+('NRL','BURARI CIRCLE'),
+('AVC','ASHOK VIHAR CIRCLE'),
+('ALP','NARELA CIRCLE'),
+('BWC','BAWANA CIRCLE'),
+('RHN','ROHINI CIRCLE'),
+('MGP','MANGOL PURI CIRCLE'),
+('IGI','I.G. AIR PORT CIRCLE'),
+('PAP','PALAM AIRPORT CIRCLE'),
+('DRP','DELHI RAILWAYS CIRCLE'),
+('RKP','R.K. PURAM CIRCLE'),
+('DFC','DEFENCE COLONY CIRCLE'),
+('DCC','DELHI CANTT CIRCLE'),
+('VVC','VASANT VIHAR CIRCLE'),
+('SDV','SUKHDEV VIHAR CIRCLE'),
+('LNC','LAJPAT NAGAR CIRCLE'),
+('HKC','HAUS KHAS CIRCLE'),
+('SVC','SARITA VIHAR CIRCLE'),
+('KKC','KALKAJI CIRCLE'),
+('SGV','SANGAM VIHAR CIRCLE'),
+('SKT','SAKET CIRCLE'),
+('GKC','GREATER KAILASH CIRCLE'),
+('MRC','MEHRAULI CIRCLE'),
+('KHC','KAPASHERA CIRCLE'),
+('DWC','DWARKA CIRCLE'),
+('TNC','TILAK NAGAR CIRCLE'),
+('NJC','NAJAF GARH CIRCLE'),
+('JPC','JANAK PURI CIRCLE'),
+('NLC','NANGLOI CIRCLE'),
+('PNC','PATEL NAGAR CIRCLE'),
+('MPC','MAYA PURI CIRCLE'),
+('PBC','PUNJABI BAGH CIRCLE'),
+('RGC','RAJOURI GARDEN CIRCLE'),
+)
 class circles(models.Model):
     DISTNAM = models.CharField(max_length=50)
     DIST = models.CharField(max_length=4)
@@ -66,7 +122,7 @@ class profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, default = "0")
     emp_id = models.CharField(max_length=15, default = "0")
-    circle = models.ForeignKey(circles)
+    circle = models.CharField(max_length=60, choices = circle_choices)
     district_circle = models.CharField(max_length=30, blank = True)
     range_circle = models.CharField(max_length=30, blank = True)
     designation = models.CharField(max_length=30, choices = designation_choices)

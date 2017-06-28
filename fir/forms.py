@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import details, injured, killed, profile, designation_choices, circles
+from .models import details, injured, killed, profile, designation_choices, circle_choices
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
@@ -14,7 +14,7 @@ from django.utils.translation import gettext as _
 class SignUpForm(UserCreationForm):
     name = forms.CharField(max_length=50, required= True)
     emp_id = forms.CharField(max_length=15, required= True, label="Employee ID")
-    circle = forms.ModelChoiceField(circles.objects.all(), required=True)
+    circle = forms.ChoiceField(choices=circle_choices, widget=forms.Select(attrs={'class':'form-control'}), required= True)
     designation = forms.ChoiceField(choices=designation_choices, widget=forms.Select(attrs={'class':'form-control'}), required= True)
 
 
