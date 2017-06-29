@@ -32,7 +32,7 @@ import re
 from django.contrib import messages
 
 
-@user_passes_test(lambda user: not user.username, login_url='/fir/home', redirect_field_name=None) #whatdoesthisdo
+@user_passes_test(lambda user: not user.username, login_url=settings.LOGIN_REDIRECT_URL, redirect_field_name=None) #whatdoesthisdo
 def login(request):
   print "inside req"
   if request.method=='POST':
@@ -106,7 +106,7 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-@login_required(login_url='/fir/login/')
+@login_required(login_url=settings.LOGIN_URL)
 def home(request):
     if (request.user.groups.filter(name='arc').exists() == 1):
         isadmin = True 
@@ -114,7 +114,7 @@ def home(request):
         isadmin = False 
     return render(request, 'home.html', {'isadmin': isadmin})
 
-@login_required(login_url='/fir/login/')
+@login_required(login_url=settings.LOGIN_URL)
 def create_fir(request):        
     InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
     'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
@@ -184,8 +184,8 @@ def create_fir(request):
         kilform = KilInlineFormSet(prefix = 'killed')
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
-@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url='/fir/home')
-@login_required(login_url='/fir/login/')
+@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url=settings.LOGIN_REDIRECT_URL)
+@login_required(login_url=settings.LOGIN_URL)
 def edit_fir(request,acc_id):
     InjInlineFormSet = inlineformset_factory(details, injured, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), 
   widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),
@@ -338,8 +338,8 @@ def get_query(query_string, search_fields):
             query = query & or_query
     return query
 
-@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url='/fir/home')
-@login_required(login_url='/fir/login/')
+@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url=settings.LOGIN_REDIRECT_URL)
+@login_required(login_url=settings.LOGIN_URL)
 def search_fir(request):
     query_string = ''
     fir_entries = None

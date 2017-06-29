@@ -134,7 +134,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/fir/login/'
 LOGOUT_URL = '/logout/'
-LOGIN_REDIRECT_URL = '/fir/home'
+LOGIN_REDIRECT_URL = 'home'
 GOOGLE_RECAPTCHA_SECRET_KEY = '6Lfd8iYUAAAAAGCC-LXkYded7hMrhLB2KJ65XDsD'
