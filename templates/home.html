@@ -50,11 +50,15 @@ display:none;
 	  
 	  <div class="box"><a href="{% url 'create_fir' %}">Add an Accident Report</a></div>
 	  <div class="box">View Analysis and Reports</div>
+	 {% if isadmin is True %}
+	
 	  <div class="box"><a id ="edit" href="#">Edit a Report</a></div>
       <div class = "box" id ="search">
       <form action="{% url 'search_fir' %}" method="get" accept-charset="utf-8">
         <input type="text" id = "searchbox" class="form-control" placeholder="Enter Accident ID" name="q">
         <button type="submit">Search</button></div>
+		
+	{% endif %}
         </form>
     <script>
         $('#edit').click( function(){

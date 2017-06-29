@@ -32,8 +32,7 @@ import re
 from django.contrib import messages
 
 
-
-@user_passes_test(lambda user: not user.username, login_url='/fir/home', redirect_field_name=None)
+@user_passes_test(lambda user: not user.username, login_url='/fir/home', redirect_field_name=None) #whatdoesthisdo
 def login(request):
   print "inside req"
   if request.method=='POST':
@@ -109,7 +108,11 @@ def signup(request):
 
 @login_required(login_url='/fir/login/')
 def home(request):
-    return render(request, 'home.html')
+    if (request.user.groups.filter(name='arc').exists() == 1):
+        isadmin = True 
+    else:
+        isadmin = False 
+    return render(request, 'home.html', {'isadmin': isadmin})
 
 @login_required(login_url='/fir/login/')
 def create_fir(request):        
@@ -181,6 +184,8 @@ def create_fir(request):
         kilform = KilInlineFormSet(prefix = 'killed')
         return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
+@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url='/fir/home')
+@login_required(login_url='/fir/login/')
 def edit_fir(request,acc_id):
     InjInlineFormSet = inlineformset_factory(details, injured, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), 
   widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),
@@ -333,7 +338,8 @@ def get_query(query_string, search_fields):
             query = query & or_query
     return query
 
-@login_required
+@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url='/fir/home')
+@login_required(login_url='/fir/login/')
 def search_fir(request):
     query_string = ''
     fir_entries = None
