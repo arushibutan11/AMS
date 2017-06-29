@@ -493,8 +493,17 @@ h2 { text-align: center; }
 <label class="firsttag">VICTIM_PERSON_STATUS</label>
 {{ form.VICTIM_PERSON_STATUS }}
 
+<label class="firsttag">VICTIM_PERSON_STATUS1</label>
+{{ form.VICTIM_PERSON_STATUS1 }}
+
 <br>
 <br>
+<div>
+
+<label class="firsttag">MVA_NAME</label>
+{{ form.MVA_NAME }}
+
+</div>
 <label>VICTIM_FAULT</label>
  {{ form.VICTIM_FAULT }}
 
@@ -505,10 +514,34 @@ h2 { text-align: center; }
 <label class="firsttag">AREA_TYPE</label>
  {{ form.AREA_TYPE }}
 
+<label class="firsttag">AREA_TYPE-2</label>
+ {{ form.SAREA_TYPE }}
 
+<label class="firsttag">AREA_TYPE-2-OTHER</label>
+ {{ form.SOAREA_TYPE }}
+
+</div>
+
+<div>
 <label>ROAD_LEVEL</label>
  {{ form.ROAD_LEVEL }} 
 
+<label>GROUND_LEVEL</label>
+ {{ form.ROAD_LEVEL }} 
+
+ <label>JUNCTION_CONTROL</label>
+ {{ form.ROAD_LEVEL }} 
+
+</div>
+<div>
+<label>ROAD_TYPE</label>
+ {{ form.ROAD_TYPE }} 
+
+ <label>ROAD_TYPE1</label>
+ {{ form.ROAD_TYPE1 }} 
+
+ <br>
+ <br>
 
 <label>ROAD_CONDITION </label>
 {{ form.ROAD_CONDITION }}
@@ -584,6 +617,7 @@ h2 { text-align: center; }
 <label>REMEDIES</label>
 {{ form.REMEDIES }}
 </div>
+
 
 <input type="submit" class = "formsubmit">
 </form>

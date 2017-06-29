@@ -210,13 +210,26 @@ class accid_type(models.Model):
             SNO = self.SNO,
             VICTIM = self.VICTIM)    
 
-
-
 class victim_person_status(models.Model):
 
     Victim_Person_Status=models.CharField(max_length=100,primary_key=True)
     def __str__(self):
         return self.Victim_Person_Status             
+
+class victim_person_status1(models.Model):
+
+    Victim_Person_Status1=models.CharField(max_length=100,primary_key=True)
+    def __str__(self):
+        return self.Victim_Person_Status1  
+
+class mva_act(models.Model):
+          
+    MVA_Section=models.CharField(max_length=20,primary_key=True)
+    MVA_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.MVA_Name
+
+
                                         
 class area_type(models.Model):
           
@@ -225,12 +238,63 @@ class area_type(models.Model):
     def __str__(self):
         return self.Area_Type
 
-class road_level(models.Model):
+
+class area_type2(models.Model):
           
+    SAtype_Code=models.CharField(max_length=20,primary_key=True)
+    SArea_Type=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.SArea_Type
+
+class area_type2_oth(models.Model):
+          
+    SOAtype_Code=models.CharField(max_length=20,primary_key=True)
+    SOArea_Type=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.SAOrea_Type
+
+
+class road_level(models.Model):          
     RL_Code=models.CharField(max_length=20,primary_key=True)
     RL_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.RL_Name
+
+
+class ground_level(models.Model):
+          
+    RL_Code=models.CharField(max_length=20)
+    RL_Name=models.CharField(max_length = 100)
+    GL_Code=models.CharField(max_length=20,primary_key=True)
+    GL_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.GL_Code
+
+class junction_control(models.Model):
+          
+    GL_Code=models.CharField(max_length=20)
+    GL_Name=models.CharField(max_length = 100)
+    JCTRL_Code=models.CharField(max_length=20)
+    JCTRL_Name=models.CharField(max_length = 100)
+    GL_JCTRL_Code=models.CharField(max_length=40,primary_key=True)
+    def __str__(self):
+        return self.GL_JCTRL_Code
+
+
+class road_type(models.Model):
+          
+    RT_Code=models.CharField(max_length=20,primary_key=True)
+    RT_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.RT_Name
+
+
+class road_type1(models.Model):
+          
+    SRT_Code=models.CharField(max_length=20,primary_key=True)
+    SRT_Name=models.CharField(max_length = 100)
+    def __str__(self):
+        return self.SRT_Name
 
 
 class seperation(models.Model):
@@ -356,6 +420,8 @@ class remedies(models.Model):
     Rem_Description=models.CharField(max_length = 100)
     def __str__(self):
         return self.Rem_Description
+
+
  
 class vehtype1(models.Model):
     VEHTYPE = models.CharField(max_length=20, primary_key= True)
@@ -641,8 +707,16 @@ class details(models.Model):
     HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)
 
     VICTIM_PERSON_STATUS = models.ForeignKey(victim_person_status,default='',blank=True)
+    VICTIM_PERSON_STATUS1 = models.ForeignKey(victim_person_status1,default='',blank=True)
+    MVA_NAME =models.ForeignKey(mva_act,default='',blank=True)
     AREA_TYPE = models.ForeignKey(area_type,default='',blank=True)
+    SAREA_TYPE=models.ForeignKey(area_type2,default='',blank=True)
+    SOAREA_TYPE=models.ForeignKey(area_type2_oth,default='',blank=True)
     ROAD_LEVEL = models.ForeignKey(road_level,default='',blank=True)
+    GROUND_LEVEL=models.ForeignKey(ground_level,default='',blank=True)
+    JUNCTION_CONTROL=models.ForeignKey(junction_control,default='',blank=True)
+    ROAD_TYPE=models.ForeignKey(road_type,default='',blank=True)
+    ROAD_TYPE1=models.ForeignKey(road_type1,default='',blank=True)
     SEPERATION = models.ForeignKey(seperation,default='',blank=True)
     ROAD_CHARACTER = models.ForeignKey(road_character,default='',blank=True)
     SURFACE_TYPE = models.ForeignKey(surface_type,default='',blank=True)
@@ -661,8 +735,6 @@ class details(models.Model):
     REMEDIES = models.ForeignKey(remedies,default='',blank=True)
     FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
     ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
-
-
 
 
 class injured(models.Model):
