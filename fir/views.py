@@ -19,6 +19,8 @@ from django.db.models import Q
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as authlogin, authenticate
+from django.contrib.auth.models import User, Group
+
 from django.contrib.auth.forms import UserCreationForm
 from .models import profile
 import urllib
@@ -78,8 +80,8 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.refresh_from_db() 
-            user.profile.name = form.cleaned_data.get('name') # load the profile instance created by the signal
+            user.refresh_from_db() # load the profile instance created by the signal
+            user.profile.name = form.cleaned_data.get('name') 
             user.profile.emp_id = form.cleaned_data.get('emp_id')
             user.profile.circle = form.cleaned_data.get('circle')
             user.profile.designation = form.cleaned_data.get('designation')
@@ -87,6 +89,19 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=user.username, password=raw_password)
             authlogin(request, user)
+            user.refresh_from_db()
+            if (user.profile.designation == 'DCP'):
+                g = Group.objects.get(name='dcp') 
+                g.user_set.add(user)
+            if (user.profile.designation == 'ACP'):
+                g = Group.objects.get(name='acp') 
+                g.user_set.add(user)
+            if (user.profile.designation == 'INS'):
+                g = Group.objects.get(name='ins') 
+                g.user_set.add(user)
+            if (user.profile.designation == 'ARC'):
+                g = Group.objects.get(name='arc') 
+                g.user_set.add(user)
             return redirect('home')
     else:
         form = SignUpForm()

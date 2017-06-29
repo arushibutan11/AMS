@@ -38,8 +38,8 @@ CONVERT_STAT_Choices = (
 
 designation_choices = (
      ('', '-----------'),
-    ('DCP','DCP'),('ACP','ACP'),('INSPECTOR', 'INSPECTOR'),
-    ('ACCIDENT RESEARCH CELL','ACCIDENT RESEARCH CELL'),
+    ('DCP','DCP'),('ACP','ACP'),('INS', 'INSPECTOR'),
+    ('ARC','ACCIDENT RESEARCH CELL'),
 )
 circle_choices = (
 ('', '-----------'),
