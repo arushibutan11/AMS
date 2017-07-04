@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
-from .models import details, circles, sections, injured, killed, location, accid_type
-from .forms import FirForm, InjForm, KilForm, SignUpForm
+from .models import details, circles, sections, injured, killed, location, accid_type, offender, collision, victim_person, victim_vehicle
+from .forms import FirForm, InjForm, KilForm, SignUpForm, PVicForm, VVicForm, OffendForm, CollisionForm
 from django.forms import ModelForm
 from django import forms
 from django.shortcuts import render, redirect, get_object_or_404
@@ -274,8 +274,48 @@ def edit_fir(request,acc_id):
         form = FirForm(instance = fir)
         return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
         
+@login_required(login_url=settings.LOGIN_URL)
+def new_fir(request):        
+    PVicInlineFormSet = inlineformset_factory(details, victim_person, exclude = (), form=PVicForm, extra = 1)
+    VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 1)
+    OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 1)
+    CollisionInlineFormSet = inlineformset_factory(details, collision, exclude = (), form=CollisionForm, extra = 1)
 
-def count_inj(firid):
+    if request.method == 'POST':
+      form = FirForm(request.POST,request.FILES)
+      pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic')
+      vvicform = PVicInlineFormSet(request.POST, prefix = 'vvic')
+      offendform = VVicInlineFormSet(request.POST, prefix = 'offend')
+      collisionform = PVicInlineFormSet(request.POST, prefix = 'collision')
+
+      if form.is_valid():
+        fir = form.save()
+        pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
+        vvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
+        offendform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
+        collisionform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
+
+        if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
+          return render(request,'new_form.html', { 'form': form})
+        else:
+          pvcform.save()
+          vvcform.save()
+          offendform.save()
+          collisionform.save()
+      else:
+        return render(request,'new_form.html', { 'form': form})
+
+
+    else:
+        form = FirForm()
+        pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic')
+        vvicform = PVicInlineFormSet(request.POST, prefix = 'vvic')
+        offendform = VVicInlineFormSet(request.POST, prefix = 'offend')
+        collisionform = PVicInlineFormSet(request.POST, prefix = 'collision')
+        return render(request,'new_form.html', { 'form': form})
+
+
+'''def count_inj(firid):
     is_fir = Q(ACCID_ID = firid)
     is_male = Q(INJSEX = "F")
     is_female = Q(INJSEX = "M")
@@ -313,7 +353,7 @@ def count_kil(firid):
     acc.KILGIRL = CNTG
     if (acc.VEHTYPE2_id == "PED"):
       acc.PEDESTRIAN = KILLED 
-    acc.save() 
+    acc.save() '''
 
 def normalize_query(query_string,
                     findterms=re.compile(r'"([^"]+)"|(\S+)').findall,

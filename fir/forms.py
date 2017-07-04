@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import details, injured, killed, profile, designation_choices, circle_choices
+from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person, victim_vehicle
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
@@ -28,12 +28,7 @@ class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )
-    dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
-        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
-        )
-    dri_lic_date_upto= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
-        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
-        )
+
     CONVERT_DATE=forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
         )
@@ -43,9 +38,9 @@ class FirForm(forms.ModelForm):
 
     class Meta:
         model = details
-     	exclude = ('INJURED','KILLED',)
+     	exclude = ()
  
- 
+
  
     def clean(self):
         cd = self.cleaned_data
@@ -84,10 +79,34 @@ class FirForm(forms.ModelForm):
             self.add_error('VICTIM', "Victim is vehicle")       
         return cd          
 
+class OffendForm(forms.ModelForm):
+    dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+        )
+    dri_lic_date_upto= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+        )
+    class Meta:
+        model = offender
+        exclude = ('ACCID_ID',)
 
+class VVicForm(forms.ModelForm):
 
+    class Meta:
+        model = victim_vehicle
+        exclude = ('ACCID_ID',)
 
+class PVicForm(forms.ModelForm):
 
+    class Meta:
+        model = victim_person
+        exclude = ('ACCID_ID',)
+
+class CollisionForm(forms.ModelForm):
+
+    class Meta:
+        model = collision
+        exclude = ('ACCID_ID',)
 
 class InjForm(forms.ModelForm):
 

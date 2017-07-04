@@ -37,7 +37,9 @@ ARRESTED_Choices=(
 AGE_Choices = (
     ('<10','<10'),('11-18','11-18'),('19-30','19-30'),('31-40','31-40'),('>40','>40'),
 )
-
+INJKIL_CHOICES = (
+    ('INJURED','Injured'),('KILLED','Killed'),
+    )
 VIC_TYPE_CHOICES = (
     ('SCL','School Children'),('PPL','Police Person'),('OTH', 'Other'),
 )
@@ -54,6 +56,9 @@ designation_choices = (
      ('', '-----------'),
     ('DCP','DCP'),('ACP','ACP'),('INS', 'INSPECTOR'),
     ('ARC','ACCIDENT RESEARCH CELL'),
+)
+RELATION_CHOICES = (
+    ('S/O','S/O'),('D/O','D/O'),('W/O', 'W/O'),
 )
 circle_choices = (
 ('', '-----------'),
@@ -281,7 +286,7 @@ class area_type2_oth(models.Model):
     SOAtype_Code=models.CharField(max_length=20,primary_key=True)
     SOArea_Type=models.CharField(max_length = 100)
     def __str__(self):
-        return self.SAOrea_Type
+        return self.SOArea_Type
 
 
 class road_level(models.Model):          
@@ -613,13 +618,11 @@ class vehtype2(models.Model):
           
 
 class details(models.Model):
-
+    #FIR DETAILS
     ACC_ID = models.CharField(max_length=15, primary_key=True)
-    RNG = models.CharField(max_length=5)
-
     CIRCLE = models.ForeignKey(circles)
-
     DIST =  models.CharField(max_length=5)
+    RNG = models.CharField(max_length=5)
     PS = ChainedForeignKey(policestation,
         chained_field = "CIRCLE",
         chained_model_field = "CIRCLE",
@@ -628,28 +631,27 @@ class details(models.Model):
         sort=True)
 
     FIRNO = models.PositiveIntegerField( validators=[MaxValueValidator(9999), MinValueValidator(1)])
-    FIR_DATE = models.DateField('FIR DATE')
-    DATE_OCC = models.DateField('DATE_OCC')
-    TIME_OCC = models.CharField(max_length=4,default='',blank=True)
+    FIR_DATE = models.DateField('FIR Date')
+    DATE_OCC = models.DateField('Acc Date')
     TIME_KNOWN =models.CharField(choices=TIME_KNOWN_CHOICES, max_length = 30)
-    SECTION = models.ForeignKey(sections)
+    TIME_OCC = models.CharField(max_length=4,default='',blank=True)
+    OF_SECTION = models.ForeignKey(sections)
     MVA_NAME =models.ForeignKey(mva_act,default='',blank=True)
-    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
     ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
+    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
+    #END OF FIR DETAILS
 
 
 
-
+    #LOCATION
     PLACE_OCC = models.CharField(max_length=140,blank=True, default='')
     AREA =models.CharField(choices=AREA_CHOICES, max_length = 30)
     LOCATION = models.ForeignKey(location, blank=True,default = 0)
     ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
-    AREA_TYPE = models.ForeignKey(area_type,default='',blank=True)
-    AREA_TYPE_OTHER = models.CharField(max_length=140,blank=True, default='')
-    SAREA_TYPE=models.ForeignKey(area_type2,default='',blank=True)
-    SOAREA_TYPE=models.ForeignKey(area_type2_oth,default='',blank=True)
-
-
+    AREA_TYPE = models.ForeignKey(area_type)
+    AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='')
+    AREA_TYPE2=models.ForeignKey(area_type2)
+    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True)
     ROAD = ChainedForeignKey(
         roads,
         chained_field = "CIRCLE",
@@ -659,32 +661,32 @@ class details(models.Model):
         sort=True)
 
     ROADNAME = models.CharField(max_length=150)
-    MINORROADNAME = models.CharField(max_length=150)
+    MINORROADNAME = models.CharField(max_length=150, default='',blank=True)
 
-    ROAD_LEVEL = models.ForeignKey(road_level,default='',blank=True)
+    ROAD_LEVEL = models.ForeignKey(road_level)
     GROUND_LEVEL=models.ForeignKey(ground_level,default='',blank=True)
-    FLYOVER_UNDERP =models.CharField(choices=FLYOVER_UNDERP_CHOICES, max_length = 30)
+    FLYOVER_UNDERPASS =models.CharField(choices=FLYOVER_UNDERP_CHOICES, max_length = 30,blank=True)
 
-    JUNCTION_CONTROL=models.ForeignKey(junction_control,default='',blank=True)
-    ROAD_TYPE=models.ForeignKey(road_type,default='',blank=True)
-    ROAD_TYPE1=models.ForeignKey(road_type1,default='',blank=True)
-    SEPERATION = models.ForeignKey(seperation,default='',blank=True)
-    ROAD_CHARACTER = models.ForeignKey(road_character,default='',blank=True)
-    ROAD_CHARACTER_REMARKS= models.CharField(max_length=15,blank=True, default=0)
-    SURFACE_TYPE = models.ForeignKey(surface_type,default='',blank=True)
-    SURFACE_CONDITION = models.ForeignKey(surface_condition,default='',blank=True)
-    SURFACE_CONDITION_REMARKS = models.CharField(max_length=15,blank=True, default=0)
-    ROAD_CONDITION = models.ForeignKey(road_condition,default='',blank=True)
-    ROAD_CONDITION_REMARKS = models.CharField(max_length=15,blank=True, default=0)
+    JUNCTION_CONTROL=models.ForeignKey(junction_control)
+    ROAD_TYPE=models.ForeignKey(road_type)
+    ROAD_TYPE1=models.ForeignKey(road_type1)
+    SEPERATION = models.ForeignKey(seperation)
+    ROAD_CHARACTER = models.ForeignKey(road_character)
+    ROAD_CHARACTER_REMARKS= models.CharField(max_length=50,blank=True, default='')
+    SURFACE_TYPE = models.ForeignKey(surface_type)
+    SURFACE_CONDITION = models.ForeignKey(surface_condition)
+    SURFACE_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='')
+    ROAD_CONDITION = models.ForeignKey(road_condition)
+    ROAD_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='')
+    #END OF LOCATION
+    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '')
+    LATITUDE = models.CharField(max_length=15, blank = True, default = '')
     
+
+
+    #DOUBTFUL
+    '''SELF_TYPE = models.ForeignKey(self_type, default=0,blank=True)
     CATEGORY = models.CharField(max_length=140,blank=True, default =0)
-    
-
-    
-
-    
-    SELF_TYPE = models.ForeignKey(self_type, default=0,blank=True)
-
     INJURED = models.PositiveIntegerField(default = 0, blank=True)
     INJMALE = models.PositiveIntegerField(default = 0, blank=True)
     INJFEMALE = models.PositiveIntegerField(default = 0, blank=True)
@@ -695,63 +697,26 @@ class details(models.Model):
     KILFEMALE = models.PositiveIntegerField(default = 0,blank=True)
     KILBOY = models.PositiveIntegerField(default = 0,blank=True)
     KILGIRL = models.PositiveIntegerField(default = 0,blank=True)
-    PEDESTRIAN = models.PositiveIntegerField(default = 0,blank=True)
-    
+    PEDESTRIAN = models.PositiveIntegerField(default = 0,blank=True)    
     ACCTYPE = models.CharField(max_length=20,blank=True)
-
     ACCID_TYPE = models.ForeignKey(accid_type, default = 0)
-
     VICTIM = models.CharField(max_length=100,blank = True, default = 0)
-
     DUPL = models.CharField(max_length=15, blank=True, default = 0)
     PENDING = models.CharField(max_length=15,blank=True,default = 0)
-
     DAY_NIGHT = models.CharField(max_length=15)
     YEAR = models.PositiveIntegerField()
     TIME_SLOT = models.CharField(max_length=15)
     MONTH = models.CharField(max_length=15)
     FN = models.CharField(max_length=15)
-
     ACCAGE = models.CharField(max_length=15, blank=True,default=0)
     ACCSEX = models.CharField(max_length=15, choices = SEX_Choices, blank=True, default = '')
-
     Intersection = models.CharField(max_length=150, blank=True, default = '')
     case_status = models.CharField(max_length=15, blank=True, choices = CONVERT_STAT_Choices, default = '')
     convert_case = models.CharField(max_length=15,blank=True, default = '')
-    
-    BRIEF_FACTS = models.CharField(max_length=500,blank=True, default = '')
-    
-
-    
-    dri_lic_status = models.CharField(max_length=15,blank=True, default = '')
-    
-    REMARK = models.CharField(max_length=500, default = '', blank=True)
     CONFIRM = models.CharField(max_length=15, default = '' ,blank=True)
-    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '')
-    LATITUDE = models.CharField(max_length=15, blank = True, default = '')
-    
-    #CAUSE ANALYSIS
-    CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices)
-    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True)
-    OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    OVER_SPEED_FAULT = models.CharField(max_length=15,choices=YES_NO_CHOICES)
-    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,default='',blank=True)
-    OTHER_VEC_MEH_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,default='',blank=True)
-    OTHER_ROAD_ENV_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,default='',blank=True)
-    OTHER_ROAD_ENGG_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    VICTIM_FAULT = models.ForeignKey(victim_fault,default='',blank=True)
-    OTHER_VICTIM_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    WEATHER_COND = models.ForeignKey(weather_cond,default='',blank=True)
-    OTHER_WEATHER_COND_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    OTHER_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    #END OF CAUSE ANALYSIS
-
     CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,default = 'N')
     CONVERT_DATE = models.DateField(null=True)
-    CN_DT = models.CharField(max_length=1000,blank=True, default = 0)
-    
+    CN_DT = models.CharField(max_length=1000,blank=True, default = 0)    
     CONVERT_FN = models.CharField(max_length=150,blank=True, default = 0)
     BUS_NO = models.CharField(max_length=15, default = 0, blank=True)
     BLACK_SPOT = models.CharField(max_length=15, default = '', blank=True)
@@ -764,21 +729,48 @@ class details(models.Model):
     PILLION_HELMET = models.CharField(max_length=15,default='',blank=True)
     STATE = models.CharField(max_length=15,default='',blank=True)
     SCANNED = models.CharField(max_length=15,default='',blank=True)
-    HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)
+    HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)'''
+    #END OF DOUBTFUL
 
-    VICTIM_PERSON_STATUS = models.ForeignKey(victim_person_status,default='',blank=True)
-    VICTIM_PERSON_STATUS1 = models.ForeignKey(victim_person_status1,default='',blank=True)
-    REMEDIES = models.ForeignKey(remedies,default='',blank=True)
+    #REMARKS 
+    REMEDIES = models.ForeignKey(remedies)
+    REMARKS = models.CharField(max_length=1000,default='',blank=True)
+    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True)    
+    #END OF REMARKS
+    
+
+    
+    #CAUSE ANALYSIS
+    CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices)
+    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True)
+    OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '')
+    DRUNK_FAULT = models.CharField(max_length=25,blank=True, default = '')
+    OVER_SPEED_FAULT = models.CharField(max_length=15,choices=YES_NO_CHOICES,default='',blank=True)
+    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,default='',blank=True)
+    OTHER_VEC_MEH_FAULT = models.CharField(max_length=50,blank=True, default = '')
+    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,default='',blank=True)
+    OTHER_ROAD_ENV_FAULT = models.CharField(max_length=50,blank=True, default = '')
+    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,default='',blank=True)
+    OTHER_ROAD_ENGG_FAULT = models.CharField(max_length=50,blank=True, default = '')
+    VICTIM_FAULT = models.ForeignKey(victim_fault,default='',blank=True)
+    OTHER_VICTIM_FAULT = models.CharField(max_length=50,blank=True, default = '')
+    WEATHER_COND = models.ForeignKey(weather_cond,default='',blank=True)
+    OTHER_WEATHER_COND_FAULT = models.CharField(max_length=50,blank=True, default = '')
+    OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '')
+    #END OF CAUSE ANALYSIS
+
 
 class offender(models.Model):
+    ACCID_ID = models.ForeignKey(details)
     #offending vehicle
-    VEHTYPE1 = models.ForeignKey(vehtype1)
-    SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default=0)
+    VEHTYPE1 = models.ForeignKey(vehtype1)    
+    SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default='') #Not clear
     routeno1 = models.CharField(max_length=15, default = 0, blank=True)
     rcno1 = models.CharField(max_length=15, default = 0, blank=True)
-    VEHICLE_LOADED_CONDITION1 = models.ForeignKey(vehicle_loaded_condition,default='',blank=True)
+    VEHICLE_LOADED_CONDITION1 = models.ForeignKey(vehicle_loaded_condition)
     STUDY_PARAMETER1 = models.ForeignKey(study_parameter,default='',blank=True)
-    dri_name = models.CharField(max_length=150,blank=True, default = '')
+    dri_name = models.CharField(max_length=50,blank=True, default = '')
+    dri_relation = models.CharField(max_length=15, choices = RELATION_CHOICES, blank=True, default = '')
     dri_rel_name = models.CharField(max_length=150,blank=True, default = '')
     dri_sex = models.CharField(max_length=15, choices = SEX_Choices,blank=True,default='')
     dri_age = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0)
@@ -787,51 +779,55 @@ class offender(models.Model):
     OTHER_EDU_QUAL = models.CharField(max_length=50, blank=True,default='')
     WORK_STATUS = models.ForeignKey(work_status,default='',blank=True)
     OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='')
-    DRI_DRUNK = models.BooleanField()
+    DRI_DRUNK = models.CharField(max_length=50, choices = YES_NO_CHOICES)
     dri_lic_no = models.CharField(max_length=150,blank=True, default = '')
     dri_lic_from = models.CharField(max_length=150,blank=True, default = '')
     dri_lic_date_issu = models.DateField(null=True)
     dri_lic_date_upto = models.DateField(null=True)
+
+    #offending vehicle end
     RNOV1A = models.CharField(max_length=4, default=0, blank=True)
     RNOV1B = models.CharField(max_length=4, default=0, blank=True)
-    #offending vehicle end
-    dri_lic_status = models.CharField(max_length=15,blank=True, default = '')
+
 
 class victim_vehicle(models.Model):
+    ACCID_ID = models.ForeignKey(details) 
     #victim vehicle 
     VEHTYPE2 = models.ForeignKey(vehtype2)
-    SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default=0, blank=True)
+    SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default=0, blank=True)  #Not clear
     routeno2 = models.CharField(max_length=15, default = 0, blank=True)
     rgno2 = models.CharField(max_length=15, default = 0, blank=True)
-    VEHICLE_LOADED_CONDITION2 = models.ForeignKey(vehicle_loaded_condition,default='',blank=True)
+    VEHICLE_LOADED_CONDITION2 = models.ForeignKey(vehicle_loaded_condition)
     STUDY_PARAMETER2 = models.ForeignKey(study_parameter,default='',blank=True)
+
     #victim vehicle end
 
-class victim(models.Model):
-    VIC_TYPE = models.CharField(max_length=15, choices = VIC_TYPE_CHOICES)
+class victim_person(models.Model):
+    ACCID_ID = models.ForeignKey(details)
+    INJKIL = models.CharField(max_length=15, choices = INJKIL_CHOICES)
     VICSEX = models.CharField(max_length=15, choices = SEX_Choices)
     VICAGE = models.CharField(max_length = 15, choices = AGE_Choices)
-    VICTYPE = models.CharField(max_length = 15, choices = VIC_TYPE_CHOICES)
-    VICTYPE1 = models.ForeignKey(victim_person_status1)
+    PER_STAT_TYPE = models.CharField(max_length = 15, choices = VIC_TYPE_CHOICES)
+    PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1)
     VIC_IN_VEH = models.CharField(max_length = 5, choices = YES_NO_CHOICES)
-    OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES)
-    #VEH_INFO = models.CharField(max_length = 5, choices = OFFEND_CHOICES)
-    VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES)
-    VIC_HELMET = models.CharField(max_length = 5, choices = YES_NO_CHOICES)
-    HELMET_STANDARD = models.CharField(max_length = 15, choices = HELMET_STANDARD_CHOICES)
+    OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='')
+    VEH_INFO = models.CharField(max_length = 5, blank = True) #NOT CLEAR
+    VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='')
+    VIC_HELMET = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='')
+    HELMET_STANDARD = models.CharField(max_length = 15, choices = HELMET_STANDARD_CHOICES, blank=True,default='')
     VIC_EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True)
     VIC_OTHER_EDU_QUAL = models.CharField(max_length=50, blank=True,default='')
     VIC_WORK_STATUS = models.ForeignKey(work_status,default='',blank=True)
     VIC_OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='')
-    VIC_DRI_DRUNK = models.BooleanField()
-    ACCID_ID = models.ForeignKey(details)
+    VIC_DRI_DRUNK = models.CharField(max_length = 5, choices = YES_NO_CHOICES)
+
 
 class collision(models.Model):
-
+    ACCID_ID = models.ForeignKey(details)
     VIC_TYPE = models.CharField(max_length=15)
     COL_TYPE = models.CharField(max_length = 15)
-    ACCID_ID = models.ForeignKey(details)
 
+#REMOVE BUT HOW
 
 class injured(models.Model):
     PS = models.CharField(max_length=5)
