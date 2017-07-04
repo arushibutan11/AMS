@@ -619,68 +619,104 @@ class vehtype2(models.Model):
 
 class details(models.Model):
     #FIR DETAILS
-    ACC_ID = models.CharField(max_length=15, primary_key=True)
-    CIRCLE = models.ForeignKey(circles)
-    DIST =  models.CharField(max_length=5)
-    RNG = models.CharField(max_length=5)
+    ACC_ID = models.CharField(max_length=15, primary_key=True,  verbose_name = 'Accident ID')
+    CIRCLE = models.ForeignKey(circles, verbose_name = 'Circle')
+    DIST =  models.CharField(max_length=5, verbose_name = 'District')
+    RNG = models.CharField(max_length=5, verbose_name = 'Range')
     PS = ChainedForeignKey(policestation,
         chained_field = "CIRCLE",
         chained_model_field = "CIRCLE",
         show_all=False,
         auto_choose=True,
-        sort=True)
+        sort=True, 
+        verbose_name = 'Police Station')
 
-    FIRNO = models.PositiveIntegerField( validators=[MaxValueValidator(9999), MinValueValidator(1)])
+    FIRNO = models.PositiveIntegerField( verbose_name = 'FIR No.', validators=[MaxValueValidator(9999), MinValueValidator(1)])
     FIR_DATE = models.DateField('FIR Date')
-    DATE_OCC = models.DateField('Acc Date')
-    TIME_KNOWN =models.CharField(choices=TIME_KNOWN_CHOICES, max_length = 30)
-    TIME_OCC = models.CharField(max_length=4,default='',blank=True)
-    OF_SECTION = models.ForeignKey(sections)
-    MVA_NAME =models.ForeignKey(mva_act,default='',blank=True)
-    ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
-    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
+    DATE_OCC = models.DateField('Accident Date')
+    TIME_KNOWN =models.CharField(choices=TIME_KNOWN_CHOICES, max_length = 30, verbose_name = 'Time Known')
+    TIME_OCC = models.CharField(max_length=4,default='',blank=True, verbose_name = 'Time')
+    OF_SECTION = models.ForeignKey(sections, verbose_name = 'Section')
+    MVA_NAME =models.ForeignKey(mva_act,blank=True, null=True,verbose_name = 'MVA')
+    ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Accident Photo')
+    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'FIR Photo')
     #END OF FIR DETAILS
 
 
 
     #LOCATION
-    PLACE_OCC = models.CharField(max_length=140,blank=True, default='')
-    AREA =models.CharField(choices=AREA_CHOICES, max_length = 30)
-    LOCATION = models.ForeignKey(location, blank=True,default = 0)
-    ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='')
-    AREA_TYPE = models.ForeignKey(area_type)
-    AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='')
-    AREA_TYPE2=models.ForeignKey(area_type2)
-    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True)
+    PLACE_OCC = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Place of Occurence')
+    AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
+    LOCATION = models.ForeignKey(location, blank=True,default = 0, verbose_name = 'Location')
+    ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Sketch Photo')
+    AREA_TYPE = models.ForeignKey(area_type, verbose_name = 'Area Type')
+    AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Area Type Other')
+    AREA_TYPE2=models.ForeignKey(area_type2, verbose_name = 'Area Type 2')
+    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True, verbose_name = 'Area Type 2 Other')
     ROAD = ChainedForeignKey(
         roads,
         chained_field = "CIRCLE",
         chained_model_field = "CIRCLE",
         show_all=False,
         auto_choose=True,
-        sort=True)
+        sort=True,
+        verbose_name = 'Road')
 
-    ROADNAME = models.CharField(max_length=150)
-    MINORROADNAME = models.CharField(max_length=150, default='',blank=True)
+    ROADNAME = models.CharField(max_length=150, verbose_name = 'Road Name')
+    MINORROADNAME = models.CharField(max_length=150, default='',blank=True, verbose_name = 'Minor Road Name')
 
-    ROAD_LEVEL = models.ForeignKey(road_level)
-    GROUND_LEVEL=models.ForeignKey(ground_level,default='',blank=True)
-    FLYOVER_UNDERPASS =models.CharField(choices=FLYOVER_UNDERP_CHOICES, max_length = 30,blank=True)
+    ROAD_LEVEL = models.ForeignKey(road_level, verbose_name = 'Road Level')
+    GROUND_LEVEL=models.ForeignKey(ground_level,default='',blank=True, verbose_name = 'Ground Level')
+    FLYOVER_UNDERPASS =models.CharField(choices=FLYOVER_UNDERP_CHOICES, max_length = 30,blank=True, verbose_name = 'Flyover/Underpass')
 
-    JUNCTION_CONTROL=models.ForeignKey(junction_control)
-    ROAD_TYPE=models.ForeignKey(road_type)
-    ROAD_TYPE1=models.ForeignKey(road_type1)
-    SEPERATION = models.ForeignKey(seperation)
-    ROAD_CHARACTER = models.ForeignKey(road_character)
-    ROAD_CHARACTER_REMARKS= models.CharField(max_length=50,blank=True, default='')
-    SURFACE_TYPE = models.ForeignKey(surface_type)
-    SURFACE_CONDITION = models.ForeignKey(surface_condition)
-    SURFACE_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='')
-    ROAD_CONDITION = models.ForeignKey(road_condition)
-    ROAD_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='')
+    JUNCTION_CONTROL=models.ForeignKey(junction_control, verbose_name = 'Junction')
+    ROAD_TYPE=models.ForeignKey(road_type, verbose_name = 'Road Type')
+    ROAD_TYPE1=models.ForeignKey(road_type1, verbose_name = 'Road Type 1')
+    SEPERATION = models.ForeignKey(seperation, verbose_name = 'Separation')
+    ROAD_CHARACTER = models.ForeignKey(road_character, verbose_name = 'Road Character')
+    ROAD_CHARACTER_REMARKS= models.CharField(max_length=50,blank=True, default='', verbose_name = 'Road Char Remarks')
+    SURFACE_TYPE = models.ForeignKey(surface_type, verbose_name = 'Surface Type')
+    SURFACE_CONDITION = models.ForeignKey(surface_condition, verbose_name = 'Surface Condition')
+    SURFACE_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Surface Cond Remarks')
+    ROAD_CONDITION = models.ForeignKey(road_condition, verbose_name = 'Road Condition')
+    ROAD_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Road Cond Remarks')
     #END OF LOCATION
-    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '')
-    LATITUDE = models.CharField(max_length=15, blank = True, default = '')
+    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Latitude')
+    LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Longitude')
+
+    #REMARKS 
+    REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
+    REMARKS = models.CharField(max_length=1000,default='',blank=True, verbose_name = 'Remarks')
+    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')    
+    #END OF REMARKS
+    
+
+    
+    #CAUSE ANALYSIS
+    CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
+    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Driver Fault')
+    OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Other Dri Fault')
+
+    DRUNK_FAULT = models.CharField(max_length=25,blank=True, default = '', verbose_name = 'Drunk')
+    OVER_SPEED_FAULT = models.CharField(max_length=15,choices=YES_NO_CHOICES,default='',blank=True, verbose_name = 'Over Speed')
+
+    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,null=True,blank=True, verbose_name = 'Vehicle Mechanical')
+    OTHER_VEC_MEH_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Other Vehicle Mech')
+
+    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,null=True,blank=True, verbose_name = 'Road Environment')
+    OTHER_ROAD_ENV_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Other Road Env')
+
+    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,null=True,blank=True, verbose_name = 'Road Engg')
+    OTHER_ROAD_ENGG_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Other Road Engg')
+
+    VICTIM_FAULT = models.ForeignKey(victim_fault,null=True,blank=True, verbose_name = 'Victim')
+    OTHER_VICTIM_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Other Victim')
+
+    WEATHER_COND = models.ForeignKey(weather_cond,null=True,blank=True, verbose_name = 'Weather Cond')
+    OTHER_WEATHER_COND_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Other Weather Cond')
+
+    OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '', verbose_name = 'Other')
+    #END OF CAUSE ANALYSIS
     
 
 
@@ -732,32 +768,6 @@ class details(models.Model):
     HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)'''
     #END OF DOUBTFUL
 
-    #REMARKS 
-    REMEDIES = models.ForeignKey(remedies)
-    REMARKS = models.CharField(max_length=1000,default='',blank=True)
-    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True)    
-    #END OF REMARKS
-    
-
-    
-    #CAUSE ANALYSIS
-    CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices)
-    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True)
-    OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    DRUNK_FAULT = models.CharField(max_length=25,blank=True, default = '')
-    OVER_SPEED_FAULT = models.CharField(max_length=15,choices=YES_NO_CHOICES,default='',blank=True)
-    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,default='',blank=True)
-    OTHER_VEC_MEH_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,default='',blank=True)
-    OTHER_ROAD_ENV_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,default='',blank=True)
-    OTHER_ROAD_ENGG_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    VICTIM_FAULT = models.ForeignKey(victim_fault,default='',blank=True)
-    OTHER_VICTIM_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    WEATHER_COND = models.ForeignKey(weather_cond,default='',blank=True)
-    OTHER_WEATHER_COND_FAULT = models.CharField(max_length=50,blank=True, default = '')
-    OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '')
-    #END OF CAUSE ANALYSIS
 
 
 class offender(models.Model):

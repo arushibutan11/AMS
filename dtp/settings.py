@@ -34,6 +34,7 @@ INSTALLED_APPS = [
 
     'smart_selects',
     'report_builder',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

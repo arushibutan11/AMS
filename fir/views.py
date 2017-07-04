@@ -296,12 +296,13 @@ def new_fir(request):
         collisionform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
 
         if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
-          return render(request,'new_form.html', { 'form': form})
+          return HttpResponse('here')
         else:
           pvcform.save()
           vvcform.save()
           offendform.save()
           collisionform.save()
+          return HttpResponse('done')
       else:
         return render(request,'new_form.html', { 'form': form})
 

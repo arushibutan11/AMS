@@ -9,7 +9,9 @@ from django.forms.models import BaseModelFormSet, inlineformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
-
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.bootstrap import PrependedText, PrependedAppendedText, FormActions
 
 class SignUpForm(UserCreationForm):
     name = forms.CharField(max_length=50, required= True)
@@ -22,19 +24,21 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'name', 'emp_id', 'circle', 'designation', 'password1', 'password2', )
 
+
     
 
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )
-
-    CONVERT_DATE=forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
-        widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
+    FIR_DATE = forms.DateField(required = False,
+        widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )
-    BRIEF_FACTS = forms.CharField( required = False, widget=forms.Textarea)
-    REMARK = forms.CharField( required = False, widget=forms.Textarea)
-    file = forms.FileField()
+
+    REMARKS = forms.CharField( required = False, widget=forms.Textarea)
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
     class Meta:
         model = details
@@ -56,7 +60,7 @@ class FirForm(forms.ModelForm):
                 self.add_error('LATITUDE', "Check Value of Latitude")             
 
              
-        if cd.get('TIME_OCC') is not "UNK":
+        if cd.get('TIME_OCC') is not "UNK" and (cd.get('TIME_OCC') != ''):
             tim1 = cd.get('TIME_OCC')[:2]
             tim2 = cd.get('TIME_OCC')[-2:]
             tim1 = int(tim1)
@@ -64,7 +68,7 @@ class FirForm(forms.ModelForm):
             if (tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0):
                 self.add_error('TIME_OCC', "Enter a valid time")
 
-        VEHTYPE2 = str(cd.get('VEHTYPE2'))        
+        '''VEHTYPE2 = str(cd.get('VEHTYPE2'))        
         VICTIM = str(cd.get('VICTIM'))
 
         if ("PEDESTRIAN" in VEHTYPE2) and ("VEHICLES" in VICTIM or "SELF"  in VICTIM or "PASSENGER"  in VICTIM or "SELF/ANIMAL" in VICTIM ):
@@ -76,7 +80,7 @@ class FirForm(forms.ModelForm):
         elif ("PASSENGER" in VEHTYPE2) and ("SELF" in VICTIM  or "PEDESTRIAN" in VICTIM  or "SELF/ANIMAL" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is passenger")
         elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
-            self.add_error('VICTIM', "Victim is vehicle")       
+            self.add_error('VICTIM', "Victim is vehicle") '''      
         return cd          
 
 class OffendForm(forms.ModelForm):
