@@ -193,38 +193,38 @@ h2 { text-align: center; }
 
 </div>
 
-<div class="tab-pane fade vvic-formset" id="vvic">
-
+<div class="tab-pane fade" id="vvic">
+<div class = "vvic-formset">
 {{ vvicform.management_form }}
 {% for form in vvicform %}
               {{ form|crispy }}
             {% endfor %}
-
+</div>
 
 </div>
 
-<div class="tab-pane fade pvic-formset" id="pvic">
-
+<div class="tab-pane fade" id="pvic">
+<div class = "pvic-formset">
     {{ pvicform.management_form }}
 {{pvicform|crispy}}
-
 </div>
-<div class="tab-pane fade offend-formset" id="offend">
-
+</div>
+<div class="tab-pane fade" id="offend">
+<div class = "offend-formset">
   {{ offendform.management_form }}
 {{offendform|crispy}}
 
-
 </div>
-<div class="tab-pane fade collision-formset" id="collision">
-
+</div>
+<div class="tab-pane fade" id="collision">
+<div class="collision-formset">
   {{ collisionform.management_form }}
 {{collisionform|crispy}}
-  
-
-</div>
+ </div>
 
 <input type="submit" class = "formsubmit">
+</div>
+
 
 </form>
 </div>

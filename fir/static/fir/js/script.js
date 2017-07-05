@@ -94,24 +94,24 @@ $("#id_DATE_OCC_day, #id_DATE_OCC_month").change(function () {
 
 
 $('.vvic-formset').formset({
-    addText: 'add',
-    deleteText: 'remove',
+    addText: '<span class = "btn btn-success btn-sm">Add</span>',
+    deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
     prefix: 'vvic'     
 });
 $('.pvic-formset').formset({
-    addText: 'add',
-    deleteText: 'remove',
+    addText: '<span class = "btn btn-success btn-sm">Add</span>',
+    deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
     prefix: 'pvic'
     
     });
 $('.offend-formset').formset({
-    addText: 'add',
-    deleteText: 'remove',
+    addText: '<span class = "btn btn-success btn-sm">Add</span>',
+    deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
     prefix: 'offend'     
 });
 $('.collision-formset').formset({
-    addText: 'add',
-    deleteText: 'remove',
+    addText: '<span class = "btn btn-success btn-sm">Add</span>',
+    deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
     prefix: 'collision'
     
     });
