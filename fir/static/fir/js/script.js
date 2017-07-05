@@ -115,6 +115,12 @@ $('.collision-formset').formset({
     prefix: 'collision'
     
     });
+$('.cause-formset').formset({
+    addText: '<span class = "btn btn-success btn-sm">Add</span>',
+    deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
+    prefix: 'cause'
+    
+    });
     
 
 

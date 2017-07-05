@@ -2,11 +2,12 @@
 <html>  
 <head>
  {% load static %}
+ {% load crispy_forms_tags %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
+<script src="{% static 'fir/js/bootstrap.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
@@ -15,12 +16,17 @@
 
 <script>
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE , #id_FIRNO , #id_PS, #id_DATE_OCC_year, #id_DATE_OCC_month, #id_DATE_OCC_day').prop('readonly', true);
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE,  #id_FIRNO , #id_PS, #id_DATE_OCC_year, #id_DATE_OCC_month, #id_DATE_OCC_day').css({"background-color": "rgb(247, 247, 247)"});
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_FIRNO , id_PS, id_DATE_OCC_year, id_DATE_OCC_month, id_DATE_OCC_day ').css({"border": "1px #aaaaaa solid"});
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
+$('#id_LOCATION').val('11');
+$('#id_SELF_TYPE').val('0');
+
 }
 
 </script>
+
+
 <style type="text/css">
 
 label.firsttag {
@@ -95,11 +101,8 @@ select {
 }
 div{
     width: 100%;
-    border-bottom: 10px;
-    border-bottom: 1px #c7bfbf solid;
     color: black;
-    /* margin: 10px 0 10px 0; */
-    padding: 10px;
+    padding: 5px;
 } 
 input {
     background-color: white
@@ -171,832 +174,64 @@ h2 { text-align: center; }
 
 <div class="form-style-6">
 <h1>ACCIDENT REPORT FORM</h1>
-<form name="myForm" action="{% url 'edit_fir' fir.ACC_ID%}" method="Post">
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#main_fir">FIR Details</a></li>
+    <li><a data-toggle="tab" href="#vvic">Victim Vehicle</a></li>
+    <li><a data-toggle="tab" href="#pvic">Victim Person</a></li>
+    <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
+    <li><a data-toggle="tab" href="#collision">Collisions</a></li>
+  </ul>
+
+
+<div class="tab-content">
+<div class="tab-pane fade in active" id="main_fir">
+<form name="myForm" action = "{% url 'edit_fir' fir.ACC_ID%}" method="post">
+
+{{form|crispy}}
 {% csrf_token %}
 
-<div>
-<label class="firsttag">Accident Id:</label>
- {{ form.ACC_ID.as_hidden }} 
- {{fir.ACC_ID}}
- <br>
- <label class="firsttag">Fortnight</label>
-{{ form.FN }}
+</div>
 
-  <label>Month</label>
-  {{ form.MONTH }}
-
-  <label>Year</label>
-  {{ form.YEAR }}
+<div class="tab-pane fade" id="vvic">
+<div class = "vvic-formset">
+{{ vvicform.management_form }}
+{% for form in vvicform %}
+              {{ form|crispy }}
+            {% endfor %}
+</div>
 
 </div>
 
-<div>
-
-<label class="firsttag">Circle: </label> 
-{{ form.CIRCLE.as_hidden }}
-{{ fir.CIRCLE }}
-
-<label>District</label> 
-{{ form.DIST }}
-
-
-<label>Range </label> 
-{{ form.RNG }}
-
-<label>Police Station: </label>
-{{ form.PS.as_hidden }}
-{{ fir.PS }}
+<div class="tab-pane fade" id="pvic">
+<div class = "pvic-formset">
+    {{ pvicform.management_form }}
+{{pvicform|crispy}}
 </div>
-
-<div>
-
-<label class="firsttag">FIR No.:</label>
-{{ form.FIRNO.as_hidden }}
-{{fir.FIRNO}}
-
-<label>Date: </label> 
-{{ form.DATE_OCC.as_hidden }}
-{{ fir.DATE_OCC }}
 </div>
-<div>
-
-<label class="firsttag">Time </label> 
-{{ form.TIME_OCC }}
-
-
-<label>Time Type </label> 
-{{ form.TIME_TYPE }}
-
-<label>Time Slot</label>
-<!--<select id="time" name="Time Slot">
-    <option value="p1">Approx</option>
-    <option value="p2">INFIR</option>
-    </select> -->
-{{ form.TIME_SLOT }}
-
-<label>Day/Night</label> 
-{{ form.DAY_NIGHT }}
-
+<div class="tab-pane fade" id="offend">
+<div class = "offend-formset">
+  {{ offendform.management_form }}
+{{offendform|crispy}}
 
 </div>
-<div>
-
-<label class="firsttag">Place of occurance  </label> 
-{{ form.PLACE_OCC }}
-
-<label for="road">Road Name </label> 
-{{form.ROAD}}
-
- {{form.ROADNAME.as_hidden}}
-
-<label>Location </label> 
-{{ form.LOCATION }}
-<!--<label> Category</label>-->
-{{form.CATEGORY.as_hidden}}
-
-<label>Intersection  </label> 
-{{ form.Intersection}}
-
-
-<br>
-<label class="firsttag">Latitude </label> 
-{{ form.LATITUDE }}
-
-<label>Longitude </label> 
-{{ form.LONGITUDE }}
-
 </div>
-<div>
-
-    <label class="firsttag">Section </label> 
-{{ form.SECTION }}
-
-  <label>Accident Type</label>
- {{ form.ACCTYPE }}
-
-</div>
-<div>
-<h3>Vehicle at fault</h3> 
-
-    <label  class="firsttag">Type</label> 
-{{ form.VEHTYPE1 }}
-
-
- <label  id="tww1" visible="false">TWW1</label> 
-{{ form.TWW1 }}
-
-<br>
-    <label class="firsttag" id="RNOV1A" >Registration-No. A</label> 
-    {{ form.RNOV1A }}
-    <label id="RNOV1B" >Registration-No. B</label> 
-    {{ form.RNOV1B }}
-
-    <label id="route" visible="false">Route No.</label> 
-    {{ form.routeno }}
-
-</div>
-<div>
-<h3>Victim Vehicle</h3> 
-
-    <label  class="firsttag">Type </label> 
-{{ form.VEHTYPE2 }}
-<br>
-    <label  class="firsttag" for="regnof"  id="RNOV2A">Registration-No. A</label> 
-    {{ form.RNOV2A }}
-    <label for="regnof"  id="RNOV2B">Registration-No. B</label> 
-    {{ form.RNOV2B }}
-
-
-    {{ form.PEDESTRIAN.as_hidden }}
-
-    <!--<label for="board>Boarding/De-boarding</label> -->
-    <label id="self_type" visible="false">Self Type</label>
-    {{ form.SELF_TYPE }}
-
-</div>
-<div id="alltables">
-<div id="table1" class="table-editable">
-    
-    <table class="table">
-      <tr>
-
-        <th>Injured- Sex</th>
-        <th>Injured- Age</th>
-        <th>Injured- Type</th>
-
-      </tr>
-    {{ forminj.management_form }}
-      {% for k in forminj %}
-        {% if k.errors %}
-            {% for field in k %}
-        
-        {% for error in field.errors %}
-        
-            <div class="alert alert-danger">
-                <strong>{{field.label}} : {{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-    {% endif %}
-
-      <tr  class = "inj-formset">
-        <td hidden> {{ k.PS }} </td>
-        <td hidden> {{ k.FIRNO }} </td>
-        <td hidden> {{ k.YEAR }} </td>
-
-        {% for hidden in k.hidden_fields %} {{ hidden }} {% endfor %}
-
-        <td>{{ k.INJSEX }}</td>
-        <td>{{ k.INJAGE }}</td>
-        <td>{{ k.INJTYPE }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-  
- <div id="table2" class="table-editable">
-    <table class="table">
-      <tr>
-
-        <th>Killed- Sex</th>
-        <th>Killed- Age</th>
-        <th>Killed- Type</th>
-
-      </tr>
-    {{ formkil.management_form }}
-      {% for k in formkil %}
-        {% if k.errors %}
-            {% for field in k %}
-        
-        {% for error in field.errors %}
-        
-            <div class="alert alert-danger">
-                <strong>{{field.label}} : {{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endfor %}
-    {% for error in form.non_field_errors %}
-        <div class="alert alert-danger">
-            <strong>{{ error|escape }}</strong>
-        </div>
-    {% endfor %}
-    {% endif %}
-
-      <tr  class = "kil-formset">
-        <td hidden> {{ k.PS }} </td>
-        <td hidden> {{ k.FIRNO }} </td>
-        <td hidden> {{ k.YEAR }} </td>
-
-        {% for hidden in k.hidden_fields %} {{ hidden }} {% endfor %}
-
-        <td>{{ k.SEX }}</td>
-        <td>{{ k.AGE }}</td>
-        <td>{{ k.TYPE }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-  </div>
-<div>
-<h3>Accident Driver Details</h3>
-
-
-    <label  class="firsttag" >Driver Name</label> 
-     {{ form.dri_name }}
-     
-    <label>Age </label> 
-    {{ form.dri_age }}
-    
-	<label>Sex </label> 
-     {{ form.dri_sex }}
-    
-	
-    <label>Address </label> 
-     {{ form.dri_add }}
- 
- <label>Father's Name </label> 
-     {{ form.dri_fath }}
-     <br>
-    <label class="firsttag">Arrested</label> 
-    {{ form.dri_arrest }}
-
-    <label>License No.</label> 
-    {{ form.dri_lic_no }}
-
-   
-
-    <label">Place from where License was issued </label> 
-    {{ form.dri_place }}
-    <label>Drunk/Not Drunk</label> 
-    {{ form.ACCDRUNK }}
-	<br>
-    <label class="firsttag">Issued Date:</label> 
-    {{ form.dri_lic_date_issu }}
-
-	<br>
-    <label class="firsttag" >Upto Date:</label> 
-    {{ form.dri_lic_date_upto }}
-    <br>
-       <label class="firsttag" >License Status</label> 
-    {{ form.dri_lic_status }}
-
-   
-
-
-</div>
-<div>
-    <label class="firsttag">Type of Accident</label> 
-    {{ form.ACCID_TYPE}}
-	
-	<label class="firsttag" >Victim</label> 
-    {{ form.VICTIM}}
-</div>
-<div>
-    <label class="firsttag" for="remarks">Remarks</label> 
-    {{ form.REMARK }}
-	
-	  <label class="firsttag" for="remarks">Brief Facts</label> 
-    {{ form.BRIEF_FACTS }}
-	
-</div>
-<!--
-<div>
-  <label class="firsttag" for="remarks">Duplicate</label> 
-    {{ form.DUPL }}
-	
-	  <label for="remarks">Pending</label> 
-    {{ form.PENDING }}
-	
-	<br>
-	  <label for="remarks">Case Status</label> 
-    {{ form.case_status }}
-	
-	<br>
-		
-	  <label class="firsttag" >Victim</label> 
-    {{ form.VICTIM}}
-	
-</div> -->
-<div>
-    
-
-    <label class="firsttag" for="remarks">Convert Case</label> 
-    {{ form.CONVERT}}
-
-    <label id="convert_date" visible="false">Convert Date</label>
-    {{ form.CONVERT_DATE }}
-
-    <label>Case Status</label>
-    {{ form.case_status  }}
-	
-
-	
-</div>
+<div class="tab-pane fade" id="collision">
+<div class="collision-formset">
+  {{ collisionform.management_form }}
+{{collisionform|crispy}}
+ </div>
 
 <input type="submit" class = "formsubmit">
+</div>
+
+
 </form>
 </div>
 
 
 <script src="{% static 'fir/js/jquery.formset.js' %}"></script>
-<script>
+<script src = "{% static 'fir/js/script.js'%}"></script>
 
-id_FIRNO.oninput = function () {
-    if (this.value.length > 4) {
-        this.value = this.value.slice(0,4); 
-    }
-}
-id_dri_age.oninput = function () {
-    if (this.value.length > 2) {
-        this.value = this.value.slice(0,2); 
-    }
-}
-
-$("#id_CONVERT").change(function () {
-    var selection = $("#id_CONVERT option:selected").text();
-
-    if(selection=='YES')
-    {
-        $("#convert_date").show();
-        $("#id_CONVERT_DATE_month").show();
-         $("#id_CONVERT_DATE_day").show();
-          $("#id_CONVERT_DATE_year").show();
-    }
-    else if (selection=='NO')
-   {
-      $("#convert_date").hide();
-       $("#id_CONVERT_DATE_month").hide();
-       $("#id_CONVERT_DATE_day").hide();
-       $("#id_CONVERT_DATE_year").hide();
-             
-    }});
-
-
-
-$("#id_VEHTYPE1").change(function () {
-    var selection = $("#id_VEHTYPE1 option:selected").text();
-    //alert("you selected" + selection);
-    if (selection=='BUS DTC')
-    {
-    
-     document.getElementById("route").style.visibility = "visible";
-    $("#id_routeno").show();
-    }
-    else
-    {
-        document.getElementById("route").style.visibility = "hidden";
-        //$("#id_routeno").attr('disabled', true);
-         $("#id_routeno").hide()
-      
-    }
-    if(selection=='TWW')
-    {
-      document.getElementById("tww1").style.visibility = "visible";
-    $("#id_TWW1").show();  
-    }
-    else
-    {
-        document.getElementById("tww1").style.visibility = "hidden";
-        //$("#id_routeno").attr('disabled', true);
-         $("#id_TWW1").hide()
-      
-    }
-    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
-    {
-        document.getElementById("RNOV1A").style.visibility = "hidden";
-        document.getElementById("RNOV1B").style.visibility = "hidden";
-        //$("#id_routeno").attr('disabled', true);
-        $("#id_RNOV1A").hide()
-        $("#id_RNOV1B").hide()
-    }
-    else
-    {
-        document.getElementById("RNOV1A").style.visibility = "visible";
-        document.getElementById("RNOV1B").style.visibility = "visible";
-        $("#id_RNOV1A").show(); 
-        $("#id_RNOV1B").show(); 
-    }
-
-    });
-
-$("#id_VEHTYPE2").change(function () {
-    var selection = $("#id_VEHTYPE2 option:selected").text();
-    //if selection == "PED" && (VICTIM1 = "VEHICLES" Or VICTIM1 = "SELF" Or VICTIM1 = "PASSENGER" Or VICTIM1 = "SELF/ANIMAL")
-    if (selection=='SELF')
-    {
-     $("#self_type").show();
-    $("#id_SELF_TYPE").show();
-    }
-    else
-    {
-        $("#self_type").hide();
-        //$("#id_routeno").attr('disabled', true);
-         $("#id_SELF_TYPE").hide()
-      
-    }
-     /*if (selection=='PEDESTRIAN')
-    {
-     document.getElementById("Pedestrian").style.visibility = "visible";
-    $("#id_PEDESTRIAN").show();
-    }
-
-    else
-    {
-        document.getElementById("Pedestrian").style.visibility = "hidden";
-        //$("#id_routeno").attr('disabled', true);
-         $("#id_PEDESTRIAN").hide()
-      
-    }*/
-      if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF' || selection=='PASSENGER' || selection=='CYCLE')
-    {
-        document.getElementById("RNOV2A").style.visibility = "hidden";
-        document.getElementById("RNOV2B").style.visibility = "hidden";
-        //$("#id_routeno").attr('disabled', true);
-        $("#id_RNOV2A").hide()
-        $("#id_RNOV2B").hide()
-    }
-    else
-    {
-        document.getElementById("RNOV2A").style.visibility = "visible";
-        document.getElementById("RNOV2B").style.visibility = "visible";
-        $("#id_RNOV2A").show(); 
-        $("#id_RNOV2B").show(); 
-    }
-
-
-
-    });
-
-$("#id_SELF_TYPE").change(function () {
-    var vehi2 = $("#id_VEHTYPE2 option:selected").text();
-    var self_type = $("#id_SELF_TYPE option:selected").val();
-    if (vehi2=='SELF')
-    {
-    
-        $("#id_ACCID_TYPE").val(self_type).change();
-    }
-    
-
-    
-
-});
-
-
-
-/*CIRCLE*/
-
-$("#id_CIRCLE").change(function () {
-    var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
- 
-    function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-    $.post({
-        url: '/getcircleinfo',
-        data: {
-          'circle': selection
-        },
-        dataType: 'json',
-        success: function (data) {
-            document.getElementById("id_DIST").value = data['DIST'];
-            document.getElementById("id_RNG").value = data['RANGE'];
-        }
-      });
-    });
-
-/*SECTION*/   
-$("#id_SECTION").change(function () {
-    var selection = $("#id_SECTION option:selected").text(); //grab the value selected
- 
-    function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-    $.post({
-        url: '/getsection',
-        data: {
-          'section': selection
-        },
-        dataType: 'json',
-        success: function (data) {
-            document.getElementById("id_ACCTYPE").value = data['ACCTYPE'];
-            if (data['ACCTYPE'] == 'S' || data['ACCTYPE'] == 'G' )
-            {
-                //Show Injured Table
-                $("#table2").hide();
-                $("#table1").show();
-            }
-            else if (data['ACCTYPE'] == 'F') 
-            {   
-                $("#table1").hide(); //Hide Injured Table
-                $("#table2").show(); //Show Killed Table
-
-                
-                
-                if ( (data['SECTIONDTL'].indexOf('338')) >= 0 || (data['SECTIONDTL'].indexOf('337')) >= 0)
-                 { 
-                    $("#table1").show(); //Show Injured Table
-                 }
-
-                
-            }
-            else 
-            {
-                $("#table1").hide();
-                $("#table2").hide(); 
-            }
-
-        }
-      });
-    });
-
-/*LOCATION*/
-$("#id_LOCATION").change(function () {
-    var selection = $("#id_LOCATION option:selected").text(); //grab the value selected
- 
-    function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-    $.post({
-        url: '/getlocation',
-        data: {
-          'location': selection
-        },
-        dataType: 'json',
-        success: function (data) {
-            document.getElementById("id_CATEGORY").value = data['CATEGORY'];
-        }
-      });
-    });
-
-/*VICTIM*/
-$("#id_ACCID_TYPE").change(function () {
-    var selection = $("#id_ACCID_TYPE option:selected").val(); //grab the value selected
- 
-    function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-    $.post({
-        url: '/getacctype',
-        data: {
-          'accid_type': selection
-        },
-        dataType: 'json',
-        success: function (data) {
-            document.getElementById("id_VICTIM").value = data['VICTIM'];
-        }
-      });
-    });
-
-$("#id_DATE_OCC_month").change(function () {
-    var selection = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-    var mon = selection.substring(0, 3);
-    document.getElementById("id_MONTH").value = mon;
-    });
-
-$("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
-    var ps =  document.getElementById("id_PS").value;
-    var firno =  document.getElementById("id_FIRNO").value;
-    firno =  parseInt(firno);
-    var psCode = ps.split("-");
-    var yr = document.getElementById("id_DATE_OCC_year").value;
-    var id = document.getElementById("id_DATE_OCC_year").value +  psCode[1] +  firno;
-	if(document.getElementById("id_FIRNO").value!="" && document.getElementById("id_PS").value!="" && document.getElementById("id_DATE_OCC_year").value!=0)
-    { document.getElementById("id_ACC_ID").value = id; 
-      $('.iACCID_ID').val(id);
-      $('.iPS').val(psCode[1]);
-      $('.iYEAR').val(yr);
-      $('.iFIRNO').val(firno);
-      
-    }
-});
-
-    
-$("#id_DATE_OCC_year").change(function () {
-    var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
-    document.getElementById("id_YEAR").value = selection;
-    //var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
-    //document.getElementById("id_ACC_ID").value = id;
-    });
-
-	
-
-$("#id_DATE_OCC_day, #id_DATE_OCC_month").change(function () {
-    var selection = $("#id_DATE_OCC_day option:selected").text(); 
-    var month = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-    var mon = month.substring(0, 3);
-    if(document.getElementById("id_DATE_OCC_month").value!="" && document.getElementById("id_DATE_OCC_day").value!="")
-    { 
-    	if (selection<=15) 
-    	{ document.getElementById("id_FN").value = mon + 1; } 
-    	else if (selection>15)
-    	{ document.getElementById("id_FN").value = mon + 2; }
-}
-    });
-
-var $TABLE = $('#table1');
-$('.zeroadd').click(function () {
-  var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-  $TABLE.find('table').append($clone);
-  
-
-  
-});
-//for adding to table2
-var $TABLE2 = $('#table2');
-$('.oneadd').click(function () {
-  var $clone2 = $TABLE2.find('tr.hide').clone(true).removeClass('hide table-line');
-  $TABLE2.find('table').append($clone2);
-  alert('click one');
-});
-
-$('.inj-formset').formset({
-    addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
-    deleteText: '<span class="zerominus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iYEAR, .iFIRNO',
-    prefix: 'injured'     
-});
-$('.kil-formset').formset({
-    addText: '<span class="oneadd table-add glyphicon glyphicon-plus"></span>',
-    deleteText: '<span class="oneminus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iYEAR, .iFIRNO',
-    prefix: 'killed'
-    
-    });
-	
-$("#id_TIME_OCC").change(function () {
-    var selection = document.getElementById("id_TIME_OCC").value;
-	//for day and night
-	if( selection >=0800 && selection < 2100 ) { document.getElementById("id_DAY_NIGHT").value = "Day"; }
-	else if((selection >=2100 && selection <=2359) || (selection>=0000 && selection < 0800) ) { document.getElementById("id_DAY_NIGHT").value = "Night"; }
-	else { document.getElementById("id_DAY_NIGHT").value = "Unknown"; }
-	
-	//for timeslot
-	second = selection;
-	second = second.slice(2,4);
-	selection = selection.slice(0,2);
-	selection = parseInt(selection);
-	if(second >=60 && second <= 99 ) { 
-    document.getElementById("id_TIME_OCC").value = "UNK";	
-    document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";	}
-	else if( selection >=0 && selection < 1 ) { document.getElementById("id_TIME_SLOT").value = "0000-0100"; }
-	else if(selection >=1 && selection < 2 ) { document.getElementById("id_TIME_SLOT").value = "0100-0200"; }
-	else if(selection >=2 && selection < 3 ) { document.getElementById("id_TIME_SLOT").value = "0200-0300"; }
-	else if(selection >=3 && selection < 4 ) { document.getElementById("id_TIME_SLOT").value = "0300-0400"; }
-	else if(selection >=4 && selection < 5 ) { document.getElementById("id_TIME_SLOT").value = "0400-0500"; }
-	else if(selection >=5 && selection < 6 ) { document.getElementById("id_TIME_SLOT").value = "0500-0600"; }
-	else if(selection >=6 && selection < 7 ) { document.getElementById("id_TIME_SLOT").value = "0600-0700"; }
-	else if(selection >=7 && selection < 8 ) { document.getElementById("id_TIME_SLOT").value = "0700-0800"; }
-	else if(selection >=8 && selection < 9 ) { document.getElementById("id_TIME_SLOT").value = "0800-0900"; }
-	else if(selection >=9 && selection < 10 ) { document.getElementById("id_TIME_SLOT").value = "0900-1000"; }
-	else if(selection >=10 && selection < 11 ) { document.getElementById("id_TIME_SLOT").value = "1000-1100"; }
-	else if(selection >=11 && selection < 12 ) { document.getElementById("id_TIME_SLOT").value = "1100-1200"; }
-	else if(selection >=12 && selection < 13 ) { document.getElementById("id_TIME_SLOT").value = "1200-1300"; }
-	else if(selection >=13 && selection < 14 ) { document.getElementById("id_TIME_SLOT").value = "1300-1400"; }
-	else if(selection >=14 && selection < 15 ) { document.getElementById("id_TIME_SLOT").value = "1400-1500"; }
-	else if(selection >=15 && selection < 16 ) { document.getElementById("id_TIME_SLOT").value = "1500-1600"; }
-	else if(selection >=16 && selection < 17 ) { document.getElementById("id_TIME_SLOT").value = "1600-1700"; }
-	else if(selection >=17 && selection < 18 ) { document.getElementById("id_TIME_SLOT").value = "1700-1800"; }
-	else if(selection >=18 && selection < 19 ) { document.getElementById("id_TIME_SLOT").value = "1800-1900"; }
-	else if(selection >=19 && selection < 20 ) { document.getElementById("id_TIME_SLOT").value = "1900-2000"; }
-	else if(selection >=20 && selection < 21 ) { document.getElementById("id_TIME_SLOT").value = "2000-2100"; }
-	else if(selection >=21 && selection < 22 ) { document.getElementById("id_TIME_SLOT").value = "2100-2200"; }
-	else if(selection >=22 && selection < 23 ) { document.getElementById("id_TIME_SLOT").value = "2200-2300"; }
-	else if(selection >=23 && selection < 24 ) { document.getElementById("id_TIME_SLOT").value = "2300-2400"; }
-	else { document.getElementById("id_TIME_SLOT").value = "UNK.-TIME";
-document.getElementById("id_TIME_OCC").value = "UNK";	}
-
-     });
-$(document).ready(function() {
-  $('#id_ROAD').change(function() {
-    var roadname = $("#id_ROAD option:selected").text();
-    $("#id_ROADNAME").val(roadname).change();
-  });
-});
-
-$('.zeroadd, .oneadd, .formsubmit').click(function () {
-
-    var ps =  document.getElementById("id_PS").value;
-    var firno =  document.getElementById("id_FIRNO").value;
-    firno =  parseInt(firno);
-    var psCode = ps.split("-");
-    var id = document.getElementById("id_YEAR").value +  psCode[1] +  firno;
-    var yr = document.getElementById("id_YEAR").value;
-      
-      $('.iPS').val(psCode[1]);
-      $('.iYEAR').val(yr);
-      $('.iFIRNO').val(firno);
-    
-    
-    });
-
-
-
-</script>
 </body>
 </html>
-
-
-
-
-

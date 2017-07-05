@@ -187,92 +187,48 @@ def create_fir(request):
 @user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url=settings.LOGIN_REDIRECT_URL)
 @login_required(login_url=settings.LOGIN_URL)
 def edit_fir(request,acc_id):
-    InjInlineFormSet = inlineformset_factory(details, injured, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE', 'ACCID_ID'), 
-  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),
-  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
-  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
-  form=InjForm, extra = 0)
-
-
-    KilInlineFormSet = inlineformset_factory(details, killed, can_delete=True, fields = ('id','PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE', 'ACCID_ID'), 
-  widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
-  'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
-  'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
-  form=KilForm, extra = 0)
+    PVicInlineFormSet = inlineformset_factory(details, victim_person, exclude = (), form=PVicForm, extra = 0)
+    VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 0)
+    OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 0)
+    CollisionInlineFormSet = inlineformset_factory(details, collision, exclude = (), form=CollisionForm, extra = 0)
     fir = get_object_or_404(details, pk = acc_id)
-    #If Method is POST
-    if request.method == 'POST':        
-        injform = InjInlineFormSet(request.POST,instance=fir, prefix = 'injured')
-        kilform = KilInlineFormSet(request.POST,instance=fir, prefix = 'killed')
-        form = FirForm(request.POST,instance = fir)
-        if form.is_valid():
-            form.save()
-            if form.data['ACCTYPE'] == 'F':
-              if kilform.is_valid():
-                kil = kilform.save()
-                count_kil(acc_id)
-                sec = form.data['SECTION']
-                sec_obj = sections.objects.get(pk = sec)
-                
-                if ('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
-                  if injform.is_valid():
-                    inj = injform.save()
-                    count_inj(acc_id)
-                  #Injform is invalid and Kilform is valid
-                  else:
-                    return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
-                #If Section is not 338/337 but Inj form is not empty
-                else:
-                    if injform != None:
-                        injorm = None
-                        injured.objects.filter(ACCID_ID=acc_id).delete()
-                        inj = injorm.save()
-                        count_inj(acc_id)
-              else:
-                #If Kilform is invalid
-                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
 
-            elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G'):
-              if injform.is_valid():
-        
-                inj = injform.save()
-                if kilform != None:
-                    kilorm = None
-                    killed.objects.filter(ACCID_ID=acc_id).delete()
-                    kil = kilform.save()
-                    count_kil(acc_id)
-                count_inj(firid)  
-              else: 
-                # If Injform is invalid
-                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+    if request.method == 'POST':
+      pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic',instance = fir)
+      vvicform = VVicInlineFormSet(request.POST, prefix = 'vvic', instance = fir)
+      offendform = OffendInlineFormSet(request.POST, prefix = 'offend', instance = fir)
+      collisionform = CollisionInlineFormSet(request.POST, prefix = 'collision', instance = fir)
+      form = FirForm(request.POST,request.FILES,instance = fir)
 
-            elif form.data['ACCTYPE'] == 'N':
-                if injform != None or kilform!=None:
-                        injorm = None
-                        kilform = None
-                        injured.objects.filter(ACCID_ID=acc_id).delete()
-                        killed.objects.filter(ACCID_ID=acc_id).delete()
-                        kil= injform.save()
-                        inj = injorm.save()
-                        count_kil(acc_id)
-                        count_inj(acc_id)
+      if form.is_valid():
+        fir = form.save()
+        pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
+        vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
+        offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
+        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
 
-            else:
-                return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+        if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
+          return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
-            return HttpResponseRedirect('/fir/edit_fir/'+str(fir.ACC_ID)+'/')
         else:
-            #if main form is not Valid
-            return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+          pvicform.save()
+          vvicform.save()
+          offendform.save()
+          collisionform.save()
+          return HttpResponse('done')
+      else:
+        return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
-    #If Method is Not POST
+
     else:
-        fir = get_object_or_404(details, pk = acc_id)
-
-        injform = InjInlineFormSet(instance = fir, prefix = 'injured')
-        kilform = KilInlineFormSet(instance = fir, prefix = 'killed')
         form = FirForm(instance = fir)
-        return render(request,'edit_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform, 'fir': fir})
+        pvicform = PVicInlineFormSet(prefix = 'pvic', instance = fir)
+        vvicform = VVicInlineFormSet(prefix = 'vvic', instance = fir)
+        offendform = OffendInlineFormSet(prefix = 'offend', instance = fir)
+        collisionform = CollisionInlineFormSet(prefix = 'collision', instance = fir)
+        return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
+    
+
         
 @login_required(login_url=settings.LOGIN_URL)
 def new_fir(request):        
