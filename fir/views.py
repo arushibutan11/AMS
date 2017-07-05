@@ -284,19 +284,20 @@ def new_fir(request):
     if request.method == 'POST':
       form = FirForm(request.POST,request.FILES)
       pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic')
-      vvicform = PVicInlineFormSet(request.POST, prefix = 'vvic')
-      offendform = VVicInlineFormSet(request.POST, prefix = 'offend')
-      collisionform = PVicInlineFormSet(request.POST, prefix = 'collision')
+      vvicform = VVicInlineFormSet(request.POST, prefix = 'vvic')
+      offendform = OffendInlineFormSet(request.POST, prefix = 'offend')
+      collisionform = CollisionInlineFormSet(request.POST, prefix = 'collision')
 
       if form.is_valid():
         fir = form.save()
         pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
-        vvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
-        offendform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
-        collisionform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
+        vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
+        offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
+        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
 
         if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
-          return HttpResponse('here')
+          return render(request,'new_form.html', { 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
+
         else:
           pvcform.save()
           vvcform.save()
@@ -304,16 +305,16 @@ def new_fir(request):
           collisionform.save()
           return HttpResponse('done')
       else:
-        return render(request,'new_form.html', { 'form': form})
+        return render(request,'new_form.html', { 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
 
     else:
         form = FirForm()
-        pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic')
-        vvicform = PVicInlineFormSet(request.POST, prefix = 'vvic')
-        offendform = VVicInlineFormSet(request.POST, prefix = 'offend')
-        collisionform = PVicInlineFormSet(request.POST, prefix = 'collision')
-        return render(request,'new_form.html', { 'form': form})
+        pvicform = PVicInlineFormSet(prefix = 'pvic')
+        vvicform = VVicInlineFormSet(prefix = 'vvic')
+        offendform = OffendInlineFormSet(prefix = 'offend')
+        collisionform = CollisionInlineFormSet(prefix = 'collision')
+        return render(request,'new_form.html', { 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
 
 '''def count_inj(firid):

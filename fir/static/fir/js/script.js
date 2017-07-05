@@ -92,21 +92,30 @@ $("#id_DATE_OCC_day, #id_DATE_OCC_month").change(function () {
 }
     });
 
-/*
-$('.inj-formset').formset({
-    addText: '<span class="zeroadd table-add glyphicon glyphicon-plus"></span>',
-    deleteText: '<span class="zerominus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iYEAR, .iFIRNO',
-    prefix: 'injured'     
+
+$('.vvic-formset').formset({
+    addText: 'add',
+    deleteText: 'remove',
+    prefix: 'vvic'     
 });
-$('.kil-formset').formset({
-    addText: '<span class="oneadd table-add glyphicon glyphicon-plus"></span>',
-    deleteText: '<span class="oneminus glyphicon glyphicon-minus"></span>',
-    keepFieldValues: '.iPS, .iYEAR, .iFIRNO',
-    prefix: 'killed'
+$('.pvic-formset').formset({
+    addText: 'add',
+    deleteText: 'remove',
+    prefix: 'pvic'
     
     });
- */   
+$('.offend-formset').formset({
+    addText: 'add',
+    deleteText: 'remove',
+    prefix: 'offend'     
+});
+$('.collision-formset').formset({
+    addText: 'add',
+    deleteText: 'remove',
+    prefix: 'collision'
+    
+    });
+    
 
 
 $(document).ready(function() {
