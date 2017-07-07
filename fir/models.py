@@ -13,8 +13,8 @@ from django.dispatch import receiver
 
 # Create your models here.
 FLYOVER_UNDERP_CHOICES=(
-   ('Ascending Flyover','Ascending Flyover'),('Descending Flyover','Descending Flyover'), 
-   ('Ascending Flyover Loop','Ascending Flyover Loop'), ('Descending Flyover Loop','Desscending Flyover Loop') 
+   ('Ascending Flyover','Ascending Flyover'),('Descending Flyover','Descending Flyover'),
+   ('Ascending Flyover Loop','Ascending Flyover Loop'), ('Descending Flyover Loop','Descending Flyover Loop')
 )
 TIME_KNOWN_CHOICES=(
      ('Y','YES'),('N','NO'),
@@ -151,7 +151,7 @@ class circles(models.Model):
             CIRCLENAM=self.CIRCLENAM,
             RANGE=self.RANGE,
             RANGENAM=self.RANGENAM)
-            
+
 
 class profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -217,7 +217,7 @@ class self_type(models.Model):
     TYPE=models.CharField(max_length=100)
     def __str__(self):
         return self.TYPE
-        
+
 class location(models.Model):
     SNO = models.PositiveIntegerField(primary_key = True)
     TYPE = models.CharField(max_length = 150)
@@ -243,31 +243,31 @@ class accid_type(models.Model):
     def as_json(self):
         return dict(
             SNO = self.SNO,
-            VICTIM = self.VICTIM)    
+            VICTIM = self.VICTIM)
 
 class victim_person_status(models.Model):
 
     Victim_Person_Status=models.CharField(max_length=100,primary_key=True)
     def __str__(self):
-        return self.Victim_Person_Status             
+        return self.Victim_Person_Status
 
 class victim_person_status1(models.Model):
 
     Victim_Person_Status1=models.CharField(max_length=100,primary_key=True)
     def __str__(self):
-        return self.Victim_Person_Status1  
+        return self.Victim_Person_Status1
 
 class mva_act(models.Model):
-          
+
     MVA_Section=models.CharField(max_length=20,primary_key=True)
     MVA_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.MVA_Name
 
 
-                                        
+
 class area_type(models.Model):
-          
+
     Atype_Code=models.CharField(max_length=20,primary_key=True)
     Area_Type=models.CharField(max_length = 100)
     def __str__(self):
@@ -275,21 +275,21 @@ class area_type(models.Model):
 
 
 class area_type2(models.Model):
-          
+
     SAtype_Code=models.CharField(max_length=20,primary_key=True)
     SArea_Type=models.CharField(max_length = 100)
     def __str__(self):
         return self.SArea_Type
 
 class area_type2_oth(models.Model):
-          
+
     SOAtype_Code=models.CharField(max_length=20,primary_key=True)
     SOArea_Type=models.CharField(max_length = 100)
     def __str__(self):
         return self.SOArea_Type
 
 
-class road_level(models.Model):          
+class road_level(models.Model):
     RL_Code=models.CharField(max_length=20,primary_key=True)
     RL_Name=models.CharField(max_length = 100)
     def __str__(self):
@@ -297,7 +297,7 @@ class road_level(models.Model):
 
 
 class ground_level(models.Model):
-          
+
     RL_Code=models.CharField(max_length=20)
     RL_Name=models.CharField(max_length = 100)
     GL_Code=models.CharField(max_length=20,primary_key=True)
@@ -306,7 +306,7 @@ class ground_level(models.Model):
         return self.GL_Code
 
 class junction_control(models.Model):
-          
+
     GL_Code=models.CharField(max_length=20)
     GL_Name=models.CharField(max_length = 100)
     JCTRL_Code=models.CharField(max_length=20)
@@ -317,7 +317,7 @@ class junction_control(models.Model):
 
 
 class road_type(models.Model):
-          
+
     RT_Code=models.CharField(max_length=20,primary_key=True)
     RT_Name=models.CharField(max_length = 100)
     def __str__(self):
@@ -325,7 +325,7 @@ class road_type(models.Model):
 
 
 class road_type1(models.Model):
-          
+
     SRT_Code=models.CharField(max_length=20,primary_key=True)
     SRT_Name=models.CharField(max_length = 100)
     def __str__(self):
@@ -333,7 +333,7 @@ class road_type1(models.Model):
 
 
 class seperation(models.Model):
-          
+
     S_Code=models.CharField(max_length=20,primary_key=True)
     S_Name=models.CharField(max_length = 100)
     def __str__(self):
@@ -341,14 +341,14 @@ class seperation(models.Model):
 
 
 class road_character(models.Model):
-          
+
     RC_Code=models.CharField(max_length=20,primary_key=True)
     RC_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.RC_Name
 
 class surface_type(models.Model):
-          
+
     SFT_Code=models.CharField(max_length=20,primary_key=True)
     SFT_Name=models.CharField(max_length = 100)
     def __str__(self):
@@ -356,108 +356,108 @@ class surface_type(models.Model):
 
 
 class surface_condition(models.Model):
-          
+
     SC_Code=models.CharField(max_length=20,primary_key=True)
     SC_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.SC_Name
 
 class road_condition(models.Model):
-          
+
     RCN_Code=models.CharField(max_length=20,primary_key=True)
     RCN_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.RCN_Name
-   
+
 
 class study_parameter(models.Model):
-          
+
     SPM_Code=models.CharField(max_length=20,primary_key=True)
     SPM_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.SPM_Name
-    
+
 class vehicle_loaded_condition(models.Model):
-          
+
     VLC_Code=models.CharField(max_length=20,primary_key=True)
     VLC_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.VLC_Name
-    
+
 
 class edu_qual(models.Model):
-          
+
     EDQF_Code=models.CharField(max_length=20,primary_key=True)
     EDQF_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.EDQF_Name
-    
+
 
 class work_status(models.Model):
-          
+
     WS_Code=models.CharField(max_length=20,primary_key=True)
     WS_Name=models.CharField(max_length = 100)
     def __str__(self):
         return self.WS_Name
-   
+
 
 class driver_fault(models.Model):
-          
+
     DF_Code=models.CharField(max_length=20,primary_key=True)
     DF_Details=models.CharField(max_length = 100)
     def __str__(self):
         return self.DF_Details
-    
+
 
 class veh_mech_fault(models.Model):
-          
+
     VMF_Code=models.CharField(max_length=20,primary_key=True)
     VMF_Details=models.CharField(max_length = 100)
     def __str__(self):
         return self.VMF_Details
-   
+
 
 class road_env_fault(models.Model):
-          
+
     REF_Code=models.CharField(max_length=20,primary_key=True)
     REF_Details=models.CharField(max_length = 100)
     def __str__(self):
         return self.REF_Details
-  
+
 
 
 class road_engg_fault(models.Model):
-          
+
     RENF_Code=models.CharField(max_length=20,primary_key=True)
     RENF_Details=models.CharField(max_length = 100)
     def __str__(self):
         return self.RENF_Details
- 
+
 
 class victim_fault(models.Model):
-          
+
     VF_Code=models.CharField(max_length=20,primary_key=True)
     VF_Details=models.CharField(max_length = 100)
     def __str__(self):
         return self.VF_Details
-  
+
 class weather_cond(models.Model):
-          
+
     WC_Code=models.CharField(max_length=20,primary_key=True)
     WC_Details=models.CharField(max_length = 100)
     def __str__(self):
         return self.WC_Details
-    
- 
+
+
 class remedies(models.Model):
-          
+
     Rem_Code=models.CharField(max_length=20,primary_key=True)
     Rem_Description=models.CharField(max_length = 100)
     def __str__(self):
         return self.Rem_Description
 
 
- 
+
 class vehtype1(models.Model):
     VEHTYPE = models.CharField(max_length=20, primary_key= True)
     VEHDETL = models.CharField(max_length=20)
@@ -586,7 +586,7 @@ class vehtype2(models.Model):
     UNKI= models.PositiveIntegerField(default = 0)
     UNKK= models.PositiveIntegerField(default = 0)
     CYCI= models.PositiveIntegerField(default = 0)
-    CYCK= models.PositiveIntegerField(default = 0) 
+    CYCK= models.PositiveIntegerField(default = 0)
     TNGI= models.PositiveIntegerField(default = 0)
     TNGK= models.PositiveIntegerField(default = 0)
     CYRI= models.PositiveIntegerField(default = 0)
@@ -615,7 +615,7 @@ class vehtype2(models.Model):
     PASK= models.PositiveIntegerField(default = 0)
     def __str__(self):
         return self.VEHDETL
-          
+
 
 class details(models.Model):
     #FIR DETAILS
@@ -628,7 +628,7 @@ class details(models.Model):
         chained_model_field = "CIRCLE",
         show_all=False,
         auto_choose=True,
-        sort=True, 
+        sort=True,
         verbose_name = 'Police Station')
 
     FIRNO = models.PositiveIntegerField( verbose_name = 'FIR No.', validators=[MaxValueValidator(9999), MinValueValidator(1)])
@@ -684,14 +684,14 @@ class details(models.Model):
     LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Latitude')
     LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Longitude')
 
-    #REMARKS 
+    #REMARKS
     REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
     REMARKS = models.CharField(max_length=1000,default='',blank=True, verbose_name = 'Remarks')
-    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')    
+    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')
     #END OF REMARKS
-    
 
-    
+
+
     #CAUSE ANALYSIS
     CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
     DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Driver Fault')
@@ -717,7 +717,7 @@ class details(models.Model):
 
     OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '', verbose_name = 'Other Causes')
     #END OF CAUSE ANALYSIS
-    
+
 
 
     #DOUBTFUL
@@ -733,7 +733,7 @@ class details(models.Model):
     KILFEMALE = models.PositiveIntegerField(default = 0,blank=True)
     KILBOY = models.PositiveIntegerField(default = 0,blank=True)
     KILGIRL = models.PositiveIntegerField(default = 0,blank=True)
-    PEDESTRIAN = models.PositiveIntegerField(default = 0,blank=True)    
+    PEDESTRIAN = models.PositiveIntegerField(default = 0,blank=True)
     ACCTYPE = models.CharField(max_length=20,blank=True)
     ACCID_TYPE = models.ForeignKey(accid_type, default = 0)
     VICTIM = models.CharField(max_length=100,blank = True, default = 0)
@@ -752,7 +752,7 @@ class details(models.Model):
     CONFIRM = models.CharField(max_length=15, default = '' ,blank=True)
     CONVERT = models.CharField(max_length=15,choices=CONVERT_Choices,default = 'N')
     CONVERT_DATE = models.DateField(null=True)
-    CN_DT = models.CharField(max_length=1000,blank=True, default = 0)    
+    CN_DT = models.CharField(max_length=1000,blank=True, default = 0)
     CONVERT_FN = models.CharField(max_length=150,blank=True, default = 0)
     BUS_NO = models.CharField(max_length=15, default = 0, blank=True)
     BLACK_SPOT = models.CharField(max_length=15, default = '', blank=True)
@@ -773,7 +773,7 @@ class details(models.Model):
 class offender(models.Model):
     ACCID_ID = models.ForeignKey(details)
     #offending vehicle
-    VEHTYPE1 = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Type')    
+    VEHTYPE1 = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Type')
     SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default='',verbose_name = 'Sub Vehicle Type') #Not clear
     routeno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rcno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'RC No.')
@@ -801,8 +801,8 @@ class offender(models.Model):
 
 
 class victim_vehicle(models.Model):
-    ACCID_ID = models.ForeignKey(details) 
-    #victim vehicle 
+    ACCID_ID = models.ForeignKey(details)
+    #victim vehicle
     VEHTYPE2 = models.ForeignKey(vehtype2,verbose_name = 'Vehicle Type')
     SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default=0, blank=True,verbose_name = 'Sub Vehicle Type')  #Not clear
     routeno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
@@ -856,4 +856,3 @@ class killed(models.Model):
     AGE = models.CharField(max_length = 15, choices = AGE_Choices)
     TYPE = models.CharField(max_length = 20, choices = VIC_TYPE_CHOICES)
     ACCID_ID = models.ForeignKey(details)
-
