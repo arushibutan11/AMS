@@ -1,11 +1,30 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
   <script src='https://www.google.com/recaptcha/api.js'></script>
 
 
-  <style type="text/css">
+   <style type="text/css">
   
+header {
+    padding: 0 !important;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+h1 {
+    margin: 0;
+}
+
+img#logo{
+    padding-bottom: 1.5em;
+    height: 10em;
+}
  .alert {
     color: red;
     font-size: 0.9em;
@@ -33,10 +52,12 @@ text-align:center; }
     padding: 3px;
 }
 div#formbox {
+padding-bottom: 1em;
+    padding-top: 1em;
+    background-color: white;
     text-align: center;
-    width: 100%;
-    position: absolute;
-    display: inline-block;
+	margin-right: 16em;
+    margin-left: 16em;
   
 }
 label {
@@ -77,11 +98,11 @@ input[type="text"],
 
 </style>
     <meta charset="utf-8">
-    <title>{% block title %}Accident Monitoring System{% endblock %}</title>
+   <title>{% block title %}Delhi Traffic Police{% endblock %}</title>
   </head>
   <body>
     <header>
-      <h1>Delhi Traffic Police</h1>
+      <h1>Accident Monitoring System</h1>
       {% if user.is_authenticated %}
         <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
       {% else %}
@@ -94,6 +115,8 @@ input[type="text"],
   <form method="post">
     {% csrf_token %}
 	<div id="formbox">
+		<img id="logo" src="{% static "dtplogo.jpg" %}" alt="Delhi Traffic Police">
+
 <div class = "loginform">
 <div class="loginfield">
 {% if messages %}
