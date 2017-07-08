@@ -1,16 +1,8 @@
 
 
-id_FIRNO.oninput = function () {
-    if (this.value.length > 4) {
-        this.value = this.value.slice(0,4); 
-    }
-}
-
-/*CIRCLE*/
 
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
- 
     function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -52,6 +44,15 @@ $.ajaxSetup({
     });
 
 
+	
+id_FIRNO.oninput = function () {
+    if (this.value.length > 4) {
+        this.value = this.value.slice(0,4); 
+    }
+}
+
+\
+
 $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     var ps =  document.getElementById("id_PS").value;
     var firno =  document.getElementById("id_FIRNO").value;
@@ -69,28 +70,6 @@ $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     }
 });
 
-    
-$("#id_DATE_OCC_year").change(function () {
-    var selection = $("#id_DATE_OCC_year option:selected").text(); //grab the value selected
-    document.getElementById("id_YEAR").value = selection;
-    //var id = document.getElementById("id_FIRNO").value + document.getElementById("id_PS").value + document.getElementById("id_DATE_OCC_year").value;
-    //document.getElementById("id_ACC_ID").value = id;
-    });
-
-    
-
-$("#id_DATE_OCC_day, #id_DATE_OCC_month").change(function () {
-    var selection = $("#id_DATE_OCC_day option:selected").text(); 
-    var month = $("#id_DATE_OCC_month option:selected").text(); //grab the value selected
-    var mon = month.substring(0, 3);
-    if(document.getElementById("id_DATE_OCC_month").value!="" && document.getElementById("id_DATE_OCC_day").value!="")
-    { 
-        if (selection<=15) 
-        { document.getElementById("id_FN").value = mon + 1; } 
-        else if (selection>15)
-        { document.getElementById("id_FN").value = mon + 2; }
-}
-    });
 
 
 $('.vvic-formset').formset({
@@ -128,6 +107,8 @@ $(document).ready(function() {
   $('#id_ROAD').change(function() {
     var roadname = $("#id_ROAD option:selected").text();
     $("#id_ROADNAME").val(roadname).change();
+	
+
   });
 });
 

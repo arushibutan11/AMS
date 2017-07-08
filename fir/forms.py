@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person, victim_vehicle
+from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person,  OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
@@ -10,7 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.layout import Submit, Layout, Field, Row, Div
 from crispy_forms.bootstrap import PrependedText, PrependedAppendedText, FormActions
 
 class SignUpForm(UserCreationForm):
@@ -36,9 +36,17 @@ class FirForm(forms.ModelForm):
         )
 
     REMARKS = forms.CharField( required = False, widget=forms.Textarea)
+    TIME_KNOWN= forms.ChoiceField(required = True, choices = TIME_KNOWN_CHOICES, widget=forms.RadioSelect())
+    AREA= forms.ChoiceField(required = True, choices = AREA_CHOICES, widget=forms.RadioSelect())
+
     helper = FormHelper()
-    helper.form_method = 'POST'
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+    helper.form_class = 'form-horizontal'
+    helper.label_class = 'col-lg-2'
+    helper.field_class = 'col-lg-8'
+    helper.layout = Layout(
+        Div('Circle', 'District', 'Range')
+
+    )
 
     class Meta:
         model = details
@@ -90,6 +98,8 @@ class OffendForm(forms.ModelForm):
     dri_lic_date_upto= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
         )
+    dri_age= forms.ChoiceField(required = True, choices = SEX_Choices, widget=forms.RadioSelect())
+
     class Meta:
         model = offender
         exclude = ('ACCID_ID',)
@@ -101,7 +111,10 @@ class VVicForm(forms.ModelForm):
         exclude = ('ACCID_ID',)
 
 class PVicForm(forms.ModelForm):
-
+    INJKIL= forms.ChoiceField(required = True, choices = INJKIL_CHOICES, widget=forms.RadioSelect())
+    VICSEX= forms.ChoiceField(required = True, choices = SEX_Choices, widget=forms.RadioSelect())
+    VIC_IN_VEH = forms.ChoiceField( choices = YES_NO_CHOICES, widget=forms.RadioSelect())
+    OFFEND = forms.ChoiceField(choices = OFFEND_CHOICES,  widget=forms.RadioSelect())
     class Meta:
         model = victim_person
         exclude = ('ACCID_ID',)

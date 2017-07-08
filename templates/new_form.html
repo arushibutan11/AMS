@@ -3,6 +3,7 @@
 <head>
  {% load static %}
  {% load crispy_forms_tags %}
+{% crispy form %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/style.css' %}"/>
@@ -13,6 +14,7 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
+<script src = "{% static 'fir/js/script.js'%}"></script>
 
 
 
@@ -23,20 +25,46 @@ $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
 $('#id_SELF_TYPE').val('0');
-
+$('#div_id_CIRCLE, #div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
+$('.one').html($('#div_id_CIRCLE').html() + $('#div_id_DIST').html() +  $('#div_id_RNG').html()); 
+$('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
+$('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html()); 
+$('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
+$('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() ); 
+$('#div_id_ROAD_LEVEL, #div_id_GROUND_LEVEL, #div_id_FLYOVER_UNDERPASS, #div_id_JUNCTION_CONTROL').wrapAll( $('<div>').addClass('wrap four') );
+$('.four').html($('#div_id_ROAD_LEVEL').html() + $('#div_id_GROUND_LEVEL').html() + $('#div_id_FLYOVER_UNDERPASS').html() + $('#div_id_JUNCTION_CONTROL').html() ); 
+$('#div_id_ROAD_TYPE, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
+$('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html()); 
+$('#div_id_LONGITUDE, #div_id_LATITUDE').wrapAll( $('<div>').addClass('wrap six') );
+$('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html()); 
 }
-
 </script>
 
 
 <style type="text/css">
 
-label.firsttag {
-    width: 84px;
+.wrap {
+    MARGIN-BOTTOM: 15PX;
+}
+
+input, select {
+    border-radius: 0 !important;
+    padding: 3px  !important;
+    width: initial  !important;
+	height: initial  !important;
+	display: inline  !important;
+
+}
+
+.controls, .radio {
+    display: inline;
 }
 
 
+
 label {
+    width: 140px;
+
     padding-left: 5px;
     padding-right: 5px;
     font-weight: 400;
