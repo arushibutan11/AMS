@@ -681,8 +681,8 @@ class details(models.Model):
     ROAD_CONDITION = models.ForeignKey(road_condition, verbose_name = 'Road Condition')
     ROAD_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Road Cond Remarks')
     #END OF LOCATION
-    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Latitude')
-    LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Longitude')
+    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Longitude')
+    LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Latitude')
 
     #REMARKS
     REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')

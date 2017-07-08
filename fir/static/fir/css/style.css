@@ -1,5 +1,7 @@
 .wrap {
     margin-bottom: 15px;
+	border-bottom: 1px #c7bfbf solid;
+	padding-bottom: 20px;
 }
 
 label.firsttag {
