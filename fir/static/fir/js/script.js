@@ -44,14 +44,7 @@ $.ajaxSetup({
     });
 
 
-	
-id_FIRNO.oninput = function () {
-    if (this.value.length > 4) {
-        this.value = this.value.slice(0,4); 
-    }
-}
 
-\
 
 $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
     var ps =  document.getElementById("id_PS").value;
@@ -69,14 +62,6 @@ $("#id_PS, #id_DATE_OCC_year,  #id_FIRNO").change(function () {
       
     }
 });
-$("#id_TIME_KNOWN_1") // select the radio by its id
-    .change(function(){
-			alert("yes");// bind a function to the change event
-        if( $(this).is(":checked") ){ // check if the radio is checked
-            var val = $(this).val();
-				$('#id_TIME_0CC').css("display", "block");// retrieve the value
-        }
-    });
 
 $('.vvic-formset').formset({
     addText: '<span class = "btn btn-success btn-sm">Add</span>',

@@ -14,23 +14,21 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
-<script src = "{% static 'fir/js/script.js'%}"></script>
-
 
 
 <script>
+
 function setreadonly() {
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
-$('#id_DATE_OCC_year').val('2017');
 $('#id_DATE_OCC_month').val('7');
 $('#id_FIR_DATE_year').val('2017');
 $('#id_FIR_DATE_month').val('7');
 $('#id_SELF_TYPE').val('0');
-$('#div_id_CIRCLE, #div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
-$('.one').html($('#div_id_CIRCLE').html() + $('#div_id_DIST').html() +  $('#div_id_RNG').html()); 
+$('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
+$('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html()); 
 $('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
 $('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html()); 
 $('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
@@ -40,12 +38,21 @@ $('.four').html($('#div_id_ROAD_LEVEL').html() + $('#div_id_GROUND_LEVEL').html(
 $('#div_id_ROAD_TYPE, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
 $('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html()); 
 $('#div_id_LONGITUDE, #div_id_LATITUDE').wrapAll( $('<div>').addClass('wrap six') );
-$('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html()); 
+$('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html());
+
+id_FIRNO.oninput = function () {
+    if (this.value.length > 4) {
+        this.value = this.value.slice(0,4); 
+    }
 }
+
+ }
 </script>
 
 
+
 <style type="text/css">
+
 .wrap {
     margin-bottom: 15px;
 	border-bottom: 1px #c7bfbf solid;
@@ -58,7 +65,7 @@ $('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html());
     margin-bottom: 15px;
 }
 
-label[for="id_DIST"], label[for="id_RNG"], label[for="id_FIRNO"], label[for="id_LOCATION"], label[for="id_GROUND_LEVEL"], label[for="id_FLYOVER_UNDERPASS"], label[for="id_JUNCTION_CONTROL"], label[for="id_ROAD_TYPE1"], label[for="id_LATITUDE"] {
+label[for="id_RNG"], label[for="id_FIRNO"], label[for="id_LOCATION"], label[for="id_GROUND_LEVEL"], label[for="id_FLYOVER_UNDERPASS"], label[for="id_JUNCTION_CONTROL"], label[for="id_ROAD_TYPE1"], label[for="id_LATITUDE"] {
     width: initial;
 }
 .wrap {
@@ -279,7 +286,7 @@ h2 { text-align: center; }
 
 
 <script src="{% static 'fir/js/jquery.formset.js' %}"></script>
-<script src = "{% static 'fir/js/script.js'%}"></script>
+<script src = "{% static 'fir/js/script.js' %}"></script>
 
 </body>
 </html>
