@@ -65,10 +65,11 @@ class FirForm(forms.ModelForm):
         widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )
 
-    REMARKS = forms.CharField( required = False, widget=forms.Textarea)
     TIME_KNOWN= forms.ChoiceField(required = True, choices = TIME_KNOWN_CHOICES, widget=forms.RadioSelect())
     AREA= forms.ChoiceField(required = True, choices = AREA_CHOICES, widget=forms.RadioSelect())
-
+    TIME_OCC = forms.CharField(
+            label = 'Time of Occurence',
+            widget=forms.TextInput(attrs={'placeholder': 'hhmm','size':4, 'maxlength':4})        )
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.label_class = 'col-lg-2'
@@ -141,10 +142,10 @@ class VVicForm(forms.ModelForm):
         exclude = ('ACCID_ID',)
 
 class PVicForm(forms.ModelForm):
-    INJKIL= forms.ChoiceField(required = True, choices = INJKIL_CHOICES, widget=forms.RadioSelect())
-    VICSEX= forms.ChoiceField(required = True, choices = SEX_Choices, widget=forms.RadioSelect())
-    VIC_IN_VEH = forms.ChoiceField( choices = YES_NO_CHOICES, widget=forms.RadioSelect())
-    OFFEND = forms.ChoiceField(choices = OFFEND_CHOICES,  widget=forms.RadioSelect())
+    INJKIL= forms.ChoiceField(label = "Injured or Killed", required = True, choices = INJKIL_CHOICES, widget=forms.RadioSelect())
+    VICSEX= forms.ChoiceField(label = "Gender", required = True, choices = SEX_Choices, widget=forms.RadioSelect())
+    VIC_IN_VEH = forms.ChoiceField(label = "Victim inside/outside vehicle", choices = YES_NO_CHOICES, widget=forms.RadioSelect())
+    OFFEND = forms.ChoiceField(label = "Offending/Victim Vehicle", choices = OFFEND_CHOICES,  widget=forms.RadioSelect())
     class Meta:
         model = victim_person
         exclude = ('ACCID_ID',)

@@ -1,6 +1,4 @@
 
-
-
 $("#id_CIRCLE").change(function () {
     var selection = $("#id_CIRCLE option:selected").text(); //grab the value selected
     function getCookie(name) {

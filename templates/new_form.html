@@ -19,7 +19,7 @@
 <script>
 
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #id_offend-0-DRI_DRUNK, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2').prop('readonly', true);
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
@@ -28,6 +28,7 @@ $('#id_FIR_DATE_year').val('2017');
 $('#id_FIR_DATE_month').val('7');
 $('#id_SELF_TYPE').val('0');
 $('#div_id_AREA_TYPE_OTHER').hide();
+$('#div_id_TIME_OCC').hide();
 $('#div_id_AREA_TYPE2_OTHER').hide();
 $('#div_id_ROAD_CHARACTER_REMARKS').hide();
 $('#div_id_SURFACE_CONDITION_REMARKS').hide();
@@ -36,21 +37,24 @@ $('#div_id_OTHER_DRIVER_FAULT').hide();
 $('#div_id_OTHER_VEC_MEH_FAULT').hide();
 $('#div_id_OTHER_ROAD_ENV_FAULT').hide();
 $('#div_id_OTHER_ROAD_ENGG_FAULT').hide();
+$('#div_id_GROUND_LEVEL').hide();
+$('#div_id_FLYOVER_UNDERPASS').hide();
 $('#div_id_OTHER_VICTIM_FAULT').hide();
 $('#div_id_OTHER_WEATHER_COND_FAULT').hide();
 $('#div_id_pvic-0-VIC_OTHER_WORK_STATUS').hide();
 $('#div_id_pvic-0-VIC_OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_WORK_STATUS').hide();
-
+$('#id_LOCATION').val('11');
+$('#div_id_JUNCTION_CONTROL').hide();
 $('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
 $('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html()); 
 $('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
 $('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html()); 
 $('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
 $('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() ); 
-$('#div_id_ROAD_LEVEL, #div_id_GROUND_LEVEL, #div_id_FLYOVER_UNDERPASS, #div_id_JUNCTION_CONTROL').wrapAll( $('<div>').addClass('wrap four') );
-$('.four').html($('#div_id_ROAD_LEVEL').html() + $('#div_id_GROUND_LEVEL').html() + $('#div_id_FLYOVER_UNDERPASS').html() + $('#div_id_JUNCTION_CONTROL').html() ); 
+$('#div_id_ROADNAME, #div_id_MINORROADNAME').wrapAll( $('<div>').addClass('wrap four') );
+$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() ); 
 $('#div_id_ROAD_TYPE, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
 $('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html()); 
 $('#div_id_LONGITUDE, #div_id_LATITUDE').wrapAll( $('<div>').addClass('wrap six') );
@@ -304,6 +308,25 @@ h2 { text-align: center; }
 <script src = "{% static 'fir/js/script.js' %}"></script>
 <script type="text/javascript">
 
+$("#id_TIME_OCC").change(function () {
+    var selection = document.getElementById("id_TIME_OCC").value;
+    //for timeslot
+    second = selection;
+    second = second.slice(2,4);
+    selection = selection.slice(0,2);
+    selection = parseInt(selection);
+    second = parseInt(second);
+
+    if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_OCC").value = "UNK";   }
+    if( selection < 0 || selection >= 24 ) { document.getElementById("id_TIME_OCC").value = "UNK";   }
+});
+
+$("#id_MVA_NAME").change(function () {
+    var selection = document.getElementById("id_MVA_NAME").value;
+    
+    document.getElementById("id_DRUNK_FAULT").value = "Yes";
+    document.getElementById("id_offend-0-DRI_DRUNK").value = "Yes";
+});
   $("#id_AREA_TYPE").change(function () {
     var selection = $("#id_AREA_TYPE option:selected").text();
     //alert("you selected" + selection);
@@ -313,6 +336,28 @@ h2 { text-align: center; }
     }
     else
     $("#div_id_AREA_TYPE_OTHER").hide(); 
+
+  });
+  
+ $("#id_ROAD_LEVEL").change(function () {
+    var selection = $("#id_ROAD_LEVEL option:selected").text();
+    if (selection=='Ground Level')
+    {   $("#div_id_GROUND_LEVEL").show();
+    $('#div_id_FLYOVER_UNDERPASS').hide(); }
+    else {
+    $("#div_id_FLYOVER_UNDERPASS").show();
+    $('#div_id_GROUND_LEVEL').hide();
+    $("#div_id_JUNCTION_CONTROL").hide(); 
+
+
+    }
+  
+
+  });
+$("#id_TIME_KNOWN_1").change(function () {
+    
+    $("#div_id_TIME_OCC").show();
+
 
   });
 
@@ -329,6 +374,17 @@ h2 { text-align: center; }
     $("#div_id_AREA_TYPE2_OTHER").hide(); 
   });
 
+$("#div_id_GROUND_LEVEL").change(function () {
+    var selection = $("#id_GROUND_LEVEL option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Round About' || selection=='Cut' ||selection=='Junction' ||selection=='T Point'  )
+    {
+    $("#div_id_JUNCTION_CONTROL").show();
+
+    }
+    else
+    $("#div_id_JUNCTION_CONTROL").hide(); 
+  });
 
  $("#id_ROAD_CHARACTER").change(function () {
     var selection = $("#id_ROAD_CHARACTER option:selected").text();
