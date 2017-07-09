@@ -1,123 +1,124 @@
-{% load staticfiles %}
+{% extends 'loginbase.html'%}
+{% load static %}
+{%block title%}Accident Monitoring Stystem{%endblock%}
+{% block content %}
+<style type="text/css">
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-  <script src='https://www.google.com/recaptcha/api.js'></script>
-
-
-   <style type="text/css">
-  
 header {
-    padding: 0 !important;
+ padding: 0 !important;
 }
 
 body {
-    margin: 0 !important;
-    padding: 0 !important;
+ margin: 0 !important;
+ padding: 0 !important;
 }
 
 h1 {
-    margin: 0;
+ margin: 0;
 }
 
 img#logo{
-    padding-bottom: 1.5em;
-    height: 10em;
+ padding-bottom: 1.5em;
+ height: 10em;
 }
- .alert {
-    color: red;
-    font-size: 0.9em;
+.alert {
+ color: red;
+ font-size: 0.9em;
 }
-  
- .g-recaptcha {
-    text-align: -webkit-center;
-    padding-bottom: 1em;
+
+.g-recaptcha {
+ text-align: -webkit-center;
+ padding-bottom: 1em;
 }
 
 div#menu {
-    text-align: center;
+ text-align: center;
 }
-  
+
 h1, h2 {
 text-align:center; }
-    
-  input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 30px white inset;
+
+input:-webkit-autofill {
+ -webkit-box-shadow: 0 0 0 30px white inset;
 }
-  input {
-    background-color: white
-    color: white;
-    margin: 5px 0 5px 3px;
-    padding: 3px;
+input {
+ background-color: white
+ color: white;
+ margin: 5px 0 5px 3px;
+ padding: 3px;
 }
 div#formbox {
 padding-bottom: 1em;
-    padding-top: 1em;
-    background-color: white;
-    text-align: center;
-	margin-right: 16em;
-    margin-left: 16em;
-  
+padding-top: 1em;
+background-color: white;
+text-align: center;
+margin: 0 auto;
 }
 label {
-    padding-left: 5px;
-    padding-right: 5px;
-    font-weight: 400;
+ padding-left: 5px;
+ padding-right: 5px;
+ font-weight: 400;
 }
 input[type="submit"],
 input[type="button"]{
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background: #2196F3;
-    border-bottom: 2px solid #30C29E;
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;    
-    color: #fff;
+ box-sizing: border-box;
+ -webkit-box-sizing: border-box;
+ -moz-box-sizing: border-box;
+ background: #2196F3;
+ border-bottom: 2px solid #30C29E;
+ border-top-style: none;
+ border-right-style: none;
+ border-left-style: none;
+ color: #fff;
 }
 input[type="text"],
 {
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background: #fff;
-    margin-bottom: 4%;
-    border: 1px solid #ccc;
-    padding: 3%;
-    color: #555;
-    font: 95% Arial, Helvetica, sans-serif;
+ -webkit-transition: all 0.30s ease-in-out;
+ -moz-transition: all 0.30s ease-in-out;
+ -ms-transition: all 0.30s ease-in-out;
+ -o-transition: all 0.30s ease-in-out;
+ outline: none;
+ box-sizing: border-box;
+ -webkit-box-sizing: border-box;
+ -moz-box-sizing: border-box;
+ background: #fff;
+ margin-bottom: 4%;
+ border: 1px solid #ccc;
+ padding: 3%;
+ color: #555;
+ font: 95% Arial, Helvetica, sans-serif;
+}
+.form-control{
+  width: 75%;
+  margin: 15px auto;
+}
+.text-xs-center {
+    text-align: center;
 }
 
-
+.g-recaptcha {
+    display: inline-block;
+}
 </style>
-    <meta charset="utf-8">
-   <title>{% block title %}Delhi Traffic Police{% endblock %}</title>
-  </head>
-  <body>
-    <header>
+<header>
       <h1>Accident Monitoring System</h1>
       {% if user.is_authenticated %}
-        <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
+        <div id="menu"> <a href="{% url 'logout' %}">Logout</a> </div>
       {% else %}
-        <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> <div>
-      {% endif %} 
+        <div id="menu"> <a href="{% url 'login' %}">Login</a> / <a href="{% url 'signup' %}">Signup</a> <div>
+      {% endif %}
       <hr>
     </header>
     <main>
+<div class = "container col-md-12">
+  <div class="card card-container col-md-4 col-xs-8 col-md-offset-4 col-xs-offset-2">
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
 	<div id="formbox">
 		<img id="logo" src="{% static "dtplogo.jpg" %}" alt="Delhi Traffic Police">
 
-<div class = "loginform">
+<div class = "form-group loginform">
 <div class="loginfield">
 {% if messages %}
 <div class="span12">
@@ -128,20 +129,22 @@ input[type="text"],
 {% endfor %}
 </div>
 {% endif %}
-<input readonly onfocus="this.removeAttribute('readonly');" placeholder = "Username" type=text value="" name=name class="logininput">
+<input readonly onfocus="this.removeAttribute('readonly');" placeholder = "Username" type=text value="" name=name class="logininput form-control" id="inputUser">
 </div>
 <div class="loginfield">
-<input readonly onfocus="this.removeAttribute('readonly');" type=password name=pwd placeholder="Password" value="" class="logininput">
+<input readonly onfocus="this.removeAttribute('readonly');" type="password" name="pwd" placeholder="Password" value="" class="logininput form-control" id="inputPass">
 </div>
 </div>
 <br>
+<div class="text-xs-center">
 <div class="g-recaptcha" data-sitekey="6Lfd8iYUAAAAAOZAbxu1ITGL2ksj-RdOV82l17Qn"></div>
-
-    <button type="submit">Login</button>
-		</div>
+</div>
+<button class="btn btn-lg btn-primary btn-signin" type="submit">Login</button>
+</div>
 
 
   </form>
+</div>
+</div>
     </main>
-  </body>
-</html>
+{% endblock %}

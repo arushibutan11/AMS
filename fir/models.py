@@ -53,7 +53,7 @@ CONVERT_STAT_Choices = (
 )
 
 designation_choices = (
-     ('', '-----------'),
+     ('', 'Designation'),
     ('DCP','DCP'),('ACP','ACP'),('INS', 'INSPECTOR'),
     ('ARC','ACCIDENT RESEARCH CELL'),
 )
@@ -61,7 +61,7 @@ RELATION_CHOICES = (
     ('S/O','S/O'),('D/O','D/O'),('W/O', 'W/O'),
 )
 circle_choices = (
-('', '-----------'),
+('', 'Circle'),
 ('PGC','PAHAR GANJ CIRCLE'),
 ('KBC','KAROL BAGH CIRCLE'),
 ('KMC','KAMLA MARKET CIRCLE'),

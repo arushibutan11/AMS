@@ -14,7 +14,7 @@ from crispy_forms.layout import Submit, Layout, Field, Row, Div
 from crispy_forms.bootstrap import PrependedText, PrependedAppendedText, FormActions
 
 class SignUpForm(UserCreationForm):
-    name = forms.CharField(max_length=50, required= True)
+    name = forms.CharField(max_length=50, required= True, label="Full Name")
     emp_id = forms.CharField(max_length=15, required= True, label="Employee ID")
     circle = forms.ChoiceField(choices=circle_choices, widget=forms.Select(attrs={'class':'form-control'}), required= True)
     designation = forms.ChoiceField(choices=designation_choices, widget=forms.Select(attrs={'class':'form-control'}), required= True)
@@ -24,8 +24,38 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'name', 'emp_id', 'circle', 'designation', 'password1', 'password2', )
 
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'form-inline'
+        self.helper.field_template = 'bootstrap3/layout/inline_field.html'
+        layout = self.helper.layout = Layout(
+        'username',
+        Div(
+        Div('name', css_class='col-md-6 col-xs-12', placeholder = 'Name'),
+        Div('emp_id', css_class='col-md-6 col-xs-12', placeholder = 'Employee ID'),
 
-    
+        Div('password1', css_class='col-md-6 col-xs-12', placeholder = 'Password'),
+        Div('password2', css_class='col-md-6 col-xs-12', placeholder = 'Confirm Password'),
+        css_class='row formrow',
+        ),
+        'circle',
+        'designation',
+        )
+        #for field_name, field in self.fields.items():
+            #layout.append(Field(field_name, placeholder=field.label,  css_class='col-md-6 col-xs-8'))
+
+        self.helper.form_show_labels = False
+
+
+
+
+
+
+
 
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
@@ -51,23 +81,23 @@ class FirForm(forms.ModelForm):
     class Meta:
         model = details
      	exclude = ()
- 
 
- 
+
+
     def clean(self):
         cd = self.cleaned_data
         if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
             self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
-        if cd.get('LONGITUDE') != '': 
+        if cd.get('LONGITUDE') != '':
             LONGITUDE = float (cd.get('LONGITUDE'))
             if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
-                self.add_error('LONGITUDE', "Check Value of Longitude")             
+                self.add_error('LONGITUDE', "Check Value of Longitude")
         if cd.get('LONGITUDE') != '':
-            LATITUDE = float  (cd.get('LATITUDE'))  
+            LATITUDE = float  (cd.get('LATITUDE'))
             if LATITUDE > 29.0 or LATITUDE <28.0:
-                self.add_error('LATITUDE', "Check Value of Latitude")             
+                self.add_error('LATITUDE', "Check Value of Latitude")
 
-             
+
         if cd.get('TIME_OCC') is not "UNK" and (cd.get('TIME_OCC') != ''):
             tim1 = cd.get('TIME_OCC')[:2]
             tim2 = cd.get('TIME_OCC')[-2:]
@@ -76,11 +106,11 @@ class FirForm(forms.ModelForm):
             if (tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0):
                 self.add_error('TIME_OCC', "Enter a valid time")
 
-        '''VEHTYPE2 = str(cd.get('VEHTYPE2'))        
+        '''VEHTYPE2 = str(cd.get('VEHTYPE2'))
         VICTIM = str(cd.get('VICTIM'))
 
         if ("PEDESTRIAN" in VEHTYPE2) and ("VEHICLES" in VICTIM or "SELF"  in VICTIM or "PASSENGER"  in VICTIM or "SELF/ANIMAL" in VICTIM ):
-            self.add_error('VICTIM', "Victim is Pedestrian")        
+            self.add_error('VICTIM', "Victim is Pedestrian")
         elif (VEHTYPE2 == "SELF") and ("PEDESTRIAN" in VICTIM or "PASSENGER" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is Self")
         elif ("ANIMAL" in VEHTYPE2) and (VICTIM == "SELF" or "PEDESTRIAN" in VICTIM or "PASSENGER" in VICTIM or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
@@ -88,8 +118,8 @@ class FirForm(forms.ModelForm):
         elif ("PASSENGER" in VEHTYPE2) and ("SELF" in VICTIM  or "PEDESTRIAN" in VICTIM  or "SELF/ANIMAL" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is passenger")
         elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
-            self.add_error('VICTIM', "Victim is vehicle") '''      
-        return cd          
+            self.add_error('VICTIM', "Victim is vehicle") '''
+        return cd
 
 class OffendForm(forms.ModelForm):
     dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
@@ -133,7 +163,7 @@ class InjForm(forms.ModelForm):
     '''def __init__(self, *args, **kwargs):
         super(InjForm, self).__init__(*args, **kwargs)
         self.queryset = injured.objects.none()'''
-   
+
 
 
 
