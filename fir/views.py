@@ -53,19 +53,19 @@ def login(request):
           result = json.load(response)
           '''End reCAPTCHA validation'''
 
-          if result['success']:  
+          if result['success']:
               user = authenticate(username=name, password=pwd)
               if user is not None:
                   if user.is_active:
                       authlogin(request, user)
                       print "after authlogin"
                       return redirect('home')
-                  else: 
-                      messages.error(request, "Your account is disabled. Please contact the system administrator.")      
+                  else:
+                      messages.error(request, "Your account is disabled. Please contact the system administrator.")
               else:
                   messages.error(request, "Invalid Username or Password")
           else:
-              messages.error(request, "Invalid reCAPTCHA. Please try again.")      
+              messages.error(request, "Invalid reCAPTCHA. Please try again.")
 
   return render(request, 'login.html')
 
@@ -80,7 +80,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             user.refresh_from_db() # load the profile instance created by the signal
-            user.profile.name = form.cleaned_data.get('name') 
+            user.profile.name = form.cleaned_data.get('name')
             user.profile.emp_id = form.cleaned_data.get('emp_id')
             user.profile.circle = form.cleaned_data.get('circle')
             user.profile.designation = form.cleaned_data.get('designation')
@@ -90,16 +90,18 @@ def signup(request):
             authlogin(request, user)
             user.refresh_from_db()
             if (user.profile.designation == 'DCP'):
-                g = Group.objects.get(name='dcp') 
+                g = Group.objects.get(name='dcp')
                 g.user_set.add(user)
             if (user.profile.designation == 'ACP'):
-                g = Group.objects.get(name='acp') 
+                g = Group.objects.get(name='acp')
                 g.user_set.add(user)
             if (user.profile.designation == 'INS'):
-                g = Group.objects.get(name='ins') 
+                g = Group.objects.get(name='ins')
                 g.user_set.add(user)
             if (user.profile.designation == 'ARC'):
-                g = Group.objects.get(name='arc') 
+                user.is_superuser = True
+                user.save()
+                g = Group.objects.get(name='arc')
                 g.user_set.add(user)
             return redirect('home')
     else:
@@ -109,21 +111,21 @@ def signup(request):
 @login_required(login_url=settings.LOGIN_URL)
 def home(request):
     if (request.user.groups.filter(name='arc').exists() == 1):
-        isadmin = True 
+        isadmin = True
     else:
-        isadmin = False 
+        isadmin = False
     return render(request, 'home.html', {'isadmin': isadmin})
 
 @login_required(login_url=settings.LOGIN_URL)
-def create_fir(request):        
+def create_fir(request):
     InjInlineFormSet = inlineformset_factory(details, injured, fields = ('PS', 'FIRNO', 'YEAR', 'INJAGE','INJSEX','INJTYPE'), widgets = {
-    'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}), 
+    'PS': forms.TextInput(attrs={'class': 'iPS cloned injcloned'}),'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned injcloned'}),
     'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned injcloned'}),},
     form=InjForm, extra = 1)
 
-    KilInlineFormSet = inlineformset_factory(details, killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE'), 
+    KilInlineFormSet = inlineformset_factory(details, killed, fields = ('PS', 'FIRNO', 'YEAR', 'AGE','SEX','TYPE'),
       widgets = {'PS': forms.TextInput(attrs={'class': 'iPS cloned kilcloned'}),
-      'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}), 
+      'FIRNO': forms.TextInput(attrs={'class': 'iFIRNO cloned kilcloned'}),
       'YEAR': forms.TextInput(attrs={'class': 'iYEAR cloned kilcloned'}),},
       form=KilForm, extra = 1)
 
@@ -146,7 +148,7 @@ def create_fir(request):
             count_kil(firid)
             sec = form.data['SECTION']
             sec_obj = sections.objects.get(pk = sec)
-            
+
             if ('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
               if injform.is_valid():
                 inj = injform.save()
@@ -160,9 +162,9 @@ def create_fir(request):
 
         elif (form.data['ACCTYPE'] == 'S'  or form.data['ACCTYPE'] == 'G'):
           if injform.is_valid():
-            count_inj(firid)          
+            count_inj(firid)
             inj = injform.save()
-          else: 
+          else:
             # If Injform is invalid
             return render(request,'details_form.html', { 'form': form, 'forminj': injform, 'formkil':kilform})
 
@@ -205,7 +207,7 @@ def edit_fir(request,acc_id):
         pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
         vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
         offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
-        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
+        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')
 
         if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
           return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
@@ -227,11 +229,11 @@ def edit_fir(request,acc_id):
         offendform = OffendInlineFormSet(prefix = 'offend', instance = fir)
         collisionform = CollisionInlineFormSet(prefix = 'collision', instance = fir)
         return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
-    
 
-        
+
+
 @login_required(login_url=settings.LOGIN_URL)
-def new_fir(request):        
+def new_fir(request):
     PVicInlineFormSet = inlineformset_factory(details, victim_person, exclude = (), form=PVicForm, extra = 1)
     VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 1)
     OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 1)
@@ -249,7 +251,7 @@ def new_fir(request):
         pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
         vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
         offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
-        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')        
+        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')
 
         if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
           return render(request,'new_form.html', { 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
@@ -290,7 +292,7 @@ def new_fir(request):
     acc.INJBOY = CNTB
     acc.INJGIRL = CNTG
     if (acc.VEHTYPE2_id == "PED"):
-      acc.PEDESTRIAN = acc.PEDESTRIAN +  INJURED 
+      acc.PEDESTRIAN = acc.PEDESTRIAN +  INJURED
     acc.save()
 
 def count_kil(firid):
@@ -310,17 +312,17 @@ def count_kil(firid):
     acc.KILBOY = CNTB
     acc.KILGIRL = CNTG
     if (acc.VEHTYPE2_id == "PED"):
-      acc.PEDESTRIAN = KILLED 
+      acc.PEDESTRIAN = KILLED
     acc.save() '''
 
 def normalize_query(query_string,
                     findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
                     normspace=re.compile(r'\s{2,}').sub):
-    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)] 
+    return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
 
 def get_query(query_string, search_fields):
 
-    query = None # Query to search for every search term        
+    query = None # Query to search for every search term
     terms = normalize_query(query_string)
     for term in terms:
         or_query = None # Query to search for a given term in each field
@@ -342,31 +344,31 @@ def search_fir(request):
     query_string = ''
     fir_entries = None
 
-    
+
     if ('q' in request.GET) and request.GET['q'].strip():
         query_string = request.GET['q']
-        
+
         fir_query = get_query(query_string, ['ACC_ID',])
-        
-        
+
+
         fir_entries = details.objects.filter(fir_query).order_by('-DATE_OCC')
-        
+
     return render(request, 'search_fir.html', { 'query_string': query_string, 'fir_entries': fir_entries})
 
 
 @permission_classes((permissions.AllowAny,))
 def getcircleinfo(request):
-  
+
     if request.method == 'POST':
       circle = request.POST.get('circle')
       info = circles.objects.get(CIRCLENAM = circle)
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
-            
+
 
 
 @permission_classes((permissions.AllowAny,))
 def getsection(request):
-  
+
     if request.method == 'POST':
       section = request.POST.get('section')
       info = sections.objects.get(SECTIONDTL = section)
@@ -374,7 +376,7 @@ def getsection(request):
 
 @permission_classes((permissions.AllowAny,))
 def getlocation(request):
-  
+
     if request.method == 'POST':
       loc = request.POST.get('location')
       info = location.objects.get(TYPE = loc)
@@ -382,10 +384,8 @@ def getlocation(request):
 
 @permission_classes((permissions.AllowAny,))
 def getacctype(request):
-  
+
     if request.method == 'POST':
       acctype = request.POST.get('accid_type')
       info = accid_type.objects.get(SNO = acctype)
       return HttpResponse(json.dumps(info.as_json()), content_type="application/json")
-
-
