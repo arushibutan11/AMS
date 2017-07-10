@@ -12,8 +12,12 @@ from django.dispatch import receiver
 
 
 # Create your models here.
-FLYOVER_UNDERP_CHOICES=(
-   ('Ascending','Ascending'),('Descending','Descending'),
+FLYOVER_CHOICES=(
+   ('Ascending Flyover','Ascending Flyover'),('Descending Flyover','Descending Flyover'),
+   ('Ascending Flyover Loop','Ascending Flyover Loop'), ('Descending Flyover Loop','Descending Flyover Loop')
+)
+UNDERP_CHOICES=(
+   ('Ascending Underpass','Ascending Underpass'),('Descending Underpass','Descending Underpass'),
 )
 ROAD_LEVEL_Choices=(
    ('FLYO','Flyover'),('UNPA','Underpass'),('GRL','Ground Level'),
@@ -141,7 +145,9 @@ HELMET_STANDARD_CHOICES = (
 CAUSE_Choices = (
      ('KNOWN','Known'),('UNKNOWN','Unknown'),
 )
-
+ROAD_TYPE1_Choices = (
+     ('ONE WAY','One Way'),('TWO WAY','Two Way'),
+)
 class circles(models.Model):
     DISTNAM = models.CharField(max_length=50)
     DIST = models.CharField(max_length=4)
@@ -629,12 +635,13 @@ class details(models.Model):
     #LOCATION
     PLACE_OCC = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Place of Occurence')
     AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
-    LOCATION = models.ForeignKey(location, blank=True,verbose_name = 'Location', default='')
+
     ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Sketch of Accident')
     AREA_TYPE = models.ForeignKey(area_type, verbose_name = 'Area Type')
     AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', null =  True, verbose_name = 'Other Area Type')
-    AREA_TYPE2=models.ForeignKey(area_type2, verbose_name = 'Area Type 2')
-    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True, null =  True, verbose_name = 'Other Area Type 2')
+    '''AREA_TYPE2=models.ForeignKey(area_type2, verbose_name = 'Area Type 2')
+    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True, null =  True, verbose_name = 'Other Area Type 2')'''
+    AREA_TYPE2 = models.ForeignKey(location, blank=True,verbose_name = 'Location', default=11)
     ROAD = ChainedForeignKey(
         roads,
         chained_field = "CIRCLE",
@@ -648,10 +655,11 @@ class details(models.Model):
     MINORROADNAME = models.CharField(max_length=150, default='',blank=True, verbose_name = 'Minor Road')
     ROAD_LEVEL = models.CharField(choices=ROAD_LEVEL_Choices,blank=True, max_length = 30, verbose_name = 'Road Level')
     GROUND_LEVEL=models.CharField(choices=GROUND_LEVEL_Choices,blank=True, max_length = 30, verbose_name = 'Ground Level')
-    FLYOVER_UNDERPASS =models.CharField(choices=FLYOVER_UNDERP_CHOICES, max_length = 30,blank=True, verbose_name = 'Flyover/Underpass')
+    FLYOVER =models.CharField(choices=FLYOVER_CHOICES, max_length = 30,blank=True, verbose_name = 'Flyover')
+    UNDERPASS =models.CharField(choices=UNDERP_CHOICES, max_length = 30,blank=True, verbose_name = 'Underpass')
     JUNCTION_CONTROL=models.CharField(choices=JUNC_CTRL_Choices,blank=True, max_length = 30, verbose_name = 'Junction')
     ROAD_TYPE=models.ForeignKey(road_type, verbose_name = 'Road Type')
-    ROAD_TYPE1=models.ForeignKey(road_type1, verbose_name = 'Road Type 1')
+    ROAD_TYPE1=models.CharField(choices=ROAD_TYPE1_Choices,blank=True, max_length = 30, verbose_name = 'Road Type 1')
     SEPERATION = models.ForeignKey(seperation, verbose_name = 'Separation')
     ROAD_CHARACTER = models.ForeignKey(road_character, verbose_name = 'Character of Road')
     ROAD_CHARACTER_REMARKS= models.CharField(max_length=50,blank=True, default='', verbose_name = 'Road Character-Remarks')
@@ -663,14 +671,6 @@ class details(models.Model):
     #END OF LOCATION
     LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Longitude')
     LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Latitude')
-
-    #REMARKS
-    REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
-    REMARKS = models.CharField(max_length=200,default='',blank=True, verbose_name = 'Remarks')
-    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')
-    #END OF REMARKS
-
-
 
     #CAUSE ANALYSIS
     CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
@@ -698,8 +698,11 @@ class details(models.Model):
     OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '', verbose_name = 'Other Causes')
     #END OF CAUSE ANALYSIS
 
-
-
+    #REMARKS
+    REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
+    REMARKS = models.CharField(max_length=200,default='',blank=True, verbose_name = 'Remarks')
+    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')
+    #END OF REMARKS
     #DOUBTFUL
     '''SELF_TYPE = models.ForeignKey(self_type, default=0,blank=True)
     CATEGORY = models.CharField(max_length=140,blank=True, default =0)
@@ -770,14 +773,14 @@ class offender(models.Model):
     WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status',null=True)
     OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Work Status - Other')
     DRI_DRUNK = models.CharField(max_length=50,blank=True, verbose_name = 'Driver Drunk/Not')
+    dri_lic = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Driver has License?')
     dri_lic_no = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'License No.')
     dri_lic_from = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Driver License From')
     dri_lic_date_issu = models.DateField(null=True,verbose_name = 'License Issue Date')
     dri_lic_date_upto = models.DateField(null=True,verbose_name = 'License Upto Date')
 
     #offending vehicle end
-    RNOV1A = models.CharField(max_length=4, default=0, blank=True)
-    RNOV1B = models.CharField(max_length=4, default=0, blank=True)
+
 
 
 class victim_vehicle(models.Model):
@@ -796,7 +799,7 @@ class victim_person(models.Model):
     ACCID_ID = models.ForeignKey(details)
     INJKIL = models.CharField(max_length=15, choices = INJKIL_CHOICES,verbose_name = 'Injured or Killed')
     VICSEX = models.CharField(max_length=15, choices = SEX_Choices,verbose_name = 'Gender')
-    VICAGE = models.CharField(max_length = 15, choices = AGE_Choices,verbose_name = 'Age')
+    VICAGE = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0, verbose_name = 'Age')
     PER_STAT_TYPE = models.CharField(max_length = 15, choices = VIC_TYPE_CHOICES,verbose_name = 'Type of Person')
     PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1,verbose_name = 'Person Status')
     VIC_IN_VEH = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Victim inside/outside Vehicle')

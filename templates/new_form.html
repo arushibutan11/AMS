@@ -37,26 +37,29 @@ $('#div_id_OTHER_DRIVER_FAULT').hide();
 $('#div_id_OTHER_VEC_MEH_FAULT').hide();
 $('#div_id_OTHER_ROAD_ENV_FAULT').hide();
 $('#div_id_OTHER_ROAD_ENGG_FAULT').hide();
+$("#div_id_ROADNAME").hide();
 $('#div_id_GROUND_LEVEL').hide();
-$('#div_id_FLYOVER_UNDERPASS').hide();
+$('#div_id_FLYOVER').hide();
+$('#div_id_UNDERPASS').hide();
 $('#div_id_OTHER_VICTIM_FAULT').hide();
 $('#div_id_OTHER_WEATHER_COND_FAULT').hide();
 $('#div_id_pvic-0-VIC_OTHER_WORK_STATUS').hide();
 $('#div_id_pvic-0-VIC_OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_WORK_STATUS').hide();
+$("#div_id_MINORROADNAME").hide();
 $('#id_LOCATION').val('11');
 $('#div_id_JUNCTION_CONTROL').hide();
 $('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
 $('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html());
 $('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
 $('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html());
-$('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
+/*$('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
 $('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() );
 $('#div_id_ROADNAME, #div_id_MINORROADNAME').wrapAll( $('<div>').addClass('wrap four') );
-$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() );
-$('#div_id_ROAD_TYPE, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
-$('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html());
+$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() ); */
+$('#div_id_SEPERATION, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
+$('.five').html($('#div_id_SEPERATION').html() + $('#div_id_ROAD_TYPE1').html());
 $('#div_id_LONGITUDE, #div_id_LATITUDE').wrapAll( $('<div>').addClass('wrap six') );
 $('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html());
 id_FIRNO.oninput = function () {
@@ -84,7 +87,7 @@ id_FIRNO.oninput = function () {
     margin-bottom: 15px;
 }
 
-label[for="id_RNG"], label[for="id_FIRNO"], label[for="id_LOCATION"], label[for="id_GROUND_LEVEL"], label[for="id_FLYOVER_UNDERPASS"], label[for="id_JUNCTION_CONTROL"], label[for="id_ROAD_TYPE1"], label[for="id_LATITUDE"] {
+label[for="id_RNG"], label[for="id_FIRNO"], label[for="id_ROAD_TYPE1"], label[for="id_LATITUDE"] {
     width: initial;
 }
 .wrap {
@@ -251,9 +254,10 @@ h2 { text-align: center; }
 
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#main_fir">FIR Details</a></li>
+    <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
     <li><a data-toggle="tab" href="#vvic">Victim Vehicle</a></li>
     <li><a data-toggle="tab" href="#pvic">Victim Person</a></li>
-    <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
+    <li><a href="#div_id_CAUSE">Cause</a></li>
     <li><a data-toggle="tab" href="#collision">Collisions</a></li>
   </ul>
 
@@ -317,8 +321,8 @@ $("#id_TIME_OCC").change(function () {
     selection = parseInt(selection);
     second = parseInt(second);
 
-    if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_OCC").value = "UNK";   }
-    if( selection < 0 || selection >= 24 ) { document.getElementById("id_TIME_OCC").value = "UNK";   }
+    if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_OCC").value = "INV";   }
+    if( selection < 0 || selection >= 24 ) { document.getElementById("id_TIME_OCC").value = "INV";   }
 });
 
 $("#id_MVA_NAME").change(function () {
@@ -343,12 +347,25 @@ $("#id_MVA_NAME").change(function () {
     var selection = $("#id_ROAD_LEVEL option:selected").text();
     if (selection=='Ground Level')
     {   $("#div_id_GROUND_LEVEL").show();
-    $('#div_id_FLYOVER_UNDERPASS').hide(); }
-    else {
-    $("#div_id_FLYOVER_UNDERPASS").show();
+        $('#div_id_FLYOVER').hide();
+        $('#div_id_UNDERPASS').hide();
+        $("#id_FLYOVER, #id_UNDERPASS").val('');
+       }
+    else if (selection=='Flyover')
+{
+    $("#div_id_FLYOVER").show();
+    $('#div_id_UNDERPASS').hide();
     $('#div_id_GROUND_LEVEL').hide();
     $("#div_id_JUNCTION_CONTROL").hide();
+    $("#id_JUNCTION_CONTROL, #id_GROUND_LEVEL, #id_UNDERPASS").val('');
 
+    }
+    else {
+      $("#div_id_FLYOVER").hide();
+      $('#div_id_UNDERPASS').show();
+      $('#div_id_GROUND_LEVEL').hide();
+      $("#div_id_JUNCTION_CONTROL").hide();
+      $("#id_JUNCTION_CONTROL, #id_GROUND_LEVEL, #id_FLYOVER").val('');
 
     }
 
@@ -357,9 +374,19 @@ $("#id_MVA_NAME").change(function () {
 $("#id_TIME_KNOWN_1").change(function () {
 
     $("#div_id_TIME_OCC").show();
+    document.getElementById("id_TIME_OCC").value = "";
 
 
   });
+
+  $("#id_TIME_KNOWN_2").change(function () {
+
+      $("#div_id_TIME_OCC").hide();
+      document.getElementById("id_TIME_OCC").value = "UNK";
+
+
+    });
+
 
 
  $("#id_AREA_TYPE2").change(function () {
@@ -373,7 +400,19 @@ $("#id_TIME_KNOWN_1").change(function () {
     else
     $("#div_id_AREA_TYPE2_OTHER").hide();
   });
+$("#id_ROAD").change(function () {
+    var selection = $("#id_ROAD option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='MINOR ROADS')
+    {
+    $("#div_id_MINORROADNAME").show();
+    $("#div_id_ROADNAME").hide();
 
+    }
+    else
+    $("#div_id_MINORROADNAME").hide();
+
+  });
 $("#div_id_GROUND_LEVEL").change(function () {
     var selection = $("#id_GROUND_LEVEL option:selected").text();
     //alert("you selected" + selection);

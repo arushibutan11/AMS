@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person,  OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
+from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
+
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
 from django.forms.formsets import formset_factory
@@ -71,6 +72,8 @@ class FirForm(forms.ModelForm):
     TIME_OCC = forms.CharField(
             label = 'Time of Occurence',
             widget=forms.TextInput(attrs={'placeholder': 'hhmm','size':4, 'maxlength':4})        )
+    ROAD_TYPE1= forms.ChoiceField(label = "One/Two Way", required = True, choices = ROAD_TYPE1_Choices, widget=forms.RadioSelect())
+
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.label_class = 'col-lg-2'
@@ -88,8 +91,13 @@ class FirForm(forms.ModelForm):
 
     def clean(self):
         cd = self.cleaned_data
-        if cd.get('dri_lic_date_issu') > cd.get('dri_lic_date_upto'):
-            self.add_error('dri_lic_date_upto', "Driver License Validity cannot be before Issued Date")
+        if cd.get('DATE_OCC') > datetime.date.today():
+            self.add_error('DATE_OCC', "Accident Date cannot be before System Date")
+        if cd.get('FIR_DATE') > datetime.date.today():
+            self.add_error('FIR_DATE', "FIR Date cannot be before System Date")
+        if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
+            self.add_error('FIR_DATE', "FIR Date cannot be before be before Accident Date")
+
         if cd.get('LONGITUDE') != '':
             LONGITUDE = float (cd.get('LONGITUDE'))
             if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
@@ -99,8 +107,9 @@ class FirForm(forms.ModelForm):
             if LATITUDE > 29.0 or LATITUDE <28.0:
                 self.add_error('LATITUDE', "Check Value of Latitude")
 
-
-        if cd.get('TIME_OCC') is not "UNK" and (cd.get('TIME_OCC') != ''):
+        if cd.get('TIME_OCC') is "INV":
+            self.add_error('TIME_OCC', "Enter a valid time")
+        elif cd.get('TIME_OCC') is not "UNK" and (cd.get('TIME_OCC') != ''):
             tim1 = cd.get('TIME_OCC')[:2]
             tim2 = cd.get('TIME_OCC')[-2:]
             tim1 = int(tim1)
