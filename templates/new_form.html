@@ -18,7 +18,7 @@
 <script>
 
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #id_offend-0-DRI_DRUNK, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2').prop('readonly', true);
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
@@ -269,8 +269,9 @@ h2 { text-align: center; }
     <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
     <li><a data-toggle="tab" href="#vvic">Victim Vehicle</a></li>
     <li><a data-toggle="tab" href="#pvic">Victim Person</a></li>
-    <li><a href="#div_id_CAUSE">Cause</a></li>
     <li><a data-toggle="tab" href="#collision">Collisions</a></li>
+    <li><a data-toggle="tab" href="#cause">Causes/Remedies</a></li>
+
   </ul>
 
 
@@ -312,9 +313,15 @@ h2 { text-align: center; }
 {{collisionform|crispy}}
  </div>
 
+</div>
+<div class="tab-pane fade" id="cause">
+{% csrf_token %}
+{{form2|crispy}}
 <input type="submit" class = "formsubmit">
+
 </div>
 
+</div>
 
 </form>
 </div>
@@ -476,7 +483,6 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
 $("#id_CAUSE").change(function () {
     var selection = $("#id_CAUSE option:selected").text();
-    alert("you selected" + selection);
 
     if (selection=='Known')
   { 		  $('#id_DRIVER_FAULT, #id_VEH_MECH_FAULT, #id_ROAD_ENV_FAULT, #id_VICTIM_FAULT, #id_ROAD_ENGG_FAULT, #id_DRUNK_FAULT, #id_OVER_SPEED_FAULT, #id_WEATHER_COND, #id_OTHER_CAUSE').val('');
