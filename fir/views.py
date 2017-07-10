@@ -202,25 +202,21 @@ def edit_fir(request,acc_id):
       offendform = OffendInlineFormSet(request.POST, prefix = 'offend', instance = fir)
       collisionform = CollisionInlineFormSet(request.POST, prefix = 'collision', instance = fir)
       form = FirForm(request.POST,request.FILES,instance = fir)
-
+      form2 = CauseForm(request.POST,request.FILES,instance=fir)
       if form.is_valid():
         fir = form.save()
-        pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
-        vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
-        offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
-        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')
-
-        if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
-          return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
+        if (not form2.is_valid()) or (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
+            return render(request,'edit_form.html', { 'fir': fir, 'form2': form2, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
         else:
           pvicform.save()
           vvicform.save()
           offendform.save()
           collisionform.save()
+          form2.save()
           return HttpResponse('done')
       else:
-        return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
+        return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
 
     else:
@@ -249,18 +245,20 @@ def new_fir(request):
       offendform = OffendInlineFormSet(request.POST, prefix = 'offend')
       collisionform = CollisionInlineFormSet(request.POST, prefix = 'collision')
 
-      if form.is_valid and form2.is_valid():
+      if form.is_valid():
         fir = form.save()
-        cause = form2.save()
+
+        form2 = CauseForm(request.POST,request.FILES, instance=fir)
         pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
         vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
         offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
         collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')
 
-        if (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
-          return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
+        if (not form2.is_valid())or (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
+            return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
         else:
+          form2.save()
           pvicform.save()
           vvicform.save()
           offendform.save()
@@ -272,8 +270,8 @@ def new_fir(request):
 
     else:
         form = FirForm()
-        form2 = CauseForm()
 
+        form2 = CauseForm()
         pvicform = PVicInlineFormSet(prefix = 'pvic')
         vvicform = VVicInlineFormSet(prefix = 'vvic')
         offendform = OffendInlineFormSet(prefix = 'offend')

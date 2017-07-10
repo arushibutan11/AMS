@@ -672,7 +672,7 @@ class details(models.Model):
     LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Longitude')
     LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Latitude')
 
-    
+
     #END OF REMARKS
     #DOUBTFUL
     '''SELF_TYPE = models.ForeignKey(self_type, default=0,blank=True)
@@ -793,6 +793,7 @@ class collision(models.Model):
     #CAUSE ANALYSIS
 
 class causes(models.Model):
+    ACCID_ID = models.ForeignKey(details)
     CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
     DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Fault of Driver',null =  True)
     OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Fault of Driver-Other')

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import details, injured, killed, profile, designation_choices, circle_choices, causes, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
+from .models import details, injured, killed, sections, profile, designation_choices, circle_choices, causes, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
 
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
@@ -54,11 +54,6 @@ class SignUpForm(UserCreationForm):
 
 
 
-
-
-
-
-
 class FirForm(forms.ModelForm):
     DATE_OCC = forms.DateField(required = False,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
@@ -83,12 +78,12 @@ class FirForm(forms.ModelForm):
 
     def clean(self):
         cd = self.cleaned_data
-        if cd.get('DATE_OCC') > datetime.date.today():
-            self.add_error('DATE_OCC', "Accident Date cannot be before System Date")
-        if cd.get('FIR_DATE') > datetime.date.today():
-            self.add_error('FIR_DATE', "FIR Date cannot be before System Date")
-        if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
-            self.add_error('FIR_DATE', "FIR Date cannot be before be before Accident Date")
+        if cd.get('DATE_OCC') > datetime.datetime.now().date():
+            self.add_error('DATE_OCC', "Accident Date cannot be after System Date")
+        if cd.get('FIR_DATE') > datetime.datetime.now().date():
+            self.add_error('FIR_DATE', "FIR Date cannot be after System Date")
+        '''if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
+            self.add_error('FIR_DATE', "FIR Date cannot be before Accident Date")'''
 
         if cd.get('LONGITUDE') != '':
             LONGITUDE = float (cd.get('LONGITUDE'))
@@ -126,11 +121,9 @@ class FirForm(forms.ModelForm):
 
 
 class CauseForm(forms.ModelForm):
-
-
     class Meta:
         model = causes
-        exclude = ()
+        exclude = ('ACCID_ID',)
 
 class OffendForm(forms.ModelForm):
     dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
@@ -159,7 +152,16 @@ class PVicForm(forms.ModelForm):
     class Meta:
         model = victim_person
         exclude = ('ACCID_ID',)
-
+    def clean(self):
+        cd = self.cleaned_data
+        fir = self.instance.ACCID_ID
+        sec_obj = sections.objects.get(pk = fir.OF_SECTION_id)
+        injkil = cd.get('INJKIL')
+        if injkil == 'INJURED' and not('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
+            self.add_error('INJKIL', "Person cannot be Injured according to Section")
+        if injkil == 'KILLED' and not('304' in sec_obj.SECTIONDTL):
+            self.add_error('INJKIL', "Person cannot be Killed according to Section")
+        return cd
 class CollisionForm(forms.ModelForm):
 
     class Meta:
