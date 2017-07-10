@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/style.css' %}"/>
-
+<script src="{% static 'fir/js/jquery.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script src="{% static 'fir/js/bootstrap.js' %}"></script>
@@ -48,20 +48,20 @@ $('#div_id_offend-0-OTHER_WORK_STATUS').hide();
 $('#id_LOCATION').val('11');
 $('#div_id_JUNCTION_CONTROL').hide();
 $('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
-$('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html()); 
+$('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html());
 $('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
-$('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html()); 
+$('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html());
 $('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
-$('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() ); 
+$('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() );
 $('#div_id_ROADNAME, #div_id_MINORROADNAME').wrapAll( $('<div>').addClass('wrap four') );
-$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() ); 
+$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() );
 $('#div_id_ROAD_TYPE, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
-$('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html()); 
+$('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html());
 $('#div_id_LONGITUDE, #div_id_LATITUDE').wrapAll( $('<div>').addClass('wrap six') );
 $('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html());
 id_FIRNO.oninput = function () {
     if (this.value.length > 4) {
-        this.value = this.value.slice(0,4); 
+        this.value = this.value.slice(0,4);
     }
 }
 
@@ -323,7 +323,7 @@ $("#id_TIME_OCC").change(function () {
 
 $("#id_MVA_NAME").change(function () {
     var selection = document.getElementById("id_MVA_NAME").value;
-    
+
     document.getElementById("id_DRUNK_FAULT").value = "Yes";
     document.getElementById("id_offend-0-DRI_DRUNK").value = "Yes";
 });
@@ -335,10 +335,10 @@ $("#id_MVA_NAME").change(function () {
     $("#div_id_AREA_TYPE_OTHER").show();
     }
     else
-    $("#div_id_AREA_TYPE_OTHER").hide(); 
+    $("#div_id_AREA_TYPE_OTHER").hide();
 
   });
-  
+
  $("#id_ROAD_LEVEL").change(function () {
     var selection = $("#id_ROAD_LEVEL option:selected").text();
     if (selection=='Ground Level')
@@ -347,15 +347,15 @@ $("#id_MVA_NAME").change(function () {
     else {
     $("#div_id_FLYOVER_UNDERPASS").show();
     $('#div_id_GROUND_LEVEL').hide();
-    $("#div_id_JUNCTION_CONTROL").hide(); 
+    $("#div_id_JUNCTION_CONTROL").hide();
 
 
     }
-  
+
 
   });
 $("#id_TIME_KNOWN_1").change(function () {
-    
+
     $("#div_id_TIME_OCC").show();
 
 
@@ -371,7 +371,7 @@ $("#id_TIME_KNOWN_1").change(function () {
 
     }
     else
-    $("#div_id_AREA_TYPE2_OTHER").hide(); 
+    $("#div_id_AREA_TYPE2_OTHER").hide();
   });
 
 $("#div_id_GROUND_LEVEL").change(function () {
@@ -383,7 +383,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_JUNCTION_CONTROL").hide(); 
+    $("#div_id_JUNCTION_CONTROL").hide();
   });
 
  $("#id_ROAD_CHARACTER").change(function () {
@@ -395,7 +395,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_ROAD_CHARACTER_REMARKS").hide(); 
+    $("#div_id_ROAD_CHARACTER_REMARKS").hide();
   });
 
 
@@ -408,7 +408,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_SURFACE_CONDITION_REMARKS").hide(); 
+    $("#div_id_SURFACE_CONDITION_REMARKS").hide();
   });
 
  $("#id_ROAD_CONDITION").change(function () {
@@ -420,7 +420,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_ROAD_CONDITION_REMARKS").hide(); 
+    $("#div_id_ROAD_CONDITION_REMARKS").hide();
   });
 
 
@@ -433,7 +433,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_OTHER_DRIVER_FAULT").hide(); 
+    $("#div_id_OTHER_DRIVER_FAULT").hide();
   });
 
 
@@ -446,9 +446,9 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_OTHER_VEC_MEH_FAULT").hide(); 
+    $("#div_id_OTHER_VEC_MEH_FAULT").hide();
   });
- 
+
  $("#id_ROAD_ENV_FAULT").change(function () {
     var selection = $("#id_ROAD_ENV_FAULT option:selected").text();
     //alert("you selected" + selection);
@@ -458,7 +458,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_OTHER_ROAD_ENV_FAULT").hide(); 
+    $("#div_id_OTHER_ROAD_ENV_FAULT").hide();
   });
 
 
@@ -471,7 +471,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_OTHER_ROAD_ENGG_FAULT").hide(); 
+    $("#div_id_OTHER_ROAD_ENGG_FAULT").hide();
   });
 
 
@@ -484,7 +484,7 @@ $("#div_id_GROUND_LEVEL").change(function () {
 
     }
     else
-    $("#div_id_OTHER_VICTIM_FAULT").hide(); 
+    $("#div_id_OTHER_VICTIM_FAULT").hide();
   });
 
 
@@ -497,7 +497,7 @@ $("#id_pvic-0-VIC_WORK_STATUS").change(function () {
 
     }
     else
-    $("#div_id_pvic-0-VIC_OTHER_WORK_STATUS").hide(); 
+    $("#div_id_pvic-0-VIC_OTHER_WORK_STATUS").hide();
   });
 
 $("#id_pvic-0-VIC_EDU_QUAL").change(function () {
@@ -509,7 +509,7 @@ $("#id_pvic-0-VIC_EDU_QUAL").change(function () {
 
     }
     else
-    $("#div_id_pvic-0-VIC_OTHER_EDU_QUAL").hide(); 
+    $("#div_id_pvic-0-VIC_OTHER_EDU_QUAL").hide();
   });
 
 $("#id_offend-0-EDU_QUAL").change(function () {
@@ -521,7 +521,7 @@ $("#id_offend-0-EDU_QUAL").change(function () {
 
     }
     else
-    $("#div_id_offend-0-OTHER_EDU_QUAL").hide(); 
+    $("#div_id_offend-0-OTHER_EDU_QUAL").hide();
   });
 $("#id_offend-0-WORK_STATUS").change(function () {
     var selection = $("#id_offend-0-WORK_STATUS option:selected").text();
@@ -532,7 +532,7 @@ $("#id_offend-0-WORK_STATUS").change(function () {
 
     }
     else
-    $("#div_id_offend-0-OTHER_WORK_STATUS").hide(); 
+    $("#div_id_offend-0-OTHER_WORK_STATUS").hide();
   });
 $("#id_WEATHER_COND").change(function () {
     var selection = $("#id_WEATHER_COND option:selected").text();
@@ -543,7 +543,7 @@ $("#id_WEATHER_COND").change(function () {
 
     }
     else
-    $("#div_id_OTHER_WEATHER_COND_FAULT").hide(); 
+    $("#div_id_OTHER_WEATHER_COND_FAULT").hide();
   });
 
 </script>

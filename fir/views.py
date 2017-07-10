@@ -100,6 +100,7 @@ def signup(request):
                 g.user_set.add(user)
             if (user.profile.designation == 'ARC'):
                 user.is_superuser = True
+                user.is_staff = True
                 user.save()
                 g = Group.objects.get(name='arc')
                 g.user_set.add(user)
@@ -257,8 +258,8 @@ def new_fir(request):
           return render(request,'new_form.html', { 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
         else:
-          pvcform.save()
-          vvcform.save()
+          pvicform.save()
+          vvicform.save()
           offendform.save()
           collisionform.save()
           return HttpResponse('done')

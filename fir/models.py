@@ -167,7 +167,7 @@ class profile(models.Model):
     name = models.CharField(max_length=50, default = "0")
     emp_id = models.CharField(max_length=15, default = "0")
     designation = models.CharField(max_length=30, choices = designation_choices)
-    circle = models.CharField(max_length=60, choices = circle_choices,blank = True)
+    circle = models.CharField(max_length=60, choices = circle_choices,blank = True,default='')
     district_circle = models.CharField(max_length=30, blank = True)
     range_circle = models.CharField(max_length=30, blank = True)
     #max_attempts = models.PositiveIntegerField(blank = True, default='0')
@@ -629,12 +629,12 @@ class details(models.Model):
     #LOCATION
     PLACE_OCC = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Place of Occurence')
     AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
-    LOCATION = models.ForeignKey(location, blank=True,verbose_name = 'Location')
+    LOCATION = models.ForeignKey(location, blank=True,verbose_name = 'Location', default='')
     ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Sketch of Accident')
     AREA_TYPE = models.ForeignKey(area_type, verbose_name = 'Area Type')
-    AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Other Area Type')
+    AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', null =  True, verbose_name = 'Other Area Type')
     AREA_TYPE2=models.ForeignKey(area_type2, verbose_name = 'Area Type 2')
-    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True, verbose_name = 'Other Area Type 2')
+    AREA_TYPE2_OTHER=models.ForeignKey(area_type2_oth,default='',blank=True, null =  True, verbose_name = 'Other Area Type 2')
     ROAD = ChainedForeignKey(
         roads,
         chained_field = "CIRCLE",
@@ -674,7 +674,7 @@ class details(models.Model):
 
     #CAUSE ANALYSIS
     CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
-    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Fault of Driver')
+    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Fault of Driver',null =  True)
     OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Fault of Driver-Other')
 
     DRUNK_FAULT = models.CharField(max_length=25,blank=True, default = '', verbose_name = 'Case of Drunk Driving')
@@ -758,16 +758,16 @@ class offender(models.Model):
     routeno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rcno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'RC No.')
     VEHICLE_LOADED_CONDITION1 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
-    STUDY_PARAMETER1 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters')
+    STUDY_PARAMETER1 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters',null=True)
     dri_name = models.CharField(max_length=50,blank=True, default = '',verbose_name = 'Name of Driver')
     dri_relation = models.CharField(max_length=15, choices = RELATION_CHOICES, blank=True, default = '',verbose_name = 'Relative of Driver')
     dri_rel_name = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Name of Relative')
     dri_sex = models.CharField(max_length=15, choices = SEX_Choices,blank=True,default='',verbose_name = 'Gender')
     dri_age = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0,verbose_name = 'Age')
     dri_add = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Address')
-    EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True,verbose_name = 'Educational Qualifications')
+    EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True,verbose_name = 'Educational Qualifications',null=True)
     OTHER_EDU_QUAL = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Educational Qualifications - Other')
-    WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status')
+    WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status',null=True)
     OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Work Status - Other')
     DRI_DRUNK = models.CharField(max_length=50,blank=True, verbose_name = 'Driver Drunk/Not')
     dri_lic_no = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'License No.')
@@ -788,7 +788,7 @@ class victim_vehicle(models.Model):
     routeno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rgno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Registration No.')
     VEHICLE_LOADED_CONDITION2 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
-    STUDY_PARAMETER2 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters')
+    STUDY_PARAMETER2 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters',null=True)
 
     #victim vehicle end
 
@@ -805,9 +805,9 @@ class victim_person(models.Model):
     VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Seatbelt Worn')
     VIC_HELMET = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Helmet Worn')
     HELMET_STANDARD = models.CharField(max_length = 15, choices = HELMET_STANDARD_CHOICES, blank=True,default='',verbose_name = 'Standard of Helmet')
-    VIC_EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True,verbose_name = 'Educational Qualification')
+    VIC_EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True,verbose_name = 'Educational Qualifications',null=True)
     VIC_OTHER_EDU_QUAL = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Educational Qualifications - Other')
-    VIC_WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status')
+    VIC_WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status',null=True)
     VIC_OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Work Status - Other')
     VIC_DRI_DRUNK = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Drunk/Not')
 

@@ -16,7 +16,7 @@ from crispy_forms.bootstrap import PrependedText, PrependedAppendedText, FormAct
 class SignUpForm(UserCreationForm):
     name = forms.CharField(max_length=50, required= True, label="Full Name")
     emp_id = forms.CharField(max_length=15, required= True, label="Employee ID")
-    circle = forms.ChoiceField(choices=circle_choices, widget=forms.Select(attrs={'class':'form-control'}), required= True)
+    circle = forms.ChoiceField(choices=circle_choices, widget=forms.Select(attrs={'class':'form-control'}))
     designation = forms.ChoiceField(choices=designation_choices, widget=forms.Select(attrs={'class':'form-control'}), required= True)
 
 
@@ -42,8 +42,9 @@ class SignUpForm(UserCreationForm):
         Div('password2', css_class='col-md-6 col-xs-12', placeholder = 'Confirm Password'),
         css_class='row formrow',
         ),
-        'circle',
         'designation',
+        'circle',
+
         )
         #for field_name, field in self.fields.items():
             #layout.append(Field(field_name, placeholder=field.label,  css_class='col-md-6 col-xs-8'))
@@ -129,7 +130,7 @@ class OffendForm(forms.ModelForm):
     dri_lic_date_upto= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
         )
-    dri_age= forms.ChoiceField(required = True, choices = SEX_Choices, widget=forms.RadioSelect())
+    dri_sex= forms.ChoiceField(label = "Gender", required = True, choices = SEX_Choices, widget=forms.RadioSelect())
 
     class Meta:
         model = offender

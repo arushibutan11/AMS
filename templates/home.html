@@ -4,7 +4,7 @@
   <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <style type="text/css">
-  
+
 
 main {
     text-align: -WEBKIT-CENTER;
@@ -12,7 +12,7 @@ main {
   div#menu {
     text-align: center;
 }
-  
+
 h1, h2 {
 text-align:center; }
 
@@ -43,22 +43,22 @@ display:none;
         <div id="menu"> <a href="{% url 'logout' %}">logout</a> </div>
       {% else %}
         <div id="menu"> <a href="{% url 'login' %}">login</a> / <a href="{% url 'signup' %}">signup</a> <div>
-      {% endif %} 
+      {% endif %}
       <hr>
     </header>
     <main>
       <h2>Welcome {{ user.username }}!</h2>
-	  
-	  <div class="box"><a class="head" href="{% url 'create_fir' %}">Add an Accident Report</a></div>
+
+	  <div class="box"><a class="head" href="{% url 'new_fir' %}">Add an Accident Report</a></div>
 	  <div class="box"><a class="head" href="{% url 'report_builder' %}">View Analysis and Reports</a></div>
 	 {% if isadmin is True %}
-	
-	  <div class="box"><a id ="edit" href="#">Edit a Report</a></div>
+
+	  <div class="box"><a class="head" id ="edit" href="#">Edit a Report</a></div>
       <div class = "box" id ="search">
       <form action="{% url 'search_fir' %}" method="get" accept-charset="utf-8">
         <input type="text" id = "searchbox" class="form-control" placeholder="Enter Accident ID" name="q">
         <button type="submit">Search</button></div>
-		
+
 	{% endif %}
         </form>
     <script>
@@ -66,9 +66,7 @@ display:none;
             $('#search').show();
         });
     </script>
-	  
+
     </main>
   </body>
 </html>
-
-
