@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
+from .models import details, injured, killed, profile, designation_choices, circle_choices, causes, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
 
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
@@ -74,14 +74,6 @@ class FirForm(forms.ModelForm):
             widget=forms.TextInput(attrs={'placeholder': 'hhmm','size':4, 'maxlength':4})        )
     ROAD_TYPE1= forms.ChoiceField(label = "One/Two Way", required = True, choices = ROAD_TYPE1_Choices, widget=forms.RadioSelect())
 
-    helper = FormHelper()
-    helper.form_class = 'form-horizontal'
-    helper.label_class = 'col-lg-2'
-    helper.field_class = 'col-lg-8'
-    helper.layout = Layout(
-        Div('Circle', 'District', 'Range')
-
-    )
 
     class Meta:
         model = details
@@ -131,6 +123,14 @@ class FirForm(forms.ModelForm):
         elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
             self.add_error('VICTIM', "Victim is vehicle") '''
         return cd
+
+
+class CauseForm(forms.ModelForm):
+
+
+    class Meta:
+        model = causes
+        exclude = ()
 
 class OffendForm(forms.ModelForm):
     dri_lic_date_issu= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,

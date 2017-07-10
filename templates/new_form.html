@@ -3,7 +3,6 @@
 <head>
  {% load static %}
  {% load crispy_forms_tags %}
-{% crispy form %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/style.css' %}"/>
@@ -48,6 +47,8 @@ $('#div_id_pvic-0-VIC_OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_WORK_STATUS').hide();
 $("#div_id_MINORROADNAME").hide();
+$('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').hide();
+
 $('#id_LOCATION').val('11');
 $('#div_id_JUNCTION_CONTROL').hide();
 $('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
@@ -68,12 +69,23 @@ id_FIRNO.oninput = function () {
     }
 }
 
+$("#div_id_PLACE_OCC").prepend("<h3 id = 'section-heading'>Location</h3>");
+$("#div_id_CAUSE").prepend("<h3 id = 'section-heading'>Cause Analysis</h3>");
+$("#div_id_REMEDIES").prepend("<h3 id = 'section-heading'>Remedies</h3>");
+
  }
 </script>
 
 
 
 <style type="text/css">
+
+.form-style-6 {
+    margin-top: 0;
+}
+h3#section-heading {
+    margin-top: 0;
+}
 
 .wrap {
     margin-bottom: 15px;
@@ -329,7 +341,6 @@ $("#id_MVA_NAME").change(function () {
     var selection = document.getElementById("id_MVA_NAME").value;
 
     document.getElementById("id_DRUNK_FAULT").value = "Yes";
-    document.getElementById("id_offend-0-DRI_DRUNK").value = "Yes";
 });
   $("#id_AREA_TYPE").change(function () {
     var selection = $("#id_AREA_TYPE option:selected").text();
@@ -378,6 +389,7 @@ $("#id_TIME_KNOWN_1").change(function () {
 
 
   });
+
 
   $("#id_TIME_KNOWN_2").change(function () {
 
@@ -462,6 +474,20 @@ $("#div_id_GROUND_LEVEL").change(function () {
     $("#div_id_ROAD_CONDITION_REMARKS").hide();
   });
 
+$("#id_CAUSE").change(function () {
+    var selection = $("#id_CAUSE option:selected").text();
+    alert("you selected" + selection);
+
+    if (selection=='Known')
+  { 		  $('#id_DRIVER_FAULT, #id_VEH_MECH_FAULT, #id_ROAD_ENV_FAULT, #id_VICTIM_FAULT, #id_ROAD_ENGG_FAULT, #id_DRUNK_FAULT, #id_OVER_SPEED_FAULT, #id_WEATHER_COND, #id_OTHER_CAUSE').val('');
+			$('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').show();
+}
+
+else {    $('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').hide();
+ }
+
+
+  });
 
  $("#id_DRIVER_FAULT").change(function () {
     var selection = $("#id_DRIVER_FAULT option:selected").text();
