@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
 from multiupload.fields import MultiFileField
-from .models import details, injured, killed, profile, sections, designation_choices, circle_choices, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
+from .models import details, causes, injured, killed, profile, sections, designation_choices, circle_choices, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
 
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
