@@ -714,36 +714,7 @@ class details(models.Model):
     LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Longitude')
     LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Latitude')
 
-    #CAUSE ANALYSIS
-    CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
-    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Fault of Driver',null =  True)
-    OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Fault of Driver-Other')
 
-    DRUNK_FAULT = models.CharField(max_length=25,blank=True, default = '', verbose_name = 'Case of Drunk Driving')
-    OVER_SPEED_FAULT = models.CharField(max_length=15,choices=YES_NO_CHOICES,default='',blank=True, verbose_name = 'Case of Overspeeding')
-
-    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,null=True,blank=True, verbose_name = 'Mechanical Fault of Vehicle')
-    OTHER_VEC_MEH_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Mechanical Fault -Other')
-
-    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,null=True,blank=True, verbose_name = 'Fault of Road Environment')
-    OTHER_ROAD_ENV_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Road Environment Fault -Other')
-
-    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,null=True,blank=True, verbose_name = 'Fault of Road Engineering')
-    OTHER_ROAD_ENGG_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Road Engineering Fault - Other')
-
-    VICTIM_FAULT = models.ForeignKey(victim_fault,null=True,blank=True, verbose_name = 'Fault of Victim')
-    OTHER_VICTIM_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Fault of Victim - Other')
-
-    WEATHER_COND = models.ForeignKey(weather_cond,null=True,blank=True, verbose_name = 'Weather Conditions')
-    OTHER_WEATHER_COND_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Weather Conditions - Other')
-
-    OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '', verbose_name = 'Other Causes')
-    #END OF CAUSE ANALYSIS
-
-    #REMARKS
-    REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
-    REMARKS = models.CharField(max_length=200,default='',blank=True, verbose_name = 'Remarks')
-    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')
     #END OF REMARKS
     #DOUBTFUL
     '''SELF_TYPE = models.ForeignKey(self_type, default=0,blank=True)
@@ -862,6 +833,39 @@ class collision(models.Model):
     ACCID_ID = models.ForeignKey(details)
     VIC_TYPE = models.CharField(max_length=15,verbose_name = 'Victim Type')
     COL_TYPE = models.CharField(max_length = 15,verbose_name = 'Type of Collision')
+    #CAUSE ANALYSIS
+
+class causes(models.Model):
+    ACCID_ID = models.ForeignKey(details)
+    CAUSE = models.CharField(max_length=15,choices=CAUSE_Choices, verbose_name = 'Cause')
+    DRIVER_FAULT = models.ForeignKey(driver_fault,default='',blank=True, verbose_name = 'Fault of Driver',null =  True)
+    OTHER_DRIVER_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Fault of Driver-Other')
+
+    DRUNK_FAULT = models.CharField(max_length=25,blank=True, default = '', verbose_name = 'Case of Drunk Driving')
+    OVER_SPEED_FAULT = models.CharField(max_length=15,choices=YES_NO_CHOICES,default='',blank=True, verbose_name = 'Case of Overspeeding')
+
+    VEH_MECH_FAULT = models.ForeignKey(veh_mech_fault,null=True,blank=True, verbose_name = 'Mechanical Fault of Vehicle')
+    OTHER_VEC_MEH_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Mechanical Fault -Other')
+
+    ROAD_ENV_FAULT = models.ForeignKey(road_env_fault,null=True,blank=True, verbose_name = 'Fault of Road Environment')
+    OTHER_ROAD_ENV_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Road Environment Fault -Other')
+
+    ROAD_ENGG_FAULT = models.ForeignKey(road_engg_fault,null=True,blank=True, verbose_name = 'Fault of Road Engineering')
+    OTHER_ROAD_ENGG_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Road Engineering Fault - Other')
+
+    VICTIM_FAULT = models.ForeignKey(victim_fault,null=True,blank=True, verbose_name = 'Fault of Victim')
+    OTHER_VICTIM_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Fault of Victim - Other')
+
+    WEATHER_COND = models.ForeignKey(weather_cond,null=True,blank=True, verbose_name = 'Weather Conditions')
+    OTHER_WEATHER_COND_FAULT = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Weather Conditions - Other')
+
+    OTHER_CAUSE = models.CharField(max_length=1000,blank=True, default = '', verbose_name = 'Other Causes')
+    #END OF CAUSE ANALYSIS
+
+    #REMARKS
+    REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
+    REMARKS = models.CharField(max_length=200,default='',blank=True, verbose_name = 'Remarks')
+    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')
 
 #REMOVE BUT HOW
 

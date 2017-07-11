@@ -5,6 +5,7 @@
  {% load crispy_forms_tags %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'fir/css/style.css' %}"/>
 <script src="{% static 'fir/js/jquery.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
@@ -14,15 +15,17 @@
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/chainedm2m.js' %}"></script>
 
 
-
-
 <script>
 
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #id_offend-0-DRI_DRUNK, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2').prop('readonly', true);
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
-
+$('#id_LOCATION').val('11');
+$('#id_DATE_OCC_month').val('7');
+$('#id_FIR_DATE_year').val('2017');
+$('#id_FIR_DATE_month').val('7');
+$('#id_SELF_TYPE').val('0');
 $('#div_id_AREA_TYPE_OTHER').hide();
 $('#div_id_TIME_OCC').hide();
 $('#div_id_AREA_TYPE2_OTHER').hide();
@@ -33,24 +36,31 @@ $('#div_id_OTHER_DRIVER_FAULT').hide();
 $('#div_id_OTHER_VEC_MEH_FAULT').hide();
 $('#div_id_OTHER_ROAD_ENV_FAULT').hide();
 $('#div_id_OTHER_ROAD_ENGG_FAULT').hide();
-
+$("#div_id_ROADNAME").hide();
+$('#div_id_GROUND_LEVEL').hide();
+$('#div_id_FLYOVER').hide();
+$('#div_id_UNDERPASS').hide();
 $('#div_id_OTHER_VICTIM_FAULT').hide();
 $('#div_id_OTHER_WEATHER_COND_FAULT').hide();
 $('#div_id_pvic-0-VIC_OTHER_WORK_STATUS').hide();
 $('#div_id_pvic-0-VIC_OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_EDU_QUAL').hide();
 $('#div_id_offend-0-OTHER_WORK_STATUS').hide();
+$("#div_id_MINORROADNAME").hide();
+$('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').hide();
+
 $('#id_LOCATION').val('11');
+$('#div_id_JUNCTION_CONTROL').hide();
 $('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
 $('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html());
 $('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
 $('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html());
-$('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
+/*$('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
 $('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() );
 $('#div_id_ROADNAME, #div_id_MINORROADNAME').wrapAll( $('<div>').addClass('wrap four') );
-$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() );
-$('#div_id_ROAD_TYPE, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
-$('.five').html($('#div_id_ROAD_TYPE').html() + $('#div_id_ROAD_TYPE1').html());
+$('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() ); */
+$('#div_id_SEPERATION, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
+$('.five').html($('#div_id_SEPERATION').html() + $('#div_id_ROAD_TYPE1').html());
 $('#div_id_LONGITUDE, #div_id_LATITUDE').wrapAll( $('<div>').addClass('wrap six') );
 $('.six').html($('#div_id_LONGITUDE').html() + $('#div_id_LATITUDE').html());
 id_FIRNO.oninput = function () {
@@ -59,12 +69,23 @@ id_FIRNO.oninput = function () {
     }
 }
 
+$("#div_id_PLACE_OCC").prepend("<h3 id = 'section-heading'>Location</h3>");
+$("#div_id_CAUSE").prepend("<h3 id = 'section-heading'>Cause Analysis</h3>");
+$("#div_id_REMEDIES").prepend("<h3 id = 'section-heading'>Remedies</h3>");
+
  }
 </script>
 
 
 
 <style type="text/css">
+
+.form-style-6 {
+    margin-top: 0;
+}
+h3#section-heading {
+    margin-top: 0;
+}
 
 .wrap {
     margin-bottom: 15px;
@@ -78,7 +99,7 @@ id_FIRNO.oninput = function () {
     margin-bottom: 15px;
 }
 
-label[for="id_RNG"], label[for="id_FIRNO"], label[for="id_LOCATION"], label[for="id_GROUND_LEVEL"], label[for="id_FLYOVER_UNDERPASS"], label[for="id_JUNCTION_CONTROL"], label[for="id_ROAD_TYPE1"], label[for="id_LATITUDE"] {
+label[for="id_RNG"], label[for="id_FIRNO"], label[for="id_ROAD_TYPE1"], label[for="id_LATITUDE"] {
     width: initial;
 }
 .wrap {
@@ -220,7 +241,6 @@ h2 { text-align: center; }
 }
 </style>
 
-
 </head>
 <body onload="setreadonly()">
 
@@ -246,17 +266,19 @@ h2 { text-align: center; }
 
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#main_fir">FIR Details</a></li>
+    <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
     <li><a data-toggle="tab" href="#vvic">Victim Vehicle</a></li>
     <li><a data-toggle="tab" href="#pvic">Victim Person</a></li>
-    <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
     <li><a data-toggle="tab" href="#collision">Collisions</a></li>
+    <li><a data-toggle="tab" href="#cause">Causes/Remedies</a></li>
+
   </ul>
 
 
 <div class="tab-content">
 <div class="tab-pane fade in active" id="main_fir">
-<form name="myForm" action = "{% url 'edit_fir' fir.ACC_ID%}" method="post" enctype="multipart/form-data">
 
+<form name="myForm" action = "{% url 'edit_fir' fir.ACC_ID %}" method="post" enctype="multipart/form-data">
 {{form|crispy}}
 {% csrf_token %}
 
@@ -291,16 +313,311 @@ h2 { text-align: center; }
 {{collisionform|crispy}}
  </div>
 
+</div>
+<div class="tab-pane fade" id="cause">
+{% csrf_token %}
+{{form2|crispy}}
 <input type="submit" class = "formsubmit">
+
 </div>
 
+</div>
 
 </form>
 </div>
 
 
 <script src="{% static 'fir/js/jquery.formset.js' %}"></script>
-<script src = "{% static 'fir/js/script.js'%}"></script>
+<script src = "{% static 'fir/js/script.js' %}"></script>
+<script type="text/javascript">
+
+$("#id_TIME_OCC").change(function () {
+    var selection = document.getElementById("id_TIME_OCC").value;
+    //for timeslot
+    second = selection;
+    second = second.slice(2,4);
+    selection = selection.slice(0,2);
+    selection = parseInt(selection);
+    second = parseInt(second);
+
+    if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_OCC").value = "INV";   }
+    if( selection < 0 || selection >= 24 ) { document.getElementById("id_TIME_OCC").value = "INV";   }
+});
+
+$("#id_MVA_NAME").change(function () {
+    var selection = document.getElementById("id_MVA_NAME").value;
+
+    document.getElementById("id_DRUNK_FAULT").value = "Yes";
+});
+  $("#id_AREA_TYPE").change(function () {
+    var selection = $("#id_AREA_TYPE option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_AREA_TYPE_OTHER").show();
+    }
+    else
+    $("#div_id_AREA_TYPE_OTHER").hide();
+
+  });
+
+ $("#id_ROAD_LEVEL").change(function () {
+    var selection = $("#id_ROAD_LEVEL option:selected").text();
+    if (selection=='Ground Level')
+    {   $("#div_id_GROUND_LEVEL").show();
+        $('#div_id_FLYOVER').hide();
+        $('#div_id_UNDERPASS').hide();
+        $("#id_FLYOVER, #id_UNDERPASS").val('');
+       }
+    else if (selection=='Flyover')
+{
+    $("#div_id_FLYOVER").show();
+    $('#div_id_UNDERPASS').hide();
+    $('#div_id_GROUND_LEVEL').hide();
+    $("#div_id_JUNCTION_CONTROL").hide();
+    $("#id_JUNCTION_CONTROL, #id_GROUND_LEVEL, #id_UNDERPASS").val('');
+
+    }
+    else {
+      $("#div_id_FLYOVER").hide();
+      $('#div_id_UNDERPASS').show();
+      $('#div_id_GROUND_LEVEL').hide();
+      $("#div_id_JUNCTION_CONTROL").hide();
+      $("#id_JUNCTION_CONTROL, #id_GROUND_LEVEL, #id_FLYOVER").val('');
+
+    }
+
+
+  });
+$("#id_TIME_KNOWN_1").change(function () {
+
+    $("#div_id_TIME_OCC").show();
+    document.getElementById("id_TIME_OCC").value = "";
+
+
+  });
+
+
+  $("#id_TIME_KNOWN_2").change(function () {
+
+      $("#div_id_TIME_OCC").hide();
+      document.getElementById("id_TIME_OCC").value = "UNK";
+
+
+    });
+
+
+
+ $("#id_AREA_TYPE2").change(function () {
+    var selection = $("#id_AREA_TYPE2 option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_AREA_TYPE2_OTHER").show();
+
+    }
+    else
+    $("#div_id_AREA_TYPE2_OTHER").hide();
+  });
+$("#id_ROAD").change(function () {
+    var selection = $("#id_ROAD option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='MINOR ROADS')
+    {
+    $("#div_id_MINORROADNAME").show();
+    $("#div_id_ROADNAME").hide();
+
+    }
+    else
+    $("#div_id_MINORROADNAME").hide();
+
+  });
+$("#div_id_GROUND_LEVEL").change(function () {
+    var selection = $("#id_GROUND_LEVEL option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Round About' || selection=='Cut' ||selection=='Junction' ||selection=='T Point'  )
+    {
+    $("#div_id_JUNCTION_CONTROL").show();
+
+    }
+    else
+    $("#div_id_JUNCTION_CONTROL").hide();
+  });
+
+ $("#id_ROAD_CHARACTER").change(function () {
+    var selection = $("#id_ROAD_CHARACTER option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Others')
+    {
+    $("#div_id_ROAD_CHARACTER_REMARKS").show();
+
+    }
+    else
+    $("#div_id_ROAD_CHARACTER_REMARKS").hide();
+  });
+
+
+ $("#id_SURFACE_CONDITION").change(function () {
+    var selection = $("#id_SURFACE_CONDITION option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_SURFACE_CONDITION_REMARKS").show();
+
+    }
+    else
+    $("#div_id_SURFACE_CONDITION_REMARKS").hide();
+  });
+
+ $("#id_ROAD_CONDITION").change(function () {
+    var selection = $("#id_ROAD_CONDITION option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Others')
+    {
+    $("#div_id_ROAD_CONDITION_REMARKS").show();
+
+    }
+    else
+    $("#div_id_ROAD_CONDITION_REMARKS").hide();
+  });
+
+$("#id_CAUSE").change(function () {
+    var selection = $("#id_CAUSE option:selected").text();
+
+    if (selection=='Known')
+  { 		  $('#id_DRIVER_FAULT, #id_VEH_MECH_FAULT, #id_ROAD_ENV_FAULT, #id_VICTIM_FAULT, #id_ROAD_ENGG_FAULT, #id_DRUNK_FAULT, #id_OVER_SPEED_FAULT, #id_WEATHER_COND, #id_OTHER_CAUSE').val('');
+			$('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').show();
+}
+
+else {    $('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').hide();
+ }
+
+
+  });
+
+ $("#id_DRIVER_FAULT").change(function () {
+    var selection = $("#id_DRIVER_FAULT option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Others')
+    {
+    $("#div_id_OTHER_DRIVER_FAULT").show();
+
+    }
+    else
+    $("#div_id_OTHER_DRIVER_FAULT").hide();
+  });
+
+
+ $("#id_VEH_MECH_FAULT").change(function () {
+    var selection = $("#id_VEH_MECH_FAULT option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_OTHER_VEC_MEH_FAULT").show();
+
+    }
+    else
+    $("#div_id_OTHER_VEC_MEH_FAULT").hide();
+  });
+
+ $("#id_ROAD_ENV_FAULT").change(function () {
+    var selection = $("#id_ROAD_ENV_FAULT option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_OTHER_ROAD_ENV_FAULT").show();
+
+    }
+    else
+    $("#div_id_OTHER_ROAD_ENV_FAULT").hide();
+  });
+
+
+ $("#id_ROAD_ENGG_FAULT").change(function () {
+    var selection = $("#id_ROAD_ENGG_FAULT option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_OTHER_ROAD_ENGG_FAULT").show();
+
+    }
+    else
+    $("#div_id_OTHER_ROAD_ENGG_FAULT").hide();
+  });
+
+
+ $("#id_VICTIM_FAULT").change(function () {
+    var selection = $("#id_VICTIM_FAULT option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_OTHER_VICTIM_FAULT").show();
+
+    }
+    else
+    $("#div_id_OTHER_VICTIM_FAULT").hide();
+  });
+
+
+$("#id_pvic-0-VIC_WORK_STATUS").change(function () {
+    var selection = $("#id_pvic-0-VIC_WORK_STATUS option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_pvic-0-VIC_OTHER_WORK_STATUS").show();
+
+    }
+    else
+    $("#div_id_pvic-0-VIC_OTHER_WORK_STATUS").hide();
+  });
+
+$("#id_pvic-0-VIC_EDU_QUAL").change(function () {
+    var selection = $("#id_pvic-0-VIC_EDU_QUAL option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_pvic-0-VIC_OTHER_EDU_QUAL").show();
+
+    }
+    else
+    $("#div_id_pvic-0-VIC_OTHER_EDU_QUAL").hide();
+  });
+
+$("#id_offend-0-EDU_QUAL").change(function () {
+    var selection = $("#id_offend-0-EDU_QUAL option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_offend-0-OTHER_EDU_QUAL").show();
+
+    }
+    else
+    $("#div_id_offend-0-OTHER_EDU_QUAL").hide();
+  });
+$("#id_offend-0-WORK_STATUS").change(function () {
+    var selection = $("#id_offend-0-WORK_STATUS option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_offend-0-OTHER_WORK_STATUS").show();
+
+    }
+    else
+    $("#div_id_offend-0-OTHER_WORK_STATUS").hide();
+  });
+$("#id_WEATHER_COND").change(function () {
+    var selection = $("#id_WEATHER_COND option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Other')
+    {
+    $("#div_id_OTHER_WEATHER_COND_FAULT").show();
+
+    }
+    else
+    $("#div_id_OTHER_WEATHER_COND_FAULT").hide();
+  });
+
+</script>
 
 </body>
 </html>
