@@ -12,6 +12,48 @@ from django.dispatch import receiver
 
 
 # Create your models here.
+VEHTYPE_CHOICES=(
+('AMBULANCE','AMBULANCE'),
+('ANIMAL','ANIMAL'),
+('BULLOCK CARTS','BULLOCK CARTS'),
+('BUS BLUE LINE','BUS BLUE LINE'),
+('BUS DTC','BUS DTC'),
+('BUS MINI/RTV','BUS MINI/RTV'),
+('BUS OTHER','BUS OTHER'),
+('BUS OTHER STATE','BUS OTHER STATE'),
+('BUS SCHOOL','BUS SCHOOL'),
+('BUS UNDER DTC','BUS UNDER DTC'),
+('CALL CENTER CAB','CALL CENTER CAB'),
+('CAR PVT','CAR PVT'),
+('CLUSTER BUS','CLUSTER BUS'),
+('CRANE','CRANE'),
+('CYCLE RICKSHOW','CYCLE RICKSHOW'),
+('CYCLIST','CYCLIST'),
+('DELIVERY VAN','DELIVERY VAN'),
+('E RICKSHAW','E RICKSHAW'),
+('ELECTRIC BIKE','ELECTRIC BIKE'),
+('GRAMIN SEWA','GRAMIN SEWA'),
+('HAND CARTS','HAND CARTS'),
+('HTV/GOODS','HTV/GOODS'),
+('MATADOR','MATADOR'),
+('MILITARY VEH.','MILITARY VEH.'),
+('POLICE VEHICLE','POLICE VEHICLE'),
+('SCOOTRIST/MC','SCOOTRIST/MC'),
+('STEEM ROLLER','STEEM ROLLER'),
+('TANKER','TANKER'),
+('TAXI','TAXI'),
+('TEMPO','TEMPO'),
+('TONGA/REHRA','TONGA/REHRA'),
+('TRACTOR','TRACTOR'),
+('TRAILER/CONTANR','TRAILER/CONTANR'),
+('TSR','TSR'),
+('UN-KNOWN VEH.','UN-KNOWN VEH.'),)
+
+SUBVEHICLE_TYPE_CHOICE=(
+    ('Scooter','Scooter'),
+    ('Scooty','Scooty'),
+    ('Motor bike','Motor bike'),
+    )
 FLYOVER_CHOICES=(
    ('Ascending Flyover','Ascending Flyover'),('Descending Flyover','Descending Flyover'),
    ('Ascending Flyover Loop','Ascending Flyover Loop'), ('Descending Flyover Loop','Descending Flyover Loop')
@@ -757,7 +799,7 @@ class offender(models.Model):
     ACCID_ID = models.ForeignKey(details)
     #offending vehicle
     VEHTYPE1 = models.ForeignKey(vehtype1,verbose_name = 'Type of Vehicle')
-    SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default='',verbose_name = 'Sub Vehicle Type') #Not clear
+    SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default='',verbose_name = 'Sub Vehicle Type',choices= SUBVEHICLE_TYPE_CHOICE) #Not clear
     routeno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rcno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'RC No.')
     VEHICLE_LOADED_CONDITION1 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
@@ -787,7 +829,7 @@ class victim_vehicle(models.Model):
     ACCID_ID = models.ForeignKey(details)
     #victim vehicle
     VEHTYPE2 = models.ForeignKey(vehtype2,verbose_name = 'Type of Vehicle')
-    SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default=0, blank=True,verbose_name = 'Sub Vehicle Type')  #Not clear
+    SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default=0, blank=True,verbose_name = 'Sub Vehicle Type',choices= SUBVEHICLE_TYPE_CHOICE)  #Not clear
     routeno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rgno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Registration No.')
     VEHICLE_LOADED_CONDITION2 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
@@ -804,7 +846,8 @@ class victim_person(models.Model):
     PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1,verbose_name = 'Person Status')
     VIC_IN_VEH = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Victim inside/outside Vehicle')
     OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
-    VEH_INFO = models.CharField(max_length = 5, blank = True,verbose_name = 'Vehicle Info') #NOT CLEAR
+    VEH_INFO = models.CharField(max_length = 5, blank = True, default='',verbose_name = 'Vehicle Info',choices=VEHTYPE_CHOICES) #NOT CLEAR
+    #VEH_INFO = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Info')
     VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Seatbelt Worn')
     VIC_HELMET = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Helmet Worn')
     HELMET_STANDARD = models.CharField(max_length = 15, choices = HELMET_STANDARD_CHOICES, blank=True,default='',verbose_name = 'Standard of Helmet')

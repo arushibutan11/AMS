@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.conf import settings
+from multiupload.fields import MultiFileField
 from .models import details, injured, killed, profile, designation_choices, circle_choices, collision, offender, victim_person,  ROAD_TYPE1_Choices, OFFEND_CHOICES, YES_NO_CHOICES, INJKIL_CHOICES, SEX_Choices, victim_vehicle, TIME_KNOWN_CHOICES, AREA_CHOICES
 
 from django.forms.extras.widgets import SelectDateWidget
@@ -53,13 +54,10 @@ class SignUpForm(UserCreationForm):
         self.helper.form_show_labels = False
 
 
-
-
-
-
-
-
 class FirForm(forms.ModelForm):
+    ACC_PHOTO=MultiFileField(max_num=10);
+    FIR_PHOTO=MultiFileField(max_num=4);
+    ACC_SKETCH_PHOTO=MultiFileField(max_num=4);
     DATE_OCC = forms.DateField(required = False,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )

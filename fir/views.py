@@ -236,12 +236,12 @@ def edit_fir(request,acc_id):
 @login_required(login_url=settings.LOGIN_URL)
 def new_fir(request):
     PVicInlineFormSet = inlineformset_factory(details, victim_person, exclude = (), form=PVicForm, extra = 1)
-    VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 1)
-    OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 1)
+    VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 1,max_num= 4)
+    OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 1,max_num= 3)
     CollisionInlineFormSet = inlineformset_factory(details, collision, exclude = (), form=CollisionForm, extra = 1)
 
     if request.method == 'POST':
-      form = FirForm(request.POST,request.FILES)
+      form = FirForm(request.POST,request.FILES.getlist('ACC_PHOTO','FIR_PHOTO'))
       pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic')
       vvicform = VVicInlineFormSet(request.POST, prefix = 'vvic')
       offendform = OffendInlineFormSet(request.POST, prefix = 'offend')
