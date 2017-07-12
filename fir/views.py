@@ -41,31 +41,18 @@ def login(request):
       if ( pwd is '' or name is '' ):
           messages.error(request, "Fill in all the fields.")
       else:
-          recaptcha_response = request.POST.get('g-recaptcha-response')
-          url = 'https://www.google.com/recaptcha/api/siteverify'
-          values = {
-                'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-                'response': recaptcha_response
-            }
-          data = urllib.urlencode(values)
-          req = urllib2.Request(url, data)
-          response = urllib2.urlopen(req)
-          result = json.load(response)
-          '''End reCAPTCHA validation'''
-
-          if result['success']:
-              user = authenticate(username=name, password=pwd)
-              if user is not None:
-                  if user.is_active:
-                      authlogin(request, user)
-                      print "after authlogin"
-                      return redirect('home')
-                  else:
-                      messages.error(request, "Your account is disabled. Please contact the system administrator.")
-              else:
-                  messages.error(request, "Invalid Username or Password")
+          
+          user = authenticate(username=name, password=pwd)
+          if user is not None:
+            if user.is_active:
+                  authlogin(request, user)
+                  print "after authlogin"
+                  return redirect('home')
+            else:
+                  messages.error(request, "Your account is disabled. Please contact the system administrator.")
           else:
-              messages.error(request, "Invalid reCAPTCHA. Please try again.")
+                  messages.error(request, "Invalid Username or Password")
+        
 
   return render(request, 'login.html')
 

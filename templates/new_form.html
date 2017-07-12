@@ -602,6 +602,7 @@ $("#id_offend-0-EDU_QUAL").change(function () {
     else
     $("#div_id_offend-0-OTHER_EDU_QUAL").hide();
   });
+
 $("#id_offend-0-WORK_STATUS").change(function () {
     var selection = $("#id_offend-0-WORK_STATUS option:selected").text();
     //alert("you selected" + selection);
@@ -625,7 +626,6 @@ $("#id_WEATHER_COND").change(function () {
     $("#div_id_OTHER_WEATHER_COND_FAULT").hide();
   });
 
-
 $("#id_offend-0-VEHTYPE1").change(function () {
     var selection = $("#id_offend-0-VEHTYPE1 option:selected").text();
     //alert("you selected" + selection);
@@ -646,7 +646,6 @@ $("#id_offend-0-VEHTYPE1").change(function () {
     else
     $("#div_id_offend-0-routeno1").hide();
 
-
     if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
     {
 
@@ -659,6 +658,75 @@ $("#id_offend-0-VEHTYPE1").change(function () {
 
 
   });
+
+
+$("#id_offend-1-VEHTYPE1").change(function () {
+    var selection = $("#id_offend-1-VEHTYPE1 option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='SCOOTRIST/MC')
+    {
+    $("#div_id_offend-1-SUBVEHICLE_TYPE1").show();
+
+    }
+    else
+    $("#div_id_offend-1-SUBVEHICLE_TYPE1").hide();
+
+
+    if (selection=='BUS DTC' || selection=='BUS UNDER DTC')
+    {
+    $("#div_id_offend-1-routeno1").show();
+
+    }
+    else
+    $("#div_id_offend-1-routeno1").hide();
+
+    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
+    {
+
+    $("#div_id_offend-1-rcno1").hide();
+
+    }
+    else
+    $("#div_id_offend-1-rcno1").show();
+
+  });
+
+
+
+$("#id_offend-2-VEHTYPE1").change(function () {
+    var selection = $("#id_offend-2-VEHTYPE1 option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='SCOOTRIST/MC')
+    {
+    $("#div_id_offend-2-SUBVEHICLE_TYPE1").show();
+
+    }
+    else
+    $("#div_id_offend-2-SUBVEHICLE_TYPE1").hide();
+
+
+    if (selection=='BUS DTC' || selection=='BUS UNDER DTC')
+    {
+    $("#div_id_offend-2-routeno1").show();
+
+    }
+    else
+    $("#div_id_offend-2-routeno1").hide();
+
+    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
+    {
+
+    $("#div_id_offend-2-rcno1").hide();
+
+    }
+    else
+    $("#div_id_offend-2-rcno1").show();
+
+
+
+  });
+
+
 
 
 $("#id_vvic-0-VEHTYPE2").change(function () {
@@ -694,7 +762,8 @@ $("#id_vvic-0-VEHTYPE2").change(function () {
 
   });
 
-$("#id_pvic-0-VEH_INFO").change(function () {
+$("#id_pvic-0-VEH_INFO").change(function ()
+ {
     var selection = $("#id_pvic-0-VEH_INFO option:selected").text();
     //alert("you selected" + selection);
     if (selection=='CAR PVT' || selection=='CALL CENTER CAB' || selection=='DELIVERY VAN'|| selection=='POLICE VEHICLE')
@@ -717,9 +786,8 @@ $("#id_pvic-0-VEH_INFO").change(function () {
     $("#div_id_pvic-0-VIC_HELMET").hide();
     $("#div_id_pvic-0-HELMET_STANDARD").hide();
      }
-
-
   });
+
 //id_pvic-0-VEH_INFO
 //div_id_pvic-0-OFFEND
 //div_id_pvic-0-VIC_SEAT_BELT

@@ -49,10 +49,21 @@ VEHTYPE_CHOICES=(
 ('TSR','TSR'),
 ('UN-KNOWN VEH.','UN-KNOWN VEH.'),)
 
+VICTIM_CHOICES=(
+('SELF','SELF'),
+('SELF/ANIMAL','SELF/ANIMAL'),
+('PASSENGER','PASSENGER'),
+('PEDESTRIAN','PEDESTRIAN'),
+('VEHICLES','VEHICLES'),
+('VEHICLES/PED','VEHICLES/PED'),
+)
+
 SUBVEHICLE_TYPE_CHOICE=(
     ('Scooter','Scooter'),
     ('Scooty','Scooty'),
     ('Motor bike','Motor bike'),
+    ('N/A','N/A'),
+
     )
 FLYOVER_CHOICES=(
    ('Ascending Flyover','Ascending Flyover'),('Descending Flyover','Descending Flyover'),
@@ -296,7 +307,7 @@ class accid_type(models.Model):
     VICTIM=models.CharField(max_length=50)
 
     def __str__(self):
-        return self.TYPE
+        return self.TYPE + ' (' + self.VICTIM +')'
     def as_json(self):
         return dict(
             SNO = self.SNO,
@@ -770,7 +781,7 @@ class offender(models.Model):
     ACCID_ID = models.ForeignKey(details)
     #offending vehicle
     VEHTYPE1 = models.ForeignKey(vehtype1,verbose_name = 'Type of Vehicle')
-    SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default='',verbose_name = 'Sub Vehicle Type',choices= SUBVEHICLE_TYPE_CHOICE) #Not clear
+    SUBVEHICLE_TYPE1 = models.CharField(max_length=15,blank=True, default='N/A',verbose_name = 'Sub Vehicle Type',choices= SUBVEHICLE_TYPE_CHOICE) #Not clear
     routeno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rcno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'RC No.')
     VEHICLE_LOADED_CONDITION1 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
@@ -786,7 +797,7 @@ class offender(models.Model):
     WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status',null=True)
     OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Work Status - Other')
     DRI_DRUNK = models.CharField(max_length=50,blank=True, verbose_name = 'Driver Drunk/Not')
-    dri_lic = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Driver has License?')
+    dri_lic = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Driver has License?', blank = True)
     dri_lic_no = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'License No.')
     dri_lic_from = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Driver License From')
     dri_lic_date_issu = models.DateField(null=True,verbose_name = 'License Issue Date')
@@ -800,7 +811,7 @@ class victim_vehicle(models.Model):
     ACCID_ID = models.ForeignKey(details)
     #victim vehicle
     VEHTYPE2 = models.ForeignKey(vehtype2,verbose_name = 'Type of Vehicle')
-    SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default=0, blank=True,verbose_name = 'Sub Vehicle Type',choices= SUBVEHICLE_TYPE_CHOICE)  #Not clear
+    SUBVEHICLE_TYPE2 = models.CharField(max_length=15, default='N/A', blank=True,verbose_name = 'Sub Vehicle Type',choices= SUBVEHICLE_TYPE_CHOICE)  #Not clear
     routeno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rgno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Registration No.')
     VEHICLE_LOADED_CONDITION2 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
@@ -831,8 +842,8 @@ class victim_person(models.Model):
 
 class collision(models.Model):
     ACCID_ID = models.ForeignKey(details)
-    VIC_TYPE = models.CharField(max_length=15,verbose_name = 'Victim Type')
-    COL_TYPE = models.CharField(max_length = 15,verbose_name = 'Type of Collision')
+    VIC_TYPE = models.CharField(choices = VICTIM_CHOICES, max_length=15,verbose_name = 'Victim Type')
+    COL_TYPE = models.ForeignKey(accid_type, verbose_name = 'Type of Collision')
     #CAUSE ANALYSIS
 
 class causes(models.Model):
