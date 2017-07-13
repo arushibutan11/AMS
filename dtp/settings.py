@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fir.apps.FirConfig',
+    'location_field.apps.DefaultConfig',
 
 ]
 
@@ -84,7 +85,7 @@ REPORT_BUILDER_INCLUDE = ['fir.details', 'fir.injured', 'fir.killed']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'traffic',
         'USER': 'root',
         'PASSWORD': '1234',

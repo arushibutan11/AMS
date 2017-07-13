@@ -9,7 +9,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
+from location_field.models.spatial import LocationField
 
 # Create your models here.
 VEHTYPE_CHOICES=(
@@ -191,7 +193,15 @@ YES_NO_CHOICES = (
 OFFEND_CHOICES = (
      ('OFFENDING','Offending'),('VICTIM VEHICLE','Victim Vehicle'),
 )
-
+ILLUMINATION_CHOICES =  (
+     ('WORKING','Working'),('NOT WORKING','Not Working'),
+)
+ROAD_MARKING_CHOICES =  (
+     ('YES','Yes'),('NO','No'),('FADED','Faded'),
+)
+ROAD_SIGN_CHOICES =  (
+     ('SUFFICIENT','Sufficient'),('NOT SUFFICIENT','Not Sufficient'),
+)
 HELMET_STANDARD_CHOICES = (
      ('STANDARD','Standard'),('SUB STANDARD','Sub Standard'),('NOT KNOWN','Not Known'),
 )
@@ -688,7 +698,7 @@ class details(models.Model):
     #LOCATION
     PLACE_OCC = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Place of Occurence')
     AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
-
+    map_loc = LocationField(based_fields=['PLACE_OCC'], zoom=7, default=Point(77.1025, 28.7041))
     ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Sketch of Accident')
     AREA_TYPE = models.ForeignKey(area_type, verbose_name = 'Area Type')
     AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', null =  True, verbose_name = 'Other Area Type')
@@ -721,9 +731,16 @@ class details(models.Model):
     SURFACE_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Surface Condition-Remarks')
     ROAD_CONDITION = models.ForeignKey(road_condition, verbose_name = 'Road Condition')
     ROAD_CONDITION_REMARKS = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Road Condition- Remarks')
+    APZ = models.CharField(max_length=50,blank=True, default='', verbose_name = 'Accident Prone Zone')
+    APZ_TYPE = models.CharField(max_length=50,blank=True, default='', verbose_name = 'APZ Type')
+    ILLUMINATION = models.CharField(max_length=50,blank=True, choices=YES_NO_CHOICES, verbose_name = 'Illumination')
+    YES_ILLUMINATION = models.CharField(max_length=50,blank=True, choices=ILLUMINATION_CHOICES, verbose_name = 'Illumination Working')
+    ROAD_MARKING = models.CharField(max_length=50,blank=True, choices=ROAD_MARKING_CHOICES, verbose_name = 'Road Markings')
+    ROAD_SIGN = models.CharField(max_length=50,blank=True, choices=ROAD_SIGN_CHOICES, verbose_name = 'Road Signs')
+
+
+
     #END OF LOCATION
-    LONGITUDE = models.CharField(max_length=15, blank =  True, default = '', verbose_name = 'Longitude')
-    LATITUDE = models.CharField(max_length=15, blank = True, default = '', verbose_name = 'Latitude')
 
 
     #END OF REMARKS
