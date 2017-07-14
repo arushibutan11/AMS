@@ -55,9 +55,9 @@ class SignUpForm(UserCreationForm):
 
 
 class FirForm(forms.ModelForm):
-    ACC_PHOTO=MultiFileField(max_num=10);
-    FIR_PHOTO=MultiFileField(max_num=4);
-    ACC_SKETCH_PHOTO=MultiFileField(max_num=4);
+    #ACC_PHOTO=MultiFileField(max_num=10);
+    #FIR_PHOTO=MultiFileField(max_num=4);
+    #ACC_SKETCH_PHOTO=MultiFileField(max_num=4);
     DATE_OCC = forms.DateField(required = False,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 1, datetime.date.today().year + 10)),
         )
@@ -88,7 +88,7 @@ class FirForm(forms.ModelForm):
         '''if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
             self.add_error('FIR_DATE', "FIR Date cannot be before Accident Date")'''
 
-        if cd.get('LONGITUDE') != '':
+        '''if cd.get('LONGITUDE') != '':
             LONGITUDE = float (cd.get('LONGITUDE'))
             if LONGITUDE >= 78.0 or LONGITUDE < 76.0:
                 self.add_error('LONGITUDE', "Check Value of Longitude")
@@ -97,9 +97,9 @@ class FirForm(forms.ModelForm):
             if LATITUDE > 29.0 or LATITUDE <28.0:
                 self.add_error('LATITUDE', "Check Value of Latitude")
 
-        if cd.get('TIME_OCC') is "INV":
+        if cd.get('TIME_OCC') is 'INV':
             self.add_error('TIME_OCC', "Enter a valid time")
-        elif cd.get('TIME_OCC') is not "UNK" and (cd.get('TIME_OCC') != ''):
+        if (cd.get('TIME_OCC') is not 'UNK') and (cd.get('TIME_OCC') is not '' ) and (cd.get('TIME_OCC') is not 'INV'):
             tim1 = cd.get('TIME_OCC')[:2]
             tim2 = cd.get('TIME_OCC')[-2:]
             tim1 = int(tim1)
@@ -107,7 +107,10 @@ class FirForm(forms.ModelForm):
             if (tim1 > 23 or tim1 < 0 or tim2 > 59 or tim2 < 0):
                 self.add_error('TIME_OCC', "Enter a valid time")
 
-        '''VEHTYPE2 = str(cd.get('VEHTYPE2'))
+        '''
+        if cd.get('TIME_OCC') is 'INV':
+            self.add_error('TIME_OCC', "Enter a valid time")
+        VEHTYPE2 = str(cd.get('VEHTYPE2'))
         VICTIM = str(cd.get('VICTIM'))
 
         if ("PEDESTRIAN" in VEHTYPE2) and ("VEHICLES" in VICTIM or "SELF"  in VICTIM or "PASSENGER"  in VICTIM or "SELF/ANIMAL" in VICTIM ):
@@ -119,7 +122,7 @@ class FirForm(forms.ModelForm):
         elif ("PASSENGER" in VEHTYPE2) and ("SELF" in VICTIM  or "PEDESTRIAN" in VICTIM  or "SELF/ANIMAL" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is passenger")
         elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
-            self.add_error('VICTIM', "Victim is vehicle") '''
+            self.add_error('VICTIM', "Victim is vehicle") 
         return cd
 
 
