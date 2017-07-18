@@ -162,7 +162,7 @@ select {
 .form-style-6 h1{
     background: #2196F3;
     padding: 20px 0;
-    font-size: 160% !important; 
+    font-size: 160% !important;
     font-weight: 300;
     text-align: center;
     color: #fff;
@@ -253,9 +253,7 @@ h2 { text-align: center; }
 </head>
 <body onload="setreadonly()">
 {{form.media}}
-{{ vvicform.management_form }}
-{{ pvicform.management_form }}
-{{ offendform.management_form }}
+
 {% if form.errors %}
     {% for field in form %}
 
@@ -272,6 +270,7 @@ h2 { text-align: center; }
         </div>
     {% endfor %}
 {% endif %}
+{{ pvicform.management_form }}
 
 {% for victim in pvicform %}
 {% if victim.errors %}
@@ -292,6 +291,7 @@ h2 { text-align: center; }
 {% endif %}
 {% endfor %}
 
+
 {% for vehicle in vvicform %}
 {% if vehicle.errors %}
     {% for field in vehicle %}
@@ -310,7 +310,7 @@ h2 { text-align: center; }
     {% endfor %}
 {% endif %}
 {% endfor %}
-
+{{ offendform.management_form }}
 {% for offender in offendform %}
 {% if offender.errors %}
     {% for field in vehicle %}
@@ -395,13 +395,14 @@ h2 { text-align: center; }
 {% for form in vvicform %}
               {{ form|crispy }}
             {% endfor %}
+{{ vvicform.management_form }}
 </div>
 
 </div>
 
 <div class="tab-pane fade" id="pvic">
 <div class = "pvic-formset">
-    
+
 {{pvicform|crispy}}
 </div>
 </div>
