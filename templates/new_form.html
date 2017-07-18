@@ -18,8 +18,8 @@
 <script>
 
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2').prop('readonly', true);
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"background-color": "rgb(247, 247, 247)"});
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2, #id_map_loc').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE,#id_map_loc ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
 $('#id_DATE_OCC_month').val('7');
@@ -52,6 +52,7 @@ $('#div_id_vvic-0-SUBVEHICLE_TYPE2').hide();
 $("#div_id_pvic-0-VIC_SEAT_BELT").hide();
 $("#div_id_pvic-0-VIC_HELMET").hide();
 $("#div_id_pvic-0-HELMET_STANDARD").hide();
+$('#div_id_ILLUMINATION,#div_id_YES_ILLUMINATION').hide();
 $('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').hide();
 
 $('#id_LOCATION').val('11');
@@ -251,7 +252,10 @@ h2 { text-align: center; }
 
 </head>
 <body onload="setreadonly()">
-
+{{form.media}}
+{{ vvicform.management_form }}
+{{ pvicform.management_form }}
+{{ offendform.management_form }}
 {% if form.errors %}
     {% for field in form %}
 
@@ -263,6 +267,99 @@ h2 { text-align: center; }
         {% endfor %}
     {% endfor %}
     {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% for victim in pvicform %}
+{% if victim.errors %}
+    {% for field in victim %}
+
+        {% for error in field.errors %}
+
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in victim.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endfor %}
+
+{% for vehicle in vvicform %}
+{% if vehicle.errors %}
+    {% for field in vehicle %}
+
+        {% for error in field.errors %}
+
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in vehicle.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endfor %}
+
+{% for offender in offendform %}
+{% if offender.errors %}
+    {% for field in vehicle %}
+
+        {% for error in field.errors %}
+
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in offender.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endfor %}
+
+{% for cause in form2 %}
+{% if cause.errors %}
+    {% for field in vehicle %}
+
+        {% for error in field.errors %}
+
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in cause.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endfor %}
+
+{% if collisionform.errors %}
+    {% for field in collisionform %}
+
+        {% for error in field.errors %}
+
+            <div class="alert alert-danger">
+                <strong>{{field.label}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in collisionform.non_field_errors %}
         <div class="alert alert-danger">
             <strong>{{ error|escape }}</strong>
         </div>
@@ -294,7 +391,7 @@ h2 { text-align: center; }
 
 <div class="tab-pane fade" id="vvic">
 <div class = "vvic-formset">
-{{ vvicform.management_form }}
+
 {% for form in vvicform %}
               {{ form|crispy }}
             {% endfor %}
@@ -304,20 +401,20 @@ h2 { text-align: center; }
 
 <div class="tab-pane fade" id="pvic">
 <div class = "pvic-formset">
-    {{ pvicform.management_form }}
+    
 {{pvicform|crispy}}
 </div>
 </div>
 <div class="tab-pane fade" id="offend">
 <div class = "offend-formset">
-  {{ offendform.management_form }}
+
 {{offendform|crispy}}
 
 </div>
 </div>
 <div class="tab-pane fade" id="collision">
 <div class="collision-formset">
-  {{ collisionform.management_form }}
+
 {{collisionform|crispy}}
  </div>
 
@@ -341,13 +438,16 @@ h2 { text-align: center; }
 
 $("#id_TIME_OCC").change(function () {
     var selection = document.getElementById("id_TIME_OCC").value;
+
     //for timeslot
     second = selection;
     second = second.slice(2,4);
     selection = selection.slice(0,2);
     selection = parseInt(selection);
-    second = parseInt(second);
+    if ((selection >= 21 && selection<=23) || (selection <=8 && selection>=0))
+          $("#div_id_ILLUMINATION,#div_id_YES_ILLUMINATION").show();
 
+    second = parseInt(second);
     if(second >=60 && second <= 99 ) { document.getElementById("id_TIME_OCC").value = "INV";   }
     if( selection < 0 || selection >= 24 ) { document.getElementById("id_TIME_OCC").value = "INV";   }
 });

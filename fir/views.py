@@ -180,15 +180,14 @@ def edit_fir(request,acc_id):
     PVicInlineFormSet = inlineformset_factory(details, victim_person, exclude = (), form=PVicForm, extra = 0)
     VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 0)
     OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 0)
-    CollisionInlineFormSet = inlineformset_factory(details, collision, exclude = (), form=CollisionForm, extra = 0)
     fir = get_object_or_404(details, pk = acc_id)
 
     if request.method == 'POST':
       pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic',instance = fir)
       vvicform = VVicInlineFormSet(request.POST, prefix = 'vvic', instance = fir)
       offendform = OffendInlineFormSet(request.POST, prefix = 'offend', instance = fir)
-      collisionform = CollisionInlineFormSet(request.POST, prefix = 'collision', instance = fir)
-      form = FirForm(request.POST,request.FILES.getlist('ACC_PHOTO','FIR_PHOTO'), instance = fir)
+      collisionform = CollisionForm(request.POST, prefix = 'collision', instance =  fir)
+      form = FirForm(request.POST,request.FILES, instance = fir)
       form2 = CauseForm(request.POST,request.FILES,instance=fir)
       if form.is_valid():
         fir = form.save()
@@ -211,7 +210,7 @@ def edit_fir(request,acc_id):
         pvicform = PVicInlineFormSet(prefix = 'pvic', instance = fir)
         vvicform = VVicInlineFormSet(prefix = 'vvic', instance = fir)
         offendform = OffendInlineFormSet(prefix = 'offend', instance = fir)
-        collisionform = CollisionInlineFormSet(prefix = 'collision', instance = fir)
+        collisionform = CollisionForm(request.POST, request.FILES, prefix = 'collision', instance =  fir)
         return render(request,'edit_form.html', { 'fir': fir, 'form': form, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
 
@@ -221,16 +220,15 @@ def new_fir(request):
     PVicInlineFormSet = inlineformset_factory(details, victim_person, exclude = (), form=PVicForm, extra = 1)
     VVicInlineFormSet = inlineformset_factory(details, victim_vehicle, exclude = (), form=VVicForm, extra = 1,max_num= 4)
     OffendInlineFormSet = inlineformset_factory(details, offender, exclude = (), form=OffendForm, extra = 1,max_num= 3)
-    CollisionInlineFormSet = inlineformset_factory(details, collision, exclude = (), form=CollisionForm, extra = 1)
 
     if request.method == 'POST':
-      form = FirForm(request.POST,request.FILES.getlist('ACC_PHOTO','FIR_PHOTO'))
+      form = FirForm(request.POST,request.FILES)
       form2 = CauseForm(request.POST,request.FILES)
 
       pvicform = PVicInlineFormSet(request.POST, prefix = 'pvic')
       vvicform = VVicInlineFormSet(request.POST, prefix = 'vvic')
       offendform = OffendInlineFormSet(request.POST, prefix = 'offend')
-      collisionform = CollisionInlineFormSet(request.POST, prefix = 'collision')
+      collisionform = CollisionForm(request.POST, prefix = 'collision')
 
       if form.is_valid():
         fir = form.save()
@@ -239,7 +237,7 @@ def new_fir(request):
         pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
         vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
         offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
-        collisionform = CollisionInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'collision')
+        collisionform = CollisionForm(request.POST, request.FILES, prefix = 'collision', instance =  fir)
 
         if (not form2.is_valid())or (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
             return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
@@ -262,7 +260,7 @@ def new_fir(request):
         pvicform = PVicInlineFormSet(prefix = 'pvic')
         vvicform = VVicInlineFormSet(prefix = 'vvic')
         offendform = OffendInlineFormSet(prefix = 'offend')
-        collisionform = CollisionInlineFormSet(prefix = 'collision')
+        collisionform = CollisionForm(prefix = 'collision')
         return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
 

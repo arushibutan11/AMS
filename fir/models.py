@@ -189,6 +189,10 @@ circle_choices = (
 YES_NO_CHOICES = (
      ('Y','YES'),('N','NO'),
 )
+DRUNK_CHOICES = (
+     ('Y','YES'),('N','NO'),('UNKNOWN','UNKNOWN')
+)
+
 
 OFFEND_CHOICES = (
      ('OFFENDING','Offending'),('VICTIM VEHICLE','Victim Vehicle'),
@@ -689,8 +693,8 @@ class details(models.Model):
     TIME_OCC = models.CharField(max_length=4,default='',blank=True, verbose_name = 'Time')
     OF_SECTION = models.ForeignKey(sections, verbose_name = 'Section')
     MVA_NAME =models.ForeignKey(mva_act,blank=True, null=True,verbose_name = 'MVA Act')
-    ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Picture of Accident ')
-    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Picture of FIR ')
+    ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
+    FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of FIR ')
     #END OF FIR DETAILS
 
 
@@ -698,8 +702,8 @@ class details(models.Model):
     #LOCATION
     PLACE_OCC = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Place of Occurence')
     AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
-    map_loc = LocationField(based_fields=['PLACE_OCC'], zoom=7, default=Point(77.1025, 28.7041))
-    ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,default='', verbose_name = 'Sketch of Accident')
+    map_loc = LocationField(based_fields=['PLACE_OCC'], zoom=7, verbose_name = 'Lat/Long', default=Point(77.1025, 28.7041))
+    ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Sketch of Accident')
     AREA_TYPE = models.ForeignKey(area_type, verbose_name = 'Area Type')
     AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', null =  True, verbose_name = 'Other Area Type')
     '''AREA_TYPE2=models.ForeignKey(area_type2, verbose_name = 'Area Type 2')
@@ -845,7 +849,7 @@ class victim_person(models.Model):
     PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1,verbose_name = 'Person Status')
     VIC_IN_VEH = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Victim inside/outside Vehicle')
     OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
-    VEH_INFO = models.CharField(max_length = 5, blank = True, default='',verbose_name = 'Vehicle Info',choices=VEHTYPE_CHOICES) #NOT CLEAR
+    VEH_INFO = models.CharField(max_length = 25, blank = True, default='',verbose_name = 'Vehicle Info',choices=VEHTYPE_CHOICES) #NOT CLEAR
     #VEH_INFO = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Info')
     VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Seatbelt Worn')
     VIC_HELMET = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Helmet Worn')
@@ -854,7 +858,7 @@ class victim_person(models.Model):
     VIC_OTHER_EDU_QUAL = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Educational Qualifications - Other')
     VIC_WORK_STATUS = models.ForeignKey(work_status,default='',blank=True,verbose_name = 'Work Status',null=True)
     VIC_OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Work Status - Other')
-    VIC_DRI_DRUNK = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Drunk/Not')
+    VIC_DRI_DRUNK = models.CharField(max_length = 15, choices = DRUNK_CHOICES,verbose_name = 'Drunk/Not')
 
 
 class collision(models.Model):

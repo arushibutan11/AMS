@@ -85,6 +85,8 @@ class FirForm(forms.ModelForm):
             self.add_error('DATE_OCC', "Accident Date cannot be after System Date")
         if cd.get('FIR_DATE') > datetime.datetime.now().date():
             self.add_error('FIR_DATE', "FIR Date cannot be after System Date")
+        print datetime.datetime.now().date()
+        print cd.get('FIR_DATE')
         '''if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
             self.add_error('FIR_DATE', "FIR Date cannot be before Accident Date")'''
 
@@ -161,6 +163,8 @@ class PVicForm(forms.ModelForm):
     def clean(self):
         cd = self.cleaned_data
         fir = self.instance.ACCID_ID
+        '''offendv = offender.objects.get(ACCID_ID = fir.ACC_ID)
+        victimv = victim_vehicle.objects.get(ACCID_ID = fir.ACC_ID)'''
         sec_obj = sections.objects.get(pk = fir.OF_SECTION_id)
         injkil = cd.get('INJKIL')
         if injkil == 'INJURED' and not('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):
@@ -172,7 +176,7 @@ class CollisionForm(forms.ModelForm):
 
     class Meta:
         model = collision
-        exclude = ('ACCID_ID',)
+        exclude = ('ACCID_ID','VIC_TYPE')
 
 class InjForm(forms.ModelForm):
 

@@ -77,12 +77,6 @@ $('.offend-formset').formset({
     deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
     prefix: 'offend'
 });
-$('.collision-formset').formset({
-    addText: '<span class = "btn btn-success btn-sm">Add</span>',
-    deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
-    prefix: 'collision'
-
-    });
 $('.cause-formset').formset({
     addText: '<span class = "btn btn-success btn-sm">Add</span>',
     deleteText: '<span class = "btn btn-danger btn-sm">Remove</span>',
