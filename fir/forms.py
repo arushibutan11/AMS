@@ -124,7 +124,7 @@ class FirForm(forms.ModelForm):
         elif ("PASSENGER" in VEHTYPE2) and ("SELF" in VICTIM  or "PEDESTRIAN" in VICTIM  or "SELF/ANIMAL" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
             self.add_error('VICTIM', "Victim is passenger")
         elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
-            self.add_error('VICTIM', "Victim is vehicle") 
+            self.add_error('VICTIM', "Victim is vehicle")
         return cd
 
 
@@ -163,8 +163,28 @@ class PVicForm(forms.ModelForm):
     def clean(self):
         cd = self.cleaned_data
         fir = self.instance.ACCID_ID
-        '''offendv = offender.objects.get(ACCID_ID = fir.ACC_ID)
-        victimv = victim_vehicle.objects.get(ACCID_ID = fir.ACC_ID)'''
+
+        vehicle = cd.get('VEH_INFO')
+        noerror = False
+        if 'OFFENDING' in cd.get('OFFEND'):
+            veh_list = offender.objects.filter(ACCID_ID = fir.ACC_ID)
+            for veh in veh_list:
+                print veh.VEHTYPE1.VEHDETL
+                if vehicle == veh.VEHTYPE1.VEHDETL:
+                    noerror = True
+
+        elif 'VICTIM' in cd.get('OFFEND'):
+            veh_list = victim_vehicle.objects.filter(ACCID_ID = fir.ACC_ID)
+            for veh in veh_list:
+                print veh.VEHTYPE2.VEHDETL
+                if vehicle == veh.VEHTYPE2.VEHDETL:
+                    noerror = True
+
+        print "Vehicle: " + vehicle
+
+
+        if noerror == False:
+            self.add_error('VEH_INFO', cd.get('VEH_INFO') + " is not any of the "+ cd.get('OFFEND')+ "S. Select Valid Vehicle. (Victim Person)")
         sec_obj = sections.objects.get(pk = fir.OF_SECTION_id)
         injkil = cd.get('INJKIL')
         if injkil == 'INJURED' and not('338' in sec_obj.SECTIONDTL or '337' in sec_obj.SECTIONDTL):

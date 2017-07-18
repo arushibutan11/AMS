@@ -142,5 +142,7 @@ LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = 'home'
 GOOGLE_RECAPTCHA_SECRET_KEY = '6Lfd8iYUAAAAAGCC-LXkYded7hMrhLB2KJ65XDsD'
 
+
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 '''GDAL_LIBRARY_PATH = 'C:\Program Files (x86)\GDAL\projlib' '''

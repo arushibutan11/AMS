@@ -41,7 +41,7 @@ def login(request):
       if ( pwd is '' or name is '' ):
           messages.error(request, "Fill in all the fields.")
       else:
-          
+
           user = authenticate(username=name, password=pwd)
           if user is not None:
             if user.is_active:
@@ -52,7 +52,7 @@ def login(request):
                   messages.error(request, "Your account is disabled. Please contact the system administrator.")
           else:
                   messages.error(request, "Invalid Username or Password")
-        
+
 
   return render(request, 'login.html')
 
@@ -238,17 +238,18 @@ def new_fir(request):
         vvicform = VVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'vvic')
         offendform = OffendInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'offend')
         collisionform = CollisionForm(request.POST, request.FILES, prefix = 'collision', instance =  fir)
-
-        if (not form2.is_valid())or (not pvicform.is_valid()) or (not vvicform.is_valid()) or (not offendform.is_valid()) or (not collisionform.is_valid()):
-            return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
-
+        if vvicform.is_valid() and offendform.is_valid():
+            offendform.save()
+            vvicform.save()
+            if (not form2.is_valid())or (not pvicform.is_valid()) or (not collisionform.is_valid()):
+                return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
+            else:
+              form2.save()
+              pvicform.save()
+              collisionform.save()
+              return HttpResponse('done')
         else:
-          form2.save()
-          pvicform.save()
-          vvicform.save()
-          offendform.save()
-          collisionform.save()
-          return HttpResponse('done')
+            return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
       else:
         return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
@@ -303,7 +304,6 @@ def count_kil(firid):
     if (acc.VEHTYPE2_id == "PED"):
       acc.PEDESTRIAN = KILLED
     acc.save() '''
-
 def normalize_query(query_string,
                     findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
                     normspace=re.compile(r'\s{2,}').sub):
