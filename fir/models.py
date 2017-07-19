@@ -195,7 +195,7 @@ DRUNK_CHOICES = (
 
 
 OFFEND_CHOICES = (
-     ('OFFENDING','Offending'),('VICTIM VEHICLE','Victim Vehicle'),
+     ('OFFENDING VEHICLE','Offending Vehicle'),('VICTIM VEHICLE','Victim Vehicle'),
 )
 ILLUMINATION_CHOICES =  (
      ('WORKING','Working'),('NOT WORKING','Not Working'),
@@ -770,8 +770,7 @@ class details(models.Model):
     DAY_NIGHT = models.CharField(max_length=15)
     YEAR = models.PositiveIntegerField()
     TIME_SLOT = models.CharField(max_length=15)
-    MONTH = models.CharField(max_length=15)
-    FN = models.CharField(max_length=15)
+
     ACCAGE = models.CharField(max_length=15, blank=True,default=0)
     ACCSEX = models.CharField(max_length=15, choices = SEX_Choices, blank=True, default = '')
     Intersection = models.CharField(max_length=150, blank=True, default = '')
@@ -796,7 +795,8 @@ class details(models.Model):
     HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)'''
     #END OF DOUBTFUL
 
-
+    MONTH = models.CharField(max_length=15, blank= True)
+    FN = models.CharField(max_length=15, blank= True)
 
 class offender(models.Model):
     ACCID_ID = models.ForeignKey(details)
@@ -848,7 +848,7 @@ class victim_person(models.Model):
     PER_STAT_TYPE = models.CharField(max_length = 15, choices = VIC_TYPE_CHOICES,verbose_name = 'Type of Person')
     PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1,verbose_name = 'Person Status')
     VIC_IN_VEH = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Victim inside/outside Vehicle')
-    OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
+    OFFEND = models.CharField(max_length = 20, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
     VEH_INFO = models.CharField(max_length = 25, blank = True, default='',verbose_name = 'Vehicle Info',choices=VEHTYPE_CHOICES) #NOT CLEAR
     #VEH_INFO = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Info')
     VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Seatbelt Worn')

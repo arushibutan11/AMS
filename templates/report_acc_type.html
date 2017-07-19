@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Accident Monitoring System{% endblock %}</title>
+    <script src="{% static 'fir/js/jquery.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.css' %}" />
+  </head>
+  <body>
+    <header>
+      <h3></h3>
+
+<table border="1">
+    <th>Year</th>
+    <th>Non Injury</th>
+    <th>Simple</th>
+    <th>Fatal</th>
+    <th>Total</th>
+
+    {% for row in acc_type %}
+    <tr>
+    {% for x in row %} <td>{{ x }}</td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+
+  </form>
+    </main>
+  </body>
+</html>

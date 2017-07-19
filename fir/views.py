@@ -232,6 +232,11 @@ def new_fir(request):
 
       if form.is_valid():
         fir = form.save()
+        fir.MONTH = fir.DATE_OCC.month
+        if (fir.DATE_OCC.day <= 15):
+            fir.FN = 1
+        else:
+            fir.FN = 2
 
         form2 = CauseForm(request.POST,request.FILES, instance=fir)
         pvicform = PVicInlineFormSet(request.POST, request.FILES, instance=fir, prefix = 'pvic')
@@ -264,6 +269,45 @@ def new_fir(request):
         collisionform = CollisionForm(prefix = 'collision')
         return render(request,'new_form.html', { 'form': form, 'form2':form2, 'vvicform' :vvicform,'pvicform' :pvicform,'offendform' :offendform,'collisionform' :collisionform})
 
+
+
+
+def report_acc_type(request, month, year, fn):
+    #OF_SECTION.ACCTYPE
+    year = int(year)
+    month = int(month)
+    fn = int(fn)
+    monthfn = details.objects.filter(MONTH = month, FN = fn)
+    noninjury = details.objects.filter(OF_SECTION__ACCTYPE = 'N', MONTH = month, FN = fn)
+    simple = details.objects.filter(OF_SECTION__ACCTYPE = 'S', MONTH = month, FN = fn)
+    fatal = details.objects.filter(OF_SECTION__ACCTYPE = 'F', MONTH = month, FN = fn)
+
+    acc_type=[]
+    rowcur = []
+    rowcur.append(year)
+    rowcur.append(noninjury.filter(DATE_OCC__year = year).count())
+    rowcur.append(simple.filter(DATE_OCC__year = year).count())
+    rowcur.append(fatal.filter(DATE_OCC__year = year).count())
+    rowcur.append(rowcur[1]+rowcur[2]+rowcur[3])
+    rowprev=[]
+    rowprev.append(year-1)
+    rowprev.append(noninjury.filter(DATE_OCC__year = year-1).count())
+    rowprev.append(simple.filter(DATE_OCC__year = year-1).count())
+    rowprev.append(fatal.filter(DATE_OCC__year = year-1).count())
+    rowprev.append(rowprev[1]+rowprev[2]+rowprev[3])
+    acc_type.append(rowcur)
+    acc_type.append(rowprev)
+
+    daynight=[]
+    row=[]
+    row.append(day)
+    row.append()
+    daynight.append(row)
+    night=[]
+    unknown=[]
+
+    
+    return render(request, 'report_acc_type.html', { 'acc_type': acc_type})
 
 '''def count_inj(firid):
     is_fir = Q(ACCID_ID = firid)

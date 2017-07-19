@@ -75,7 +75,7 @@ class FirForm(forms.ModelForm):
 
     class Meta:
         model = details
-     	exclude = ()
+     	exclude = ('FN','MONTH')
 
 
 
@@ -85,8 +85,7 @@ class FirForm(forms.ModelForm):
             self.add_error('DATE_OCC', "Accident Date cannot be after System Date")
         if cd.get('FIR_DATE') > datetime.datetime.now().date():
             self.add_error('FIR_DATE', "FIR Date cannot be after System Date")
-        print datetime.datetime.now().date()
-        print cd.get('FIR_DATE')
+
         '''if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
             self.add_error('FIR_DATE', "FIR Date cannot be before Accident Date")'''
 
@@ -169,14 +168,14 @@ class PVicForm(forms.ModelForm):
         if 'OFFENDING' in cd.get('OFFEND'):
             veh_list = offender.objects.filter(ACCID_ID = fir.ACC_ID)
             for veh in veh_list:
-                print veh.VEHTYPE1.VEHDETL
+
                 if vehicle == veh.VEHTYPE1.VEHDETL:
                     noerror = True
 
         elif 'VICTIM' in cd.get('OFFEND'):
             veh_list = victim_vehicle.objects.filter(ACCID_ID = fir.ACC_ID)
             for veh in veh_list:
-                print veh.VEHTYPE2.VEHDETL
+
                 if vehicle == veh.VEHTYPE2.VEHDETL:
                     noerror = True
 

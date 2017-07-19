@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
+    url(r'^report/(?P<month>[0-9]+)/(?P<year>[0-9]+)/(?P<fn>[0-9]+)', views.report_acc_type, name='report_acc_type'),
 ]
 
 	#url(r'^logout/$', auth_views.logout, {'template_name': 'logged_out.html', 'next_page': '/'}, name='logout'),]
-
