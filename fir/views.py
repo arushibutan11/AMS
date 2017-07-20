@@ -298,15 +298,9 @@ def report_acc_type(request, month, year, fn):
     acc_type.append(rowcur)
     acc_type.append(rowprev)
 
-    daynight=[]
-    row=[]
-    row.append(day)
-    row.append()
-    daynight.append(row)
-    night=[]
-    unknown=[]
 
-    
+
+
     return render(request, 'report_acc_type.html', { 'acc_type': acc_type})
 
 '''def count_inj(firid):
@@ -388,6 +382,22 @@ def search_fir(request):
 
     return render(request, 'search_fir.html', { 'query_string': query_string, 'fir_entries': fir_entries})
 
+@user_passes_test(lambda u: u.groups.filter(name='arc').exists() == 1, login_url=settings.LOGIN_REDIRECT_URL)
+@login_required(login_url=settings.LOGIN_URL)
+def search_acc(request):
+    query_string = ''
+    fir_entries = None
+
+
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+
+        fir_query = get_query(query_string, ['ACC_ID','OF_SECTION__SECTIONDTL','CIRCLE__DISTNAM','ROADNAME','PS__PSNAME','CIRCLE__CIRCLENAM','DATE_OCC__month'])
+
+
+        fir_entries = details.objects.filter(fir_query).order_by('-DATE_OCC')
+
+    return render(request, 'search_fir.html', { 'query_string': query_string, 'fir_entries': fir_entries})
 
 @permission_classes((permissions.AllowAny,))
 def getcircleinfo(request):

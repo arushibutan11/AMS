@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^$', views.create_fir, name='create_fir'),
     url(r'^newfir$', views.new_fir, name='new_fir'),
     url(r'^search_fir$', views.search_fir, name='search_fir'),
+    url(r'^search_acc$', views.search_acc, name='search_acc'),
     url(r'^edit_fir/(?P<acc_id>[\w]+)/$', views.edit_fir, name='edit_fir'),
     url(r'^getcircleinfo$', views.getcircleinfo, name='getcircleinfo'),
     url(r'^getsection$', views.getsection, name='getsection'),

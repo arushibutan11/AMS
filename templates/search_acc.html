@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Accident Monitoring System{% endblock %}</title>
+    <script src="{% static 'fir/js/jquery.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.css' %}" />
+  </head>
+  <body>
+    <header>
+      <h3>Search Results</h3>
+      {% if fir_entries %}
+<ul>
+{% for entry in fir_entries%}
+<li><strong><a href= "{% url 'edit_fir' entry.ACC_ID %}">
+{{entry.ACC_ID}}</a></strong></li>
+{% endfor %}
+</ul>
+{% else%}
+<h3> No Results Found </h3>
+{% endif %}
+  </form>
+    </main>
+  </body>
+</html>

@@ -6,17 +6,47 @@
     <title>{% block title %}Accident Monitoring System{% endblock %}</title>
     <script src="{% static 'fir/js/jquery.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.css' %}" />
+    <style>
+    #searchresults th, #searchresults td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+    </style>
+
   </head>
   <body>
     <header>
       <h3>Search Results</h3>
       {% if fir_entries %}
-<ul>
+
+<table id = "searchresults" cellpadding="50">
+<thead>
+<tr>
+<th>ID</th>
+<th>Circle</th>
+<th>Date</th>
+<th>Police Station</th>
+<th>Road</th>
+<th>District</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
 {% for entry in fir_entries%}
-<li><strong><a href= "{% url 'edit_fir' entry.ACC_ID %}">
-{{entry.ACC_ID}}</a></strong></li>
+<tr>
+<td><strong><a href= "{% url 'edit_fir' entry.ACC_ID %}">{{entry.ACC_ID}}</a></strong></li></td>
+<td>{{entry.CIRCLE}}</td>
+<td>{{entry.DATE_OCC}}</td>
+<td>{{entry.PS}}</td>
+<td>{{entry.ROADNAME}}</td>
+<td>{{entry.CIRCLE.DISTNAM}}</td>
+
+<td>{{entry.OF_SECTION}}</td>
+</tr>
 {% endfor %}
-</ul>
+</tbody>
+</table>
 {% else%}
 <h3> No Results Found </h3>
 {% endif %}

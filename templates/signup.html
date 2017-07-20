@@ -75,14 +75,14 @@ select {
         {% if user.is_authenticated %}
         <div id="menu"> <a href="">Logout</a> </div>
       {% else %}
-        <div id="menu"> <a href="{% url 'login' %}">Login</a> / <a href="{% url 'signup' %}">signup</a> <div>
+        <div id="menu"> <a href="{% url 'login' %}">Login</a> / <a href="{% url 'signup' %}">Signup</a> <div>
       {% endif %}
       <hr>
     </header>
     <main>
       <div class = "container col-md-12">
         <div class="card card-container col-md-4 col-xs-8 col-md-offset-4 col-xs-offset-2">
-     <h2>Sign up</h2>
+     <h2>Sign Up</h2>
   <form method="post">
     {% csrf_token %}
 	<div id="formbox">
