@@ -14,6 +14,12 @@ from django.contrib.gis.geos import Point
 from location_field.models.spatial import LocationField
 
 # Create your models here.
+DRI_LIC_YES_CHOICES = (
+     ('LEARNER','Learner'),('PERMANENT','Permanent'),
+)
+DRI_LIC_NO_CHOICES = (
+     ('MINOR','Minor'),('WITHOUT LICENSE','Without License'),
+)
 VEHTYPE_CHOICES=(
 ('AMBULANCE','AMBULANCE'),
 ('ANIMAL','ANIMAL'),
@@ -195,7 +201,7 @@ DRUNK_CHOICES = (
 
 
 OFFEND_CHOICES = (
-     ('OFFENDING VEHICLE','Offending Vehicle'),('VICTIM VEHICLE','Victim Vehicle'),
+     ('OFFENDING','Offending'),('VICTIM VEHICLE','Victim Vehicle'),
 )
 ILLUMINATION_CHOICES =  (
      ('WORKING','Working'),('NOT WORKING','Not Working'),
@@ -694,15 +700,24 @@ class details(models.Model):
     OF_SECTION = models.ForeignKey(sections, verbose_name = 'Section')
     MVA_NAME =models.ForeignKey(mva_act,blank=True, null=True,verbose_name = 'MVA Act')
     ACC_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
+    ACC_PHOTO1 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
+    ACC_PHOTO2 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
+    ACC_PHOTO3 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
+    ACC_PHOTO4 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
+    ACC_PHOTO5 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
     FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of FIR ')
     #END OF FIR DETAILS
 
 
+    NAME_IO = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Name Of IO')
+    PIS_NUM = models.CharField(max_length=140,blank=True, default='', verbose_name = 'PIS No.')
+    MOB_NUM = models.CharField(max_length=11,blank=True, default='', verbose_name = 'Mobile No.')
 
     #LOCATION
+
     PLACE_OCC = models.CharField(max_length=140,blank=True, default='', verbose_name = 'Place of Occurence')
-    AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
     map_loc = LocationField(based_fields=['PLACE_OCC'], zoom=7, verbose_name = 'Lat/Long', default=Point(77.1025, 28.7041))
+    AREA =models.CharField(choices=AREA_CHOICES, max_length = 30, verbose_name = 'Area')
     ACC_SKETCH_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Sketch of Accident')
     AREA_TYPE = models.ForeignKey(area_type, verbose_name = 'Area Type')
     AREA_TYPE_OTHER = models.CharField(max_length=50,blank=True, default='', null =  True, verbose_name = 'Other Area Type')
@@ -770,7 +785,8 @@ class details(models.Model):
     DAY_NIGHT = models.CharField(max_length=15)
     YEAR = models.PositiveIntegerField()
     TIME_SLOT = models.CharField(max_length=15)
-
+    MONTH = models.CharField(max_length=15)
+    FN = models.CharField(max_length=15)
     ACCAGE = models.CharField(max_length=15, blank=True,default=0)
     ACCSEX = models.CharField(max_length=15, choices = SEX_Choices, blank=True, default = '')
     Intersection = models.CharField(max_length=150, blank=True, default = '')
@@ -795,8 +811,7 @@ class details(models.Model):
     HIT_AND_RUN_UPDATE1 = models.CharField(max_length=15,default='',blank=True)'''
     #END OF DOUBTFUL
 
-    MONTH = models.CharField(max_length=15, blank= True)
-    FN = models.CharField(max_length=15, blank= True)
+
 
 class offender(models.Model):
     ACCID_ID = models.ForeignKey(details)
@@ -806,7 +821,7 @@ class offender(models.Model):
     routeno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rcno1 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'RC No.')
     VEHICLE_LOADED_CONDITION1 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
-    STUDY_PARAMETER1 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters',null=True)
+    #STUDY_PARAMETER1 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters',null=True)
     dri_name = models.CharField(max_length=50,blank=True, default = '',verbose_name = 'Name of Driver')
     dri_relation = models.CharField(max_length=15, choices = RELATION_CHOICES, blank=True, default = '',verbose_name = 'Relative of Driver')
     dri_rel_name = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Name of Relative')
@@ -819,6 +834,9 @@ class offender(models.Model):
     OTHER_WORK_STATUS = models.CharField(max_length=50, blank=True,default='',verbose_name = 'Work Status - Other')
     DRI_DRUNK = models.CharField(max_length=50,blank=True, verbose_name = 'Driver Drunk/Not')
     dri_lic = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Driver has License?', blank = True)
+    dri_lic_yes = models.CharField(max_length = 25, choices = DRI_LIC_YES_CHOICES,verbose_name = 'Type of License?', blank = True)
+    dri_lic_no = models.CharField(max_length = 25, choices = DRI_LIC_NO_CHOICES,verbose_name = 'Reason - No License', blank = True)
+    dri_lic_perm = models.CharField(max_length = 25,verbose_name = 'Permanent License Type', blank = True)
     dri_lic_no = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'License No.')
     dri_lic_from = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Driver License From')
     dri_lic_date_issu = models.DateField(null=True,verbose_name = 'License Issue Date')
@@ -836,7 +854,7 @@ class victim_vehicle(models.Model):
     routeno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Route No.')
     rgno2 = models.CharField(max_length=15, default = 0, blank=True,verbose_name = 'Registration No.')
     VEHICLE_LOADED_CONDITION2 = models.ForeignKey(vehicle_loaded_condition,verbose_name = 'Load of Vehicle')
-    STUDY_PARAMETER2 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters',null=True)
+    #STUDY_PARAMETER2 = models.ForeignKey(study_parameter,default='',blank=True,verbose_name = 'Study Parameters',null=True)
 
     #victim vehicle end
 
@@ -847,8 +865,8 @@ class victim_person(models.Model):
     VICAGE = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0, verbose_name = 'Age')
     PER_STAT_TYPE = models.CharField(max_length = 15, choices = VIC_TYPE_CHOICES,verbose_name = 'Type of Person')
     PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1,verbose_name = 'Person Status')
-    VIC_IN_VEH = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Victim inside/outside Vehicle')
-    OFFEND = models.CharField(max_length = 20, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
+    VIC_IN_VEH = models.CharField(max_length = 15, choices = DRUNK_CHOICES,verbose_name = 'Victim inside/outside Vehicle')
+    OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
     VEH_INFO = models.CharField(max_length = 25, blank = True, default='',verbose_name = 'Vehicle Info',choices=VEHTYPE_CHOICES) #NOT CLEAR
     #VEH_INFO = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Info')
     VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Seatbelt Worn')
@@ -897,7 +915,7 @@ class causes(models.Model):
     #REMARKS
     REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
     REMARKS = models.CharField(max_length=200,default='',blank=True, verbose_name = 'Remarks')
-    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Other Remarks')
+    OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Special Observations')
 
 #REMOVE BUT HOW
 
