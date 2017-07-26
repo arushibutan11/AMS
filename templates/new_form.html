@@ -17,11 +17,15 @@
 
 <script>
 
+  
 function setreadonly() {
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2, #id_map_loc').prop('readonly', true);
-$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE,#id_map_loc ').css({"background-color": "rgb(247, 247, 247)"});
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE, #id_DRUNK_FAULT, #div_id_offend-0-SUBVEHICLE_TYPE1, #id_vvic-0-SUBVEHICLE_TYPE2, #id_map_loc, #id_offend-0-DRI_DRUNK').prop('readonly', true);
+$('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE,#id_map_loc, #id_offend-0-DRI_DRUNK ').css({"background-color": "rgb(247, 247, 247)"});
 $('#id_DIST, #id_ACC_ID,#id_FN, #id_MONTH, #id_YEAR, #id_RNG, #id_TIME_SLOT, #id_DAY_NIGHT, #id_ACCTYPE ').css({"border": "1px #aaaaaa solid"});
 $('#id_LOCATION').val('11');
+$('input:radio[name=offend-0-dri_sex][value=M]').click();
+$('input:radio[name=pvic-0-VICSEX][value=M]').click();
+$("#div_id_OTHER_REMEDIES").hide();
 $('#id_DATE_OCC_month').val('7');
 $('#id_FIR_DATE_year').val('2017');
 $('#id_FIR_DATE_month').val('7');
@@ -29,6 +33,9 @@ $('#id_SELF_TYPE').val('0');
 $('#div_id_AREA_TYPE_OTHER').hide();
 $('#div_id_TIME_OCC').hide();
 $('#div_id_AREA_TYPE2_OTHER').hide();
+$("#div_id_offend-0-dri_age").hide();
+$("#div_id_vvic-0-routeno2").hide();
+$("#div_id_vvic-0-rgno2").hide();
 $('#div_id_ROAD_CHARACTER_REMARKS').hide();
 $('#div_id_SURFACE_CONDITION_REMARKS').hide();
 $('#div_id_ROAD_CONDITION_REMARKS').hide();
@@ -54,6 +61,8 @@ $("#div_id_pvic-0-VIC_HELMET").hide();
 $("#div_id_pvic-0-HELMET_STANDARD").hide();
 $('#div_id_ILLUMINATION,#div_id_YES_ILLUMINATION').hide();
 $('#div_id_DRIVER_FAULT, #div_id_VEH_MECH_FAULT, #div_id_ROAD_ENV_FAULT, #div_id_VICTIM_FAULT, #div_id_ROAD_ENGG_FAULT, #div_id_DRUNK_FAULT, #div_id_OVER_SPEED_FAULT, #div_id_WEATHER_COND, #div_id_OTHER_CAUSE').hide();
+//license fields
+$("#div_id_offend-0-dri_lic_yes, #div_id_offend-0-dri_lic_date_issu, #div_id_offend-0-dri_lic_perm, #div_id_offend-0-dri_lic_no, #div_id_offend-0-dri_lic_from, #div_id_offend-0-dri_lic_date_upto, #div_id_offend-0-dri_lic_not").hide();
 
 $('#id_LOCATION').val('11');
 $('#div_id_JUNCTION_CONTROL').hide();
@@ -61,9 +70,9 @@ $('#div_id_DIST,#div_id_RNG').wrapAll( $('<div>').addClass('wrap one') );
 $('.one').html($('#div_id_DIST').html() +  $('#div_id_RNG').html());
 $('#div_id_PS, #div_id_FIRNO').wrapAll( $('<div>').addClass('wrap two') );
 $('.two').html($('#div_id_PS').html() + $('#div_id_FIRNO').html());
-/*$('#div_id_PLACE_OCC, #div_id_LOCATION').wrapAll( $('<div>').addClass('wrap three') );
-$('.three').html($('#div_id_PLACE_OCC').html() + $('#div_id_LOCATION').html() );
-$('#div_id_ROADNAME, #div_id_MINORROADNAME').wrapAll( $('<div>').addClass('wrap four') );
+$('#div_id_ACC_PHOTO, #div_id_ACC_PHOTO1,  #div_id_ACC_PHOTO2,  #div_id_ACC_PHOTO3').wrapAll( $('<div>').addClass('wrap three') );
+$('.three').html($('#div_id_ACC_PHOTO').html() + $('#div_id_ACC_PHOTO1').html() + $('#div_id_ACC_PHOTO2').html() + $('#div_id_ACC_PHOTO3').html() );
+/*$('#div_id_ROADNAME, #div_id_MINORROADNAME').wrapAll( $('<div>').addClass('wrap four') );
 $('.four').html($('#div_id_ROADNAME').html() + $('#div_id_MINORROADNAME').html() ); */
 $('#div_id_SEPERATION, #div_id_ROAD_TYPE1').wrapAll( $('<div>').addClass('wrap five') );
 $('.five').html($('#div_id_SEPERATION').html() + $('#div_id_ROAD_TYPE1').html());
@@ -80,6 +89,8 @@ $("#div_id_CAUSE").prepend("<h3 id = 'section-heading'>Cause Analysis</h3>");
 $("#div_id_REMEDIES").prepend("<h3 id = 'section-heading'>Remedies</h3>");
 
  }
+
+
 </script>
 
 
@@ -369,7 +380,7 @@ h2 { text-align: center; }
 <div class="form-style-6">
 <h1>ACCIDENT REPORT FORM</h1>
 
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" id = "mytabs">
     <li class="active"><a data-toggle="tab" href="#main_fir">FIR Details</a></li>
     <li><a data-toggle="tab" href="#offend">Offending Vehicle</a></li>
     <li><a data-toggle="tab" href="#vvic">Victim Vehicle</a></li>
@@ -386,7 +397,7 @@ h2 { text-align: center; }
 <form name="myForm" action = "{% url 'new_fir' %}" method="post" enctype="multipart/form-data">
 {{form|crispy}}
 {% csrf_token %}
-
+<a class="btn btn-primary btnNext">Next</a>
 </div>
 
 <div class="tab-pane fade" id="vvic">
@@ -397,6 +408,7 @@ h2 { text-align: center; }
             {% endfor %}
 {{ vvicform.management_form }}
 </div>
+<a class="btn btn-primary btnNext">Next</a>
 
 </div>
 
@@ -405,6 +417,8 @@ h2 { text-align: center; }
 
 {{pvicform|crispy}}
 </div>
+<a class="btn btn-primary btnNext">Next</a>
+
 </div>
 <div class="tab-pane fade" id="offend">
 <div class = "offend-formset">
@@ -412,12 +426,16 @@ h2 { text-align: center; }
 {{offendform|crispy}}
 
 </div>
+<a class="btn btn-primary btnNext">Next</a>
+
 </div>
 <div class="tab-pane fade" id="collision">
 <div class="collision-formset">
 
 {{collisionform|crispy}}
+
  </div>
+<a class="btn btn-primary btnNext">Next</a>
 
 </div>
 <div class="tab-pane fade" id="cause">
@@ -436,6 +454,89 @@ h2 { text-align: center; }
 <script src="{% static 'fir/js/jquery.formset.js' %}"></script>
 <script src = "{% static 'fir/js/script.js' %}"></script>
 <script type="text/javascript">
+$("#id_offend-0-dri_lic").change(function () {
+    var selection = $("#id_offend-0-dri_lic option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='YES')
+    {
+$("#div_id_offend-0-dri_lic_yes, #div_id_offend-0-dri_lic_date_issu, #div_id_offend-0-dri_lic_no, #div_id_offend-0-dri_lic_from, #div_id_offend-0-dri_lic_date_upto").show();    }
+    else
+  $("#div_id_offend-0-dri_lic_yes, #div_id_offend-0-dri_lic_date_issu, #div_id_offend-0-dri_lic_no, #div_id_offend-0-dri_lic_from, #div_id_offend-0-dri_lic_date_upto").hide(); 
+
+
+  });
+$("#id_offend-0-dri_lic").change(function () {
+    var selection = $("#id_offend-0-dri_lic option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='NO')
+    {
+$("#div_id_offend-0-dri_lic_not").show();    }
+    else
+  $("#div_id_offend-0-dri_lic_not").hide(); 
+
+  });
+
+$("#id_offend-0-dri_lic_yes").change(function () {
+    var selection = $("#id_offend-0-dri_lic_yes option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Permanent')
+    {
+$("#div_id_offend-0-dri_lic_perm").show();    }
+    else
+  $("#div_id_offend-0-dri_lic_perm").hide(); 
+
+  });
+
+$("#id_offend-0-age_known_1").change(function () {
+
+    $("#div_id_offend-0-dri_age").show();
+    document.getElementById("id_offend-0-dri_age").value = "";
+
+
+  });
+
+
+  $("#id_offend-0-age_known_2").change(function () {
+
+      $("#div_id_offend-0-dri_age").hide();
+      document.getElementById("id_offend-0-dri_age").value = "0";
+
+
+    });
+  $("#id_REMEDIES").change(function () {
+    var selection = $("#id_REMEDIES option:selected").text();
+    //alert("you selected" + selection);
+    if (selection=='Others')
+    {
+    $("#div_id_OTHER_REMEDIES").show();
+    }
+    else
+    $("#div_id_OTHER_REMEDIES").hide();
+
+  });
+
+$('.btnNext').click(function(e){
+        e.preventDefault();
+        var next = $('#mytabs li.active').next()
+        next.length?
+          next.find('a').click():
+          $('#mytabs li a')[0].click();
+    });
+
+$('.btnNext').click(function(e){
+       var link = $('#mytabs .active').next().children('a');
+alert(link);
+  $('#mytabs a[href="' + link + '"]').tab('show');
+    });
+
+
+ $('.btnNext').click(function(){ 
+
+alert("Clicked");
+$('.nav-tabs > .active').next('li').find('a').trigger('click');
+
+});
+
 
 $("#id_TIME_OCC").change(function () {
     var selection = document.getElementById("id_TIME_OCC").value;
@@ -457,6 +558,8 @@ $("#id_MVA_NAME").change(function () {
     var selection = document.getElementById("id_MVA_NAME").value;
 
     document.getElementById("id_DRUNK_FAULT").value = "Yes";
+    document.getElementById("id_offend-0-DRI_DRUNK").value = "Drunk";
+
 });
   $("#id_AREA_TYPE").change(function () {
     var selection = $("#id_AREA_TYPE option:selected").text();
@@ -747,7 +850,7 @@ $("#id_offend-0-VEHTYPE1").change(function () {
     else
     $("#div_id_offend-0-routeno1").hide();
 
-    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
+    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
     {
 
     $("#div_id_offend-0-rcno1").hide();
@@ -781,7 +884,7 @@ $("#id_offend-1-VEHTYPE1").change(function () {
     else
     $("#div_id_offend-1-routeno1").hide();
 
-    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF')
+    if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'PEDESTRIAN' ||selection== 'SELF')
     {
 
     $("#div_id_offend-1-rcno1").hide();
@@ -851,7 +954,7 @@ $("#id_vvic-0-VEHTYPE2").change(function () {
     $("#div_id_vvic-0-routeno2").hide();
 
 
-   if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' ||selection== 'E RICKSHAW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL' || selection== 'HTV/GOODS' ||selection== 'PEDESTRIAN' ||selection== 'SELF' || selection=='PASSENGER' || selection=='CYCLE')
+   if (selection=='ANIMAL'|| selection=='BULLOCK CARTS' || selection== 'CYCLIST'|| selection=='CYCLE RICKSHOW' || selection=='HAND CARTS'|| selection=='WALL' ||selection== 'ELECTRIC POLL'  ||selection== 'PEDESTRIAN' ||selection== 'SELF' || selection=='PASSENGER' || selection=='CYCLE')
     {
 
     $("#div_id_vvic-0-rgno2").hide();

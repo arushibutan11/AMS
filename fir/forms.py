@@ -66,11 +66,21 @@ class FirForm(forms.ModelForm):
         )
 
     TIME_KNOWN= forms.ChoiceField(required = True, choices = TIME_KNOWN_CHOICES, widget=forms.RadioSelect())
+
     AREA= forms.ChoiceField(required = True, choices = AREA_CHOICES, widget=forms.RadioSelect())
     TIME_OCC = forms.CharField(
             label = 'Time of Occurence',
             widget=forms.TextInput(attrs={'placeholder': 'hhmm','size':4, 'maxlength':4})        )
     ROAD_TYPE1= forms.ChoiceField(label = "One/Two Way", required = True, choices = ROAD_TYPE1_Choices, widget=forms.RadioSelect())
+    ACC_PHOTO1 = forms.FileField(label='')
+    ACC_PHOTO2 = forms.FileField(label='')
+    ACC_PHOTO3 = forms.FileField(label='')
+    ACC_PHOTO4 = forms.FileField(label='')
+    ACC_PHOTO5 = forms.FileField(label='')
+    MVA_NAME = forms.MultipleChoiceField(required=False,
+    widget=forms.CheckboxSelectMultiple)
+
+
 
 
     class Meta:
@@ -139,7 +149,8 @@ class OffendForm(forms.ModelForm):
     dri_lic_date_upto= forms.DateField(required=False, input_formats = settings.DATE_INPUT_FORMATS,
         widget=SelectDateWidget(years=range(datetime.date.today().year - 10, datetime.date.today().year + 10)),
         )
-    dri_sex= forms.ChoiceField(label = "Gender", required = True, choices = SEX_Choices, widget=forms.RadioSelect())
+    dri_sex= forms.ChoiceField(label = "Gender", required = False, choices = SEX_Choices, widget=forms.RadioSelect())
+    age_known= forms.ChoiceField(required = True, choices = TIME_KNOWN_CHOICES, widget=forms.RadioSelect())
 
     class Meta:
         model = offender

@@ -20,6 +20,9 @@ DRI_LIC_YES_CHOICES = (
 DRI_LIC_NO_CHOICES = (
      ('MINOR','Minor'),('WITHOUT LICENSE','Without License'),
 )
+PERM_LIC_CHOICES = (
+     ('LMV','LMV'),('Commercial','Commercial'),
+)
 VEHTYPE_CHOICES=(
 ('AMBULANCE','AMBULANCE'),
 ('ANIMAL','ANIMAL'),
@@ -201,7 +204,7 @@ DRUNK_CHOICES = (
 
 
 OFFEND_CHOICES = (
-     ('OFFENDING','Offending'),('VICTIM VEHICLE','Victim Vehicle'),
+     ('OFFENDING','Offending'),('VICTIM VEHICLE','Victim Vehicle'), ('OUTSIDE VEHICLE','Outside Vehicle'),('NOT KNOWN','Not Known'),
 )
 ILLUMINATION_CHOICES =  (
      ('WORKING','Working'),('NOT WORKING','Not Working'),
@@ -703,8 +706,6 @@ class details(models.Model):
     ACC_PHOTO1 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
     ACC_PHOTO2 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
     ACC_PHOTO3 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
-    ACC_PHOTO4 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
-    ACC_PHOTO5 = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of Accident ')
     FIR_PHOTO = models.FileField(upload_to='documents/',blank=True,null=True,default='', verbose_name = 'Picture of FIR ')
     #END OF FIR DETAILS
 
@@ -826,6 +827,7 @@ class offender(models.Model):
     dri_relation = models.CharField(max_length=15, choices = RELATION_CHOICES, blank=True, default = '',verbose_name = 'Relative of Driver')
     dri_rel_name = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Name of Relative')
     dri_sex = models.CharField(max_length=15, choices = SEX_Choices,blank=True,default='',verbose_name = 'Gender')
+    age_known = models.CharField(choices=TIME_KNOWN_CHOICES, max_length = 30, verbose_name = 'Age Known')
     dri_age = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0,verbose_name = 'Age')
     dri_add = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Address')
     EDU_QUAL = models.ForeignKey(edu_qual,default='',blank=True,verbose_name = 'Educational Qualifications',null=True)
@@ -835,8 +837,8 @@ class offender(models.Model):
     DRI_DRUNK = models.CharField(max_length=50,blank=True, verbose_name = 'Driver Drunk/Not')
     dri_lic = models.CharField(max_length = 5, choices = YES_NO_CHOICES,verbose_name = 'Driver has License?', blank = True)
     dri_lic_yes = models.CharField(max_length = 25, choices = DRI_LIC_YES_CHOICES,verbose_name = 'Type of License?', blank = True)
-    dri_lic_no = models.CharField(max_length = 25, choices = DRI_LIC_NO_CHOICES,verbose_name = 'Reason - No License', blank = True)
-    dri_lic_perm = models.CharField(max_length = 25,verbose_name = 'Permanent License Type', blank = True)
+    dri_lic_not = models.CharField(max_length = 25, choices = DRI_LIC_NO_CHOICES,verbose_name = 'Reason - No License', blank = True)
+    dri_lic_perm = models.CharField(choices=PERM_LIC_CHOICES, max_length = 25,verbose_name = 'Permanent License Type', blank = True)
     dri_lic_no = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'License No.')
     dri_lic_from = models.CharField(max_length=150,blank=True, default = '',verbose_name = 'Driver License From')
     dri_lic_date_issu = models.DateField(null=True,verbose_name = 'License Issue Date')
@@ -865,9 +867,8 @@ class victim_person(models.Model):
     VICAGE = models.PositiveIntegerField(validators=[MaxValueValidator(99), MinValueValidator(0)],blank=True, default= 0, verbose_name = 'Age')
     PER_STAT_TYPE = models.CharField(max_length = 15, choices = VIC_TYPE_CHOICES,verbose_name = 'Type of Person')
     PER_STAT_TYPE2 = models.ForeignKey(victim_person_status1,verbose_name = 'Person Status')
-    VIC_IN_VEH = models.CharField(max_length = 15, choices = DRUNK_CHOICES,verbose_name = 'Victim inside/outside Vehicle')
-    OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Offending/Victim Vehicle')
-    VEH_INFO = models.CharField(max_length = 25, blank = True, default='',verbose_name = 'Vehicle Info',choices=VEHTYPE_CHOICES) #NOT CLEAR
+    OFFEND = models.CharField(max_length = 15, choices = OFFEND_CHOICES, blank=True,default='',verbose_name = 'Victim in Vehicle')
+    VEH_INFO = models.CharField(max_length = 25, blank = True, default='',verbose_name = 'Vehicle Information',choices=VEHTYPE_CHOICES) #NOT CLEAR
     #VEH_INFO = models.ForeignKey(vehtype1,verbose_name = 'Vehicle Info')
     VIC_SEAT_BELT = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Seatbelt Worn')
     VIC_HELMET = models.CharField(max_length = 5, choices = YES_NO_CHOICES, blank=True,default='',verbose_name = 'Helmet Worn')
@@ -914,6 +915,7 @@ class causes(models.Model):
 
     #REMARKS
     REMEDIES = models.ForeignKey(remedies, verbose_name = 'Remedies')
+    OTHER_REMEDIES = models.CharField(max_length=50,blank=True, default = '', verbose_name = 'Remedies - Other')
     REMARKS = models.CharField(max_length=200,default='',blank=True, verbose_name = 'Remarks')
     OTHER_REMARK = models.CharField(max_length=50, default = '', blank=True, verbose_name = 'Special Observations')
 
