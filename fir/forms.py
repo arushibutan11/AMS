@@ -75,8 +75,6 @@ class FirForm(forms.ModelForm):
     ACC_PHOTO1 = forms.FileField(label='')
     ACC_PHOTO2 = forms.FileField(label='')
     ACC_PHOTO3 = forms.FileField(label='')
-    ACC_PHOTO4 = forms.FileField(label='')
-    ACC_PHOTO5 = forms.FileField(label='')
     MVA_NAME = forms.MultipleChoiceField(required=False,
     widget=forms.CheckboxSelectMultiple)
 
@@ -96,8 +94,8 @@ class FirForm(forms.ModelForm):
         if cd.get('FIR_DATE') > datetime.datetime.now().date():
             self.add_error('FIR_DATE', "FIR Date cannot be after System Date")
 
-        '''if cd.get('DATE_OCC') > cd.get('FIR_DATE'):
-            self.add_error('FIR_DATE', "FIR Date cannot be before Accident Date")'''
+        if cd.get('DATE_OCC').date() > cd.get('FIR_DATE').date():
+            self.add_error('FIR_DATE', "FIR Date cannot be before Accident Date")
 
         '''if cd.get('LONGITUDE') != '':
             LONGITUDE = float (cd.get('LONGITUDE'))
@@ -123,17 +121,6 @@ class FirForm(forms.ModelForm):
             self.add_error('TIME_OCC', "Enter a valid time")
         VEHTYPE2 = str(cd.get('VEHTYPE2'))
         VICTIM = str(cd.get('VICTIM'))
-
-        if ("PEDESTRIAN" in VEHTYPE2) and ("VEHICLES" in VICTIM or "SELF"  in VICTIM or "PASSENGER"  in VICTIM or "SELF/ANIMAL" in VICTIM ):
-            self.add_error('VICTIM', "Victim is Pedestrian")
-        elif (VEHTYPE2 == "SELF") and ("PEDESTRIAN" in VICTIM or "PASSENGER" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
-            self.add_error('VICTIM', "Victim is Self")
-        elif ("ANIMAL" in VEHTYPE2) and (VICTIM == "SELF" or "PEDESTRIAN" in VICTIM or "PASSENGER" in VICTIM or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
-            self.add_error('VICTIM', "Victim is self/animal")
-        elif ("PASSENGER" in VEHTYPE2) and ("SELF" in VICTIM  or "PEDESTRIAN" in VICTIM  or "SELF/ANIMAL" in VICTIM  or "VEHICLES" in VICTIM or "VEHICLES/PED" in VICTIM ):
-            self.add_error('VICTIM', "Victim is passenger")
-        elif ("SELF" not in VEHTYPE2 and "PASSENGER" not in VEHTYPE2 and "PEDESTRIAN" not in VEHTYPE2  and "ANIMAL" not in VEHTYPE2 ) and ("PEDESTRIAN" in VICTIM  or "PASSENGER" in VICTIM  or "SELF" in VICTIM  or "SELF/ANIMAL" in VICTIM):
-            self.add_error('VICTIM', "Victim is vehicle")
         return cd
 
 
@@ -156,11 +143,19 @@ class OffendForm(forms.ModelForm):
         model = offender
         exclude = ('ACCID_ID',)
 
+
 class VVicForm(forms.ModelForm):
 
     class Meta:
         model = victim_vehicle
         exclude = ('ACCID_ID',)
+
+def clean(self):
+        cd = self.cleaned_data
+       
+        if ("PAS" in VEHTYPE2 or "PED" in VEHTYPE2 or "SLF" in VEHTYPE2 or "ANI" in VEHTYPE2 or "UNK" in VEHTYPE2 ) and ("NA" is not VEHICLE_LOADED_CONDITION2):
+            self.add_error('VEHICLE_LOADED_CONDITION2', "Load of the Vehicle is not applicable.")
+        return cd
 
 class PVicForm(forms.ModelForm):
     INJKIL= forms.ChoiceField(label = "Injured or Killed", required = True, choices = INJKIL_CHOICES, widget=forms.RadioSelect())
@@ -190,7 +185,10 @@ class PVicForm(forms.ModelForm):
                 if vehicle == veh.VEHTYPE2.VEHDETL:
                     noerror = True
 
-        print "Vehicle: " + vehicle
+
+        elif 'OUTSIDE VEHICLE' in cd.get('OFFEND') or 'NOT KNOWN' in cd.get('OFFEND'):
+            if vehicle is not 'NOT APPLICABLE':
+                self.add_error('VEH_INFO', "is not applicable in this case.")
 
 
         if noerror == False:

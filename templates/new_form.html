@@ -7,7 +7,6 @@
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/bootstrap.min.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'fir/css/style.css' %}"/>
 <script src="{% static 'fir/js/jquery.js' %}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
 <script src="{% static 'fir/js/bootstrap.js' %}"></script>
 <script type="text/javascript" src="{% static 'smart-selects/admin/js/bindfields.js' %}"></script>
@@ -516,26 +515,11 @@ $("#id_offend-0-age_known_1").change(function () {
   });
 
 $('.btnNext').click(function(e){
-        e.preventDefault();
-        var next = $('#mytabs li.active').next()
-        next.length?
-          next.find('a').click():
-          $('#mytabs li a')[0].click();
-    });
-
-$('.btnNext').click(function(e){
-       var link = $('#mytabs .active').next().children('a');
+       var link = $('#mytabs .active').next().children('a').attr('href');
 alert(link);
   $('#mytabs a[href="' + link + '"]').tab('show');
     });
 
-
- $('.btnNext').click(function(){ 
-
-alert("Clicked");
-$('.nav-tabs > .active').next('li').find('a').trigger('click');
-
-});
 
 
 $("#id_TIME_OCC").change(function () {
